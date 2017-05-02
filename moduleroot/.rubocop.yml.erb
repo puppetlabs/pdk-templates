@@ -1,0 +1,26 @@
+require: rubocop-rspec
+AllCops:
+  TargetRubyVersion: 1.9
+  Include:
+    - ./**/*.rb
+  Exclude:
+    - vendor/**/*
+    - .vendor/**/*
+    - pkg/**/*
+    - spec/fixtures/**/*
+    <%- if !@configs.nil? && @configs.has_key?("AllCops") && @configs["AllCops"].has_key?("Exclude") -%>
+      <%- @configs["AllCops"]["Exclude"].each do |exclude| -%>
+    - <%= exclude %>
+      <%- end -%>
+    <%- end -%>
+
+<%- {"enabled_cops" => "True", "disabled_cops" => "False"}.each do |cop_type, enabled_value| -%>
+  <%- @configs[cop_type].keys.each do |group| -%>
+    <%- @configs[cop_type][group].keys.each do |cop| -%>
+<%= group %>/<%= cop %>:
+      <%- {"Enabled" => enabled_value}.merge(@configs[cop_type][group][cop] || {}).each do |key, value| -%>
+  <%= key %>: <%= value %>
+      <%- end -%>
+    <%- end -%>
+  <%- end -%>
+<%- end -%>

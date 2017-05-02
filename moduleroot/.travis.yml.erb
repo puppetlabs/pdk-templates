@@ -1,0 +1,71 @@
+---
+sudo: false
+dist: trusty
+language: ruby
+cache: bundler
+<% if !@configs.nil? && @configs.has_key?('addons') -%>
+addons:
+<%   @configs['addons'].each do |addon, params| -%>
+  <%= addon %>:
+<%     params.each do |param_name, param_value| -%>
+    <%= param_name %>:<%= param_value.is_a?(String) ? " #{param_value}" : "" %>
+<%       if param_value.is_a?(Array) -%>
+<%         param_value.each do |r| -%>
+      - <%= r %>
+<%         end -%>
+<%       end -%>
+<%     end -%>
+<%   end -%>
+<% end -%>
+before_install:
+  - bundle -v
+  - rm Gemfile.lock || true
+  - gem update --system
+  - gem update bundler
+  - gem --version
+  - bundle -v
+script:
+  - 'bundle exec rake $CHECK'
+matrix:
+  fast_finish: true
+  include:
+<% (@configs['docker_sets'] || []).each do |set| -%>
+<%   job = @configs['docker_defaults'].merge(set['options'] || {}) -%>
+    - rvm: <%= job['rvm'] %>
+<%   job.keys.sort.each do |key| -%>
+<%     next if key == 'rvm' -%>
+      <%= key %>: <%= job[key].gsub(/@@SET@@/, set['set']) %>
+<%   end -%>
+<% end -%>
+<% (@configs['includes'] + (@configs['extras'] || [])).each do |job| -%>
+    - rvm: <%= job['rvm'] %>
+<%   job.keys.sort.each do |key| -%>
+<%     next if key == 'rvm' -%>
+      <%= key %>: <%= job[key] %>
+<%   end -%>
+<% end -%>
+<% if @configs['allow_failures'] -%>
+  allow_failures:
+<%   @configs['allow_failures'].each do |job| -%>
+    - rvm: <%= job['rvm'] %>
+<%     job.keys.sort.each do |key| -%>
+<%       next if key == 'rvm' -%>
+      <%= key %>: <%= job[key] %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+branches:
+  only:
+    - master
+    - /^v\d/
+notifications:
+  email: false
+deploy:
+  provider: puppetforge
+  user: puppet
+  password:
+    secure: "<%= @configs['secure'] %>"
+  on:
+    tags: true
+    all_branches: true
+    condition: "$DEPLOY_TO_FORGE = yes"

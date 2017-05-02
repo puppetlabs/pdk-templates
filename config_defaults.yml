@@ -1,0 +1,258 @@
+---
+.gitattributes:
+  include:
+    '*.rb': 'eol=lf'
+    '*.erb': 'eol=lf'
+    '*.pp': 'eol=lf'
+    '*.sh': 'eol=lf'
+.travis.yml:
+  docker_sets:
+  docker_defaults:
+    # values will replace @@SET@@ with the docker_sets' value
+    rvm: 2.3.1
+    sudo: required
+    dist: trusty
+    services: docker
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=@@SET@@
+    script: bundle exec rake beaker
+  includes:
+    - rvm: 2.3.1
+      env: PUPPET_GEM_VERSION="~> 4.0"
+      bundler_args: --without system_tests
+    - rvm: 2.1.7
+      env: PUPPET_GEM_VERSION="~> 4.0"
+      bundler_args: --without system_tests
+appveyor.yml:
+  appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
+  matrix:
+    - PUPPET_GEM_VERSION: "~> 4.0"
+      RUBY_VER: 21
+    - PUPPET_GEM_VERSION: "~> 4.0"
+      RUBY_VER: 21-x64
+    - PUPPET_GEM_VERSION: "~> 4.0"
+      RUBY_VER: 23
+    - PUPPET_GEM_VERSION: "~> 4.0"
+      RUBY_VER: 23-x64
+    - PUPPET_GEM_VERSION: 4.2.3
+      RUBY_VER: 21-x64
+  test_script:
+    - bundle exec rake spec
+Rakefile:
+  default_disabled_lint_checks:
+    - 'relative'
+spec/spec_opts:
+  delete: true
+.rubocop.yml:
+  disabled_cops:
+    Metrics:
+      AbcSize:
+      ClassLength:
+      CyclomaticComplexity:
+      LineLength:
+      MethodLength:
+      ModuleLength:
+      ParameterLists:
+      PerceivedComplexity:
+    RSpec:
+      DescribeClass:
+      ExampleLength:
+      NamedSubject:
+    Style:
+      ClassAndModuleChildren:
+      ClosingParenthesisIndentation:
+      Documentation:
+  enabled_cops:
+    Lint:
+      AmbiguousRegexpLiteral:
+      AssignmentInCondition:
+      BlockAlignment:
+      ConditionPosition:
+      Debugger:
+      DefEndAlignment:
+      DeprecateClassMethods:
+      ElseLayout:
+      EndAlignment:
+      EnsureReturn:
+      Eval:
+      LiteralInCondition:
+      LiteralInInterpolation:
+      Loop:
+      ParenthesesAsGroupedExpression:
+      RequireParentheses:
+      RescueException:
+      ShadowingOuterLocalVariable:
+      StringConversionInInterpolation:
+      UnreachableCode:
+      UnusedBlockArgument:
+      UnusedMethodArgument:
+      UselessAccessModifier:
+      UselessAssignment:
+      UselessComparison:
+      Void:
+    Metrics:
+      BlockNesting:
+    Style:
+      AccessModifierIndentation:
+      AccessorMethodName:
+      Alias:
+      AlignArray:
+      AlignHash:
+      AlignParameters:
+      AndOr:
+      AsciiComments:
+      Attr:
+      BlockDelimiters:
+      BracesAroundHashParameters:
+      CaseEquality:
+      CaseIndentation:
+      CharacterLiteral:
+      ClassAndModuleCamelCase:
+      ClassCheck:
+      ClassMethods:
+      ClassVars:
+      CollectionMethods:
+      ColonMethodCall:
+      CommentIndentation:
+      CommentAnnotation:
+      ConstantName:
+      DefWithParentheses:
+      DotPosition:
+        EnforcedStyle: trailing
+      DoubleNegation:
+      EachWithObject:
+      EmptyLineBetweenDefs:
+      EmptyLines:
+      EmptyLinesAroundAccessModifier:
+      EmptyLiteral:
+      Encoding:
+      EvenOdd:
+      FileName:
+      For:
+      FormatString:
+      GlobalVars:
+      GuardClause:
+      HashSyntax:
+      IfUnlessModifier:
+      IfWithSemicolon:
+      IndentArray:
+      IndentHash:
+      IndentationConsistency:
+      IndentationWidth:
+      Lambda:
+      LeadingCommentSpace:
+      LineEndConcatenation:
+      MethodCallParentheses:
+      MethodDefParentheses:
+      MethodName:
+      ModuleFunction:
+      MultilineIfThen:
+      MultilineBlockChain:
+      MultilineBlockLayout:
+      MultilineTernaryOperator:
+      NegatedIf:
+      NegatedWhile:
+      NestedTernaryOperator:
+      Next:
+      NilComparision:
+      NonNilCheck:
+      Not:
+      NumericLiterals:
+      OneLineConditional:
+      OpMethod:
+      ParenthesesAroundCondition:
+      PercentLiteralDelimiters:
+      PerlBackrefs:
+      PredicateName:
+      PreferredHashMethods:
+      Proc:
+      RaiseArgs:
+      RedundantBegin:
+      RedundantException:
+      RedundantReturn:
+      RedundantSelf:
+      RegexpLiteral:
+        EnforcedStyle: percent_r
+      RescueModifier:
+      SelfAssignment:
+      Semicolon:
+      SignalException:
+      SingleLineBlockParams:
+      SingleLineMethods:
+      SpaceAfterColon:
+      SpaceAfterComma:
+      SpaceAfterNot:
+      SpaceAfterSemicolon:
+      SpaceAroundEqualsInParameterDefault:
+      SpaceAroundOperators:
+      SpaceBeforeBlockBraces:
+      SpaceBeforeComma:
+      SpaceBeforeComment:
+      SpaceBeforeSemicolon:
+      SpaceBeforeFirstArg:
+      SpaceInsideBlockBraces:
+      SpaceInsideBrackets:
+      SpaceInsideHashLiteralBraces:
+      SpaceInsideParens:
+      SpecialGlobalVars:
+      StringLiterals:
+      Tab:
+      TrailingBlankLines:
+      TrailingCommaInArguments:
+      TrailingCommaInLiteral:
+      TrailingWhitespace:
+      TrivialAccessors:
+      UnlessElse:
+      UnderscorePrefixedVariableName:
+      UnneededPercentQ:
+      VariableInterpolation:
+      VariableName:
+      WhenThen:
+      WhileUntilDo:
+      WhileUntilModifier:
+      WordArray:
+Gemfile:
+  required:
+    ':development':
+      - gem: 'puppet-module-posix-default-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-win-default-r#{minor_version}'
+        platform:
+          - mswin
+          - mingw
+          - x64_mingw
+      - gem: 'puppet-module-posix-dev-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-win-dev-r#{minor_version}'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
+      # json_pure 2.0.2 added a requirement on ruby >= 2. We pin to
+      # json_pure <= 2.0.1 if using ruby 1.x
+      - gem: json_pure
+        version: '<= 2.0.1'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')"
+      - gem: fast_gettext
+        version: '1.1.0'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')"
+      - gem: fast_gettext
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')"
+    ':system_tests':
+      - gem: 'puppet-module-posix-system-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-win-system-r#{minor_version}'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
+      - gem: beaker
+        version: '>= 3'
+        from_env: BEAKER_VERSION
+      - gem: beaker-pe
+      - gem: beaker-rspec
+        from_env: BEAKER_RSPEC_VERSION
+      - gem: beaker-hostgenerator
+        from_env: BEAKER_HOSTGENERATOR_VERSION
+      - gem: beaker-abs
+        from_env: BEAKER_ABS_VERSION
+        version: '~> 0.1'

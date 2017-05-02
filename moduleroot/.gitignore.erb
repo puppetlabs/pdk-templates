@@ -1,0 +1,24 @@
+/pkg/
+/Gemfile.lock
+/Gemfile.local
+/vendor/
+/spec/fixtures/manifests/
+/spec/fixtures/modules/
+/log/
+/junit/
+/.vagrant/
+/.bundle/
+/coverage/
+/log/
+/.idea/
+.metadata
+*.iml
+.*.sw[op]
+.yardoc
+.yardwarns
+/tmp/
+/doc/
+
+<% (@configs['paths'] || []).each do |path| -%>
+<%= path %>
+<% end -%>

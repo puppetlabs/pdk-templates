@@ -1,0 +1,178 @@
+<%
+def gem_length(gem)
+  if gem['from_env']
+    version_len = " *location_for(ENV['#{gem['from_env']}'])".length + ((" || '#{gem['version']}'".length if gem['version']) || 0)
+  else
+    version_len = (", '#{gem['version']}'".length if gem['version']) || 0
+  end
+
+  gem['gem'].length + version_len
+end
+
+def gem_spec(gem, max_len)
+  output = "\"#{gem['gem']}\""
+
+  if gem['version']
+    if gem['from_env']
+      output += ", *location_for(ENV['#{gem['from_env']}'] || '#{gem['version']}')"
+    else
+      output += ", '#{gem['version']}'"
+    end
+  end
+
+  options = []
+  options << ":require => false" if gem['from_env'].nil?
+  options << ":git => '#{gem['git']}'" unless gem['git'].nil?
+  options << ":branch => '#{gem['branch']}'" unless gem['branch'].nil?
+  options << ":ref => '#{gem['ref']}'" unless gem['branch'].nil?
+  options << ":platforms => #{gem['platforms'].inspect}" unless gem['platforms'].nil?
+  
+  unless options.empty?
+    output += ', '
+    output += ' ' * (max_len - gem['length'])
+
+    output += options.join(', ')
+  end
+
+  output += " if #{gem['condition']}" unless gem['condition'].nil?
+
+  output
+end
+-%>
+source ENV['GEM_SOURCE'] || "https://rubygems.org"
+
+def location_for(place_or_version, fake_version = nil)
+  if place_or_version =~ /\A(git[:@][^#]*)#(.*)/
+    [fake_version, { :git => $1, :branch => $2, :require => false }].compact
+  elsif place_or_version =~ /\Afile:\/\/(.*)/
+    ['>= 0', { :path => File.expand_path($1), :require => false }]
+  else
+    [place_or_version, { :require => false }]
+  end
+end
+
+def gem_type(place_or_version)
+  if place_or_version =~ /\Agit[:@]/
+    :git
+  elsif place_or_version =~ /\Afile:/
+    :file
+  else
+    :gem
+  end
+end
+
+ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
+minor_version = ruby_version_segments[0..1].join('.')
+
+<% 
+  groups = {}
+  (@configs['required'].keys + ((@configs['optional'] || {}).keys)).uniq.each do |key|
+    groups[key] = (@configs['required'][key] || []) + ((@configs['optional'] || {})[key] || [])
+  end
+-%>
+<% groups.each do |group, gems| -%>
+group <%= group %> do
+<%
+     gems.map! do |gem|
+       {
+         'gem'           => gem['gem'],
+         'version'       => gem['version'],
+         'platforms'     => gem['platforms'].nil? ? nil : Array[*gem['platforms']].map(&:to_sym),
+         'git'           => gem['git'],
+         'branch'        => gem['branch'],
+         'ref'           => gem['ref'],
+         'length'        => gem_length(gem),
+         'from_env'      => gem['from_env'],
+         'condition'     => gem['condition'],
+       }
+     end
+
+     maxlen = gems.map { |r| r['length'] }.max
+-%>
+<%   gems.each do |gem| -%>
+  gem <%= gem_spec(gem, maxlen) %>
+<%   end -%>
+end
+<% end -%>
+
+puppet_version = ENV['PUPPET_GEM_VERSION']
+puppet_type = gem_type(puppet_version)
+facter_version = ENV['FACTER_GEM_VERSION']
+hiera_version = ENV['HIERA_GEM_VERSION']
+
+puppet_older_than_3_5_0 = !puppet_version.nil? && 
+  Gem::Version.correct(puppet_version) &&
+  Gem::Requirement.new('< 3.5.0').satisfied_by?(Gem::Version.new(puppet_version.dup))
+
+gem 'puppet', *location_for(puppet_version)
+
+# If facter or hiera versions have been specified via the environment
+# variables, use those versions. If not, and if the puppet version is < 3.5.0,
+# use known good versions of both for puppet < 3.5.0.
+if facter_version
+  gem 'facter', *location_for(facter_version)
+elsif puppet_type == :gem && puppet_older_than_3_5_0
+  gem 'facter', '>= 1.6.11', '<= 1.7.5', :require => false
+end
+
+if hiera_version
+  gem 'hiera', *location_for(ENV['HIERA_GEM_VERSION'])
+elsif puppet_type == :gem && puppet_older_than_3_5_0
+  gem 'hiera', '>= 1.0.0', '<= 1.3.0', :require => false
+end
+
+if Gem.win_platform? && (puppet_type != :gem || puppet_older_than_3_5_0)
+  # For Puppet gems < 3.5.0 (tested as far back as 3.0.0) on Windows
+  if puppet_type == :gem
+    gem 'ffi',            '1.9.0',                :require => false
+    gem 'win32-eventlog', '0.5.3',    '<= 0.6.5', :require => false
+    gem 'win32-process',  '0.6.5',    '<= 0.7.5', :require => false
+    gem 'win32-security', '~> 0.1.2', '<= 0.2.5', :require => false
+    gem 'win32-service',  '0.7.2',    '<= 0.8.8', :require => false
+    gem 'minitar',        '0.5.4',                :require => false
+  else
+    gem 'ffi',            '~> 1.9.0',             :require => false
+    gem 'win32-eventlog', '~> 0.5',   '<= 0.6.5', :require => false
+    gem 'win32-process',  '~> 0.6',   '<= 0.7.5', :require => false
+    gem 'win32-security', '~> 0.1',   '<= 0.2.5', :require => false
+    gem 'win32-service',  '~> 0.7',   '<= 0.8.8', :require => false
+    gem 'minitar',        '~> 0.5.4',             :require => false
+  end
+
+  gem 'win32-dir', '~> 0.3', '<= 0.4.9', :require => false
+
+  if RUBY_VERSION =~ /\A1\./
+    gem 'win32console', '1.3.2', :require => false
+    # sys-admin was removed in Puppet 3.7.0 and doesn't compile under Ruby 2.x
+    gem 'sys-admin',    '1.5.6', :require => false
+  end
+
+  # Puppet < 3.7.0 requires these.
+  # Puppet >= 3.5.0 gem includes these as requirements.
+  # The following versions are tested to work with 3.0.0 <= puppet < 3.7.0.
+  gem 'win32-api',           '1.4.8', :require => false
+  gem 'win32-taskscheduler', '0.2.2', :require => false
+  gem 'windows-api',         '0.4.3', :require => false
+  gem 'windows-pr',          '1.2.3', :require => false
+elsif Gem.win_platform?
+  # If we're using a Puppet gem on Windows which handles its own win32-xxx gem
+  # dependencies (>= 3.5.0), set the maximum versions (see PUP-6445).
+  gem 'win32-dir',      '<= 0.4.9', :require => false
+  gem 'win32-eventlog', '<= 0.6.5', :require => false
+  gem 'win32-process',  '<= 0.7.5', :require => false
+  gem 'win32-security', '<= 0.2.5', :require => false
+  gem 'win32-service',  '<= 0.8.8', :require => false
+  end
+
+# Evaluate Gemfile.local and ~/.gemfile if they exist
+extra_gemfiles = [
+  "#{__FILE__}.local",
+  File.join(Dir.home, '.gemfile'),
+]
+
+extra_gemfiles.each do |gemfile|
+  if File.file?(gemfile) && File.readable?(gemfile)
+    eval(File.read(gemfile), binding)
+  end
+end
+# vim: syntax=ruby

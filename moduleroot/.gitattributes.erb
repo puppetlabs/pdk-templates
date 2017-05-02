@@ -1,0 +1,7 @@
+<%
+  excludelist = @configs['exclude'] || []
+  includelist = @configs['include'] || {}
+-%>
+<% (includelist.keys - excludelist).each do |key| -%>
+<%= key -%> <%= includelist[key] %>
+<% end -%>
