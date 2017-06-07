@@ -44,6 +44,8 @@ spec/spec_opts:
   delete: true
 .rubocop.yml:
   disabled_cops:
+    Layout:
+      ClosingParenthesisIndentation:
     Metrics:
       AbcSize:
       ClassLength:
@@ -59,9 +61,44 @@ spec/spec_opts:
       NamedSubject:
     Style:
       ClassAndModuleChildren:
-      ClosingParenthesisIndentation:
       Documentation:
   enabled_cops:
+    Layout:
+      AccessModifierIndentation:
+      AlignArray:
+      AlignHash:
+      AlignParameters:
+      CaseIndentation:
+      CommentIndentation:
+      DotPosition:
+        EnforcedStyle: trailing
+      EmptyLineBetweenDefs:
+      EmptyLines:
+      EmptyLinesAroundAccessModifier:
+      IndentArray:
+      IndentHash:
+      IndentationConsistency:
+      IndentationWidth:
+      LeadingCommentSpace:
+      MultilineBlockLayout:
+      SpaceAfterColon:
+      SpaceAfterComma:
+      SpaceAfterNot:
+      SpaceAfterSemicolon:
+      SpaceAroundEqualsInParameterDefault:
+      SpaceAroundOperators:
+      SpaceBeforeBlockBraces:
+      SpaceBeforeComma:
+      SpaceBeforeComment:
+      SpaceBeforeSemicolon:
+      SpaceBeforeFirstArg:
+      SpaceInsideBlockBraces:
+      SpaceInsideBrackets:
+      SpaceInsideHashLiteralBraces:
+      SpaceInsideParens:
+      Tab:
+      TrailingBlankLines:
+      TrailingWhitespace:
     Lint:
       AmbiguousRegexpLiteral:
       AssignmentInCondition:
@@ -69,11 +106,10 @@ spec/spec_opts:
       ConditionPosition:
       Debugger:
       DefEndAlignment:
-      DeprecateClassMethods:
+      DeprecatedClassMethods:
       ElseLayout:
       EndAlignment:
       EnsureReturn:
-      Eval:
       LiteralInCondition:
       LiteralInInterpolation:
       Loop:
@@ -82,6 +118,7 @@ spec/spec_opts:
       RescueException:
       ShadowingOuterLocalVariable:
       StringConversionInInterpolation:
+      UnderscorePrefixedVariableName:
       UnreachableCode:
       UnusedBlockArgument:
       UnusedMethodArgument:
@@ -91,20 +128,17 @@ spec/spec_opts:
       Void:
     Metrics:
       BlockNesting:
+    Security:
+      Eval:
     Style:
-      AccessModifierIndentation:
       AccessorMethodName:
       Alias:
-      AlignArray:
-      AlignHash:
-      AlignParameters:
       AndOr:
       AsciiComments:
       Attr:
       BlockDelimiters:
       BracesAroundHashParameters:
       CaseEquality:
-      CaseIndentation:
       CharacterLiteral:
       ClassAndModuleCamelCase:
       ClassCheck:
@@ -112,17 +146,11 @@ spec/spec_opts:
       ClassVars:
       CollectionMethods:
       ColonMethodCall:
-      CommentIndentation:
       CommentAnnotation:
       ConstantName:
       DefWithParentheses:
-      DotPosition:
-        EnforcedStyle: trailing
       DoubleNegation:
       EachWithObject:
-      EmptyLineBetweenDefs:
-      EmptyLines:
-      EmptyLinesAroundAccessModifier:
       EmptyLiteral:
       Encoding:
       EvenOdd:
@@ -134,26 +162,20 @@ spec/spec_opts:
       HashSyntax:
       IfUnlessModifier:
       IfWithSemicolon:
-      IndentArray:
-      IndentHash:
-      IndentationConsistency:
-      IndentationWidth:
       Lambda:
-      LeadingCommentSpace:
       LineEndConcatenation:
-      MethodCallParentheses:
+      MethodCallWithoutArgsParentheses:
       MethodDefParentheses:
       MethodName:
       ModuleFunction:
       MultilineIfThen:
       MultilineBlockChain:
-      MultilineBlockLayout:
       MultilineTernaryOperator:
       NegatedIf:
       NegatedWhile:
       NestedTernaryOperator:
       Next:
-      NilComparision:
+      NilComparison:
       NonNilCheck:
       Not:
       NumericLiterals:
@@ -178,31 +200,12 @@ spec/spec_opts:
       SignalException:
       SingleLineBlockParams:
       SingleLineMethods:
-      SpaceAfterColon:
-      SpaceAfterComma:
-      SpaceAfterNot:
-      SpaceAfterSemicolon:
-      SpaceAroundEqualsInParameterDefault:
-      SpaceAroundOperators:
-      SpaceBeforeBlockBraces:
-      SpaceBeforeComma:
-      SpaceBeforeComment:
-      SpaceBeforeSemicolon:
-      SpaceBeforeFirstArg:
-      SpaceInsideBlockBraces:
-      SpaceInsideBrackets:
-      SpaceInsideHashLiteralBraces:
-      SpaceInsideParens:
       SpecialGlobalVars:
       StringLiterals:
-      Tab:
-      TrailingBlankLines:
       TrailingCommaInArguments:
       TrailingCommaInLiteral:
-      TrailingWhitespace:
       TrivialAccessors:
       UnlessElse:
-      UnderscorePrefixedVariableName:
       UnneededPercentQ:
       VariableInterpolation:
       VariableName:
