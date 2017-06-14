@@ -1,26 +1,34 @@
-require: rubocop-rspec
-AllCops:
-  TargetRubyVersion: 1.9
-  Include:
-    - ./**/*.rb
-  Exclude:
-    - vendor/**/*
-    - .vendor/**/*
-    - pkg/**/*
-    - spec/fixtures/**/*
-    <%- if !@configs.nil? && @configs.has_key?("AllCops") && @configs["AllCops"].has_key?("Exclude") -%>
-      <%- @configs["AllCops"]["Exclude"].each do |exclude| -%>
-    - <%= exclude %>
-      <%- end -%>
-    <%- end -%>
+<%-
+# note that these hashes need to use rockets, not colons, because rubocop config requires strings as keys
+defaults = {
+  'require' => 'rubocop-rspec',
+  'AllCops' => {
+    'TargetRubyVersion' => '2.1',
+    'Include' => [
+      './**/*.rb',
+    ],
+    'Exclude'=> [
+      "vendor/**/*",
+      ".vendor/**/*",
+      "pkg/**/*",
+      "spec/fixtures/**/*",
+    ],
+  },
+}
 
-<%- {"enabled_cops" => "True", "disabled_cops" => "False"}.each do |cop_type, enabled_value| -%>
-  <%- @configs[cop_type].keys.each do |group| -%>
-    <%- @configs[cop_type][group].keys.each do |cop| -%>
-<%= group %>/<%= cop %>:
-      <%- {"Enabled" => enabled_value}.merge(@configs[cop_type][group][cop] || {}).each do |key, value| -%>
-  <%= key %>: <%= value %>
-      <%- end -%>
-    <%- end -%>
-  <%- end -%>
-<%- end -%>
+require 'deep_merge/core'
+profile = @configs['profiles'][@configs['selected_profile']]
+configs = defaults.dup
+DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
+
+require 'yaml'
+require 'rubocop/version'
+path = File.absolute_path(File.join(__FILE__, '..', '..', 'rubocop', "defaults-#{RuboCop::Version.version}.yml"))
+default_enabled_cops = YAML.load(File.read(path))[:default_enabled_cops]
+
+enabled_cops = (profile['enabled_cops'] || {}).keys
+enabled_cops = default_enabled_cops if enabled_cops == 'all'
+(enabled_cops - default_enabled_cops).sort.each { |c| configs[c] ||= {}; configs[c]['Enabled'] = true }
+(default_enabled_cops - enabled_cops).sort.each { |c| configs[c] ||= {}; configs[c]['Enabled'] = false }
+-%>
+<%= YAML.dump(configs) -%>
