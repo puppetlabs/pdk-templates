@@ -43,176 +43,418 @@ Rakefile:
 spec/spec_opts:
   delete: true
 .rubocop.yml:
-  disabled_cops:
-    Layout:
-      ClosingParenthesisIndentation:
-    Metrics:
-      AbcSize:
-      ClassLength:
-      CyclomaticComplexity:
-      LineLength:
-      MethodLength:
-      ModuleLength:
-      ParameterLists:
-      PerceivedComplexity:
-    RSpec:
-      DescribeClass:
-      ExampleLength:
-      NamedSubject:
-    Style:
-      ClassAndModuleChildren:
-      Documentation:
-  enabled_cops:
-    Layout:
-      AccessModifierIndentation:
-      AlignArray:
-      AlignHash:
-      AlignParameters:
-      CaseIndentation:
-      CommentIndentation:
-      DotPosition:
-        EnforcedStyle: trailing
-      EmptyLineBetweenDefs:
-      EmptyLines:
-      EmptyLinesAroundAccessModifier:
-      IndentArray:
-      IndentHash:
-      IndentationConsistency:
-      IndentationWidth:
-      LeadingCommentSpace:
-      MultilineBlockLayout:
-      SpaceAfterColon:
-      SpaceAfterComma:
-      SpaceAfterNot:
-      SpaceAfterSemicolon:
-      SpaceAroundEqualsInParameterDefault:
-      SpaceAroundOperators:
-      SpaceBeforeBlockBraces:
-      SpaceBeforeComma:
-      SpaceBeforeComment:
-      SpaceBeforeSemicolon:
-      SpaceBeforeFirstArg:
-      SpaceInsideBlockBraces:
-      SpaceInsideBrackets:
-      SpaceInsideHashLiteralBraces:
-      SpaceInsideParens:
-      Tab:
-      TrailingBlankLines:
-      TrailingWhitespace:
-    Lint:
-      AmbiguousRegexpLiteral:
-      AssignmentInCondition:
-      BlockAlignment:
-      ConditionPosition:
-      Debugger:
-      DefEndAlignment:
-      DeprecatedClassMethods:
-      ElseLayout:
-      EndAlignment:
-      EnsureReturn:
-      LiteralInCondition:
-      LiteralInInterpolation:
-      Loop:
-      ParenthesesAsGroupedExpression:
-      RequireParentheses:
-      RescueException:
-      ShadowingOuterLocalVariable:
-      StringConversionInInterpolation:
-      UnderscorePrefixedVariableName:
-      UnreachableCode:
-      UnusedBlockArgument:
-      UnusedMethodArgument:
-      UselessAccessModifier:
-      UselessAssignment:
-      UselessComparison:
-      Void:
-    Metrics:
-      BlockNesting:
-    Security:
-      Eval:
-    Style:
-      AccessorMethodName:
-      Alias:
-      AndOr:
-      AsciiComments:
-      Attr:
-      BlockDelimiters:
-      BracesAroundHashParameters:
-      CaseEquality:
-      CharacterLiteral:
-      ClassAndModuleCamelCase:
-      ClassCheck:
-      ClassMethods:
-      ClassVars:
-      CollectionMethods:
-      ColonMethodCall:
-      CommentAnnotation:
-      ConstantName:
-      DefWithParentheses:
-      DoubleNegation:
-      EachWithObject:
-      EmptyLiteral:
-      Encoding:
-      EvenOdd:
-      FileName:
-      For:
-      FormatString:
-      GlobalVars:
-      GuardClause:
-      HashSyntax:
-      IfUnlessModifier:
-      IfWithSemicolon:
-      Lambda:
-      LineEndConcatenation:
-      MethodCallWithoutArgsParentheses:
-      MethodDefParentheses:
-      MethodName:
-      ModuleFunction:
-      MultilineIfThen:
-      MultilineBlockChain:
-      MultilineTernaryOperator:
-      NegatedIf:
-      NegatedWhile:
-      NestedTernaryOperator:
-      Next:
-      NilComparison:
-      NonNilCheck:
-      Not:
-      NumericLiterals:
-      OneLineConditional:
-      OpMethod:
-      ParenthesesAroundCondition:
-      PercentLiteralDelimiters:
-      PerlBackrefs:
-      PredicateName:
-      PreferredHashMethods:
-      Proc:
-      RaiseArgs:
-      RedundantBegin:
-      RedundantException:
-      RedundantReturn:
-      RedundantSelf:
-      RegexpLiteral:
-        EnforcedStyle: percent_r
-      RescueModifier:
-      SelfAssignment:
-      Semicolon:
-      SignalException:
-      SingleLineBlockParams:
-      SingleLineMethods:
-      SpecialGlobalVars:
-      StringLiterals:
-      TrailingCommaInArguments:
-      TrailingCommaInLiteral:
-      TrivialAccessors:
-      UnlessElse:
-      UnneededPercentQ:
-      VariableInterpolation:
-      VariableName:
-      WhenThen:
-      WhileUntilDo:
-      WhileUntilModifier:
-      WordArray:
+  selected_profile: strict
+  default_configs: &default_configs
+    Metrics/LineLength:
+      Description: People have wide screens, use them.
+      Max: 200
+
+    # RSpec cops
+    RSpec/BeforeAfterAll:
+      Description: Beware of using after(:all) as it may cause state to leak between tests. A necessary evil in acceptance testing.
+      Exclude:
+        - 'spec/acceptance/**/*.rb'
+
+    RSpec/HookArgument:
+      Description: Prefer explicit :each argument, matching existing module's style
+      EnforcedStyle: each
+
+    # Style Cops
+    Style/BlockDelimiters:
+      Description: Prefer braces for chaining. Mostly an aesthetical choice. Better to be consistent then.
+      EnforcedStyle: braces_for_chaining
+
+    Style/ClassAndModuleChildren:
+      Description: Compact style reduces the required amount of indentation.
+      EnforcedStyle: compact
+
+    Style/EmptyElse:
+      Description: Enforce against empty else clauses, but allow `nil` for clarity.
+      EnforcedStyle: empty
+
+    Style/FormatString:
+      Description: Following the main puppet project's style, prefer the % format format.
+      EnforcedStyle: percent
+
+    Style/FormatStringToken:
+      Description: Following the main puppet project's style, prefer the simpler template tokens over annotated ones.
+      EnforcedStyle: template
+
+    Style/Lambda:
+      Description: Prefer the keyword for easier discoverability.
+      EnforcedStyle: literal
+
+    Style/RegexpLiteral:
+      Description: Community preference. See https://github.com/voxpupuli/modulesync_config/issues/168
+      EnforcedStyle: percent_r
+
+    Style/TernaryParentheses:
+      Description: Checks for use of parentheses around ternary conditions. Enforce parentheses on complex expressions for better readability, but seriously consider breaking it up.
+      EnforcedStyle: require_parentheses_when_complex
+
+    Style/TrailingCommaInArguments:
+      Description: Prefer always trailing comma on multiline argument lists. This makes diffs, and re-ordering nicer.
+      EnforcedStyleForMultiline: comma
+
+    Style/TrailingCommaInLiteral:
+      Description: Prefer always trailing comma on multiline literals. This makes diffs, and re-ordering nicer.
+      EnforcedStyleForMultiline: comma
+
+    Style/SymbolArray:
+      Description: Using percent style obscures symbolic intent of array's contents.
+      EnforcedStyle: brackets
+  cleanup_cops: &cleanup_cops
+    Bundler/OrderedGems:
+    Layout/AccessModifierIndentation:
+    Layout/AlignArray:
+    Layout/AlignHash:
+    Layout/AlignParameters:
+    Layout/BlockEndNewline:
+    Layout/CaseIndentation:
+    Layout/ClosingParenthesisIndentation:
+    Layout/CommentIndentation:
+    Layout/DotPosition:
+    Layout/ElseAlignment:
+    Layout/EmptyLineAfterMagicComment:
+    Layout/EmptyLineBetweenDefs:
+    Layout/EmptyLines:
+    Layout/EmptyLinesAroundAccessModifier:
+    Layout/EmptyLinesAroundBlockBody:
+    Layout/EmptyLinesAroundClassBody:
+    Layout/EmptyLinesAroundExceptionHandlingKeywords:
+    Layout/EmptyLinesAroundMethodBody:
+    Layout/EmptyLinesAroundModuleBody:
+    Layout/ExtraSpacing:
+    Layout/FirstParameterIndentation:
+    Layout/IndentArray:
+    Layout/IndentAssignment:
+    Layout/IndentHash:
+    Layout/IndentHeredoc:
+    Layout/IndentationConsistency:
+    Layout/IndentationWidth:
+    Layout/InitialIndentation:
+    Layout/LeadingCommentSpace:
+    Layout/MultilineArrayBraceLayout:
+    Layout/MultilineBlockLayout:
+    Layout/MultilineHashBraceLayout:
+    Layout/MultilineMethodCallBraceLayout:
+    Layout/MultilineMethodCallIndentation:
+    Layout/MultilineMethodDefinitionBraceLayout:
+    Layout/MultilineOperationIndentation:
+    Layout/RescueEnsureAlignment:
+    Layout/SpaceAfterColon:
+    Layout/SpaceAfterComma:
+    Layout/SpaceAfterMethodName:
+    Layout/SpaceAfterNot:
+    Layout/SpaceAfterSemicolon:
+    Layout/SpaceAroundBlockParameters:
+    Layout/SpaceAroundEqualsInParameterDefault:
+    Layout/SpaceAroundKeyword:
+    Layout/SpaceAroundOperators:
+    Layout/SpaceBeforeBlockBraces:
+    Layout/SpaceBeforeComma:
+    Layout/SpaceBeforeComment:
+    Layout/SpaceBeforeFirstArg:
+    Layout/SpaceBeforeSemicolon:
+    Layout/SpaceInLambdaLiteral:
+    Layout/SpaceInsideArrayPercentLiteral:
+    Layout/SpaceInsideBlockBraces:
+    Layout/SpaceInsideBrackets:
+    Layout/SpaceInsideHashLiteralBraces:
+    Layout/SpaceInsideParens:
+    Layout/SpaceInsidePercentLiteralDelimiters:
+    Layout/SpaceInsideRangeLiteral:
+    Layout/SpaceInsideStringInterpolation:
+    Layout/Tab:
+    Layout/TrailingBlankLines:
+    Layout/TrailingWhitespace:
+    Lint/BlockAlignment:
+    Lint/DefEndAlignment:
+    Lint/DeprecatedClassMethods:
+    Lint/EmptyInterpolation:
+    Lint/LiteralInInterpolation:
+    Lint/MultipleCompare:
+    Lint/PercentStringArray:
+    Lint/PercentSymbolArray:
+    Lint/RescueType:
+    Lint/SafeNavigationChain:
+    Lint/StringConversionInInterpolation:
+    Lint/UnifiedInteger:
+    Lint/UnneededSplatExpansion:
+    Lint/UnusedBlockArgument:
+    Lint/UnusedMethodArgument:
+    Performance/CaseWhenSplat:
+    Performance/Casecmp:
+    Performance/CompareWithBlock:
+    Performance/Count:
+    Performance/Detect:
+    Performance/DoubleStartEndWith:
+    Performance/FlatMap:
+    Performance/LstripRstrip:
+    Performance/RangeInclude:
+    Performance/RedundantBlockCall:
+    Performance/RedundantMatch:
+    Performance/RedundantMerge:
+    Performance/RedundantSortBy:
+    Performance/RegexpMatch:
+    Performance/ReverseEach:
+    Performance/Sample:
+    Performance/Size:
+    Performance/StartWith:
+    Performance/StringReplacement:
+    Performance/TimesMap:
+    RSpec/BeEql:
+    RSpec/DescribedClass:
+    RSpec/EmptyLineAfterFinalLet:
+    RSpec/EmptyLineAfterSubject:
+    RSpec/ExampleWording:
+    RSpec/HookArgument:
+    RSpec/ImplicitExpect:
+    RSpec/InstanceSpy:
+    RSpec/ItBehavesLike:
+    RSpec/LeadingSubject:
+    RSpec/NotToNot:
+    RSpec/SharedContext:
+    RSpec/SingleArgumentMessageChain:
+    Security/JSONLoad:
+    Security/YAMLLoad:
+    Style/Alias:
+    Style/AndOr:
+    Style/ArrayJoin:
+    Style/Attr:
+    Style/BarePercentLiterals:
+    Style/BlockComments:
+    Style/BlockDelimiters:
+    Style/BracesAroundHashParameters:
+    Style/CharacterLiteral:
+    Style/ClassCheck:
+    Style/ClassMethods:
+    Style/CollectionMethods:
+    Style/ColonMethodCall:
+    Style/CommandLiteral:
+    Style/CommentAnnotation:
+    Style/ConditionalAssignment:
+    Style/DefWithParentheses:
+    Style/EachForSimpleLoop:
+    Style/EachWithObject:
+    Style/EmptyCaseCondition:
+    Style/EmptyElse:
+    Style/EmptyLiteral:
+    Style/EmptyMethod:
+    Style/EvenOdd:
+    Style/FormatString:
+    Style/FrozenStringLiteralComment:
+    Style/HashSyntax:
+    Style/InfiniteLoop:
+    Style/InverseMethods:
+    Style/Lambda:
+    Style/LambdaCall:
+    Style/LineEndConcatenation:
+    Style/MethodCallWithoutArgsParentheses:
+    Style/MethodDefParentheses:
+    Style/MixinGrouping:
+    Style/MultilineIfThen:
+    Style/MultilineMemoization:
+    Style/MutableConstant:
+    Style/NegatedIf:
+    Style/NegatedWhile:
+    Style/NestedModifier:
+    Style/NestedParenthesizedCalls:
+    Style/Next:
+    Style/NilComparison:
+    Style/NonNilCheck:
+    Style/Not:
+    Style/NumericLiteralPrefix:
+    Style/NumericLiterals:
+    Style/OneLineConditional:
+    Style/ParallelAssignment:
+    Style/ParenthesesAroundCondition:
+    Style/PercentLiteralDelimiters:
+    Style/PercentQLiterals:
+    Style/PerlBackrefs:
+    Style/PreferredHashMethods:
+    Style/Proc:
+    Style/RaiseArgs:
+    Style/RedundantBegin:
+    Style/RedundantException:
+    Style/RedundantFreeze:
+    Style/RedundantParentheses:
+    Style/RedundantReturn:
+    Style/RedundantSelf:
+    Style/RegexpLiteral:
+    Style/RescueModifier:
+    Style/SafeNavigation:
+    Style/Semicolon:
+    Style/SignalException:
+    Style/SingleLineMethods:
+    Style/SpecialGlobalVars:
+    Style/StabbyLambdaParentheses:
+    Style/StringLiterals:
+    Style/StringLiteralsInInterpolation:
+    Style/StringMethods:
+    Style/SymbolArray:
+    Style/SymbolLiteral:
+    Style/TernaryParentheses:
+    Style/TrailingCommaInArguments:
+    Style/TrailingCommaInLiteral:
+    Style/TrailingUnderscoreVariable:
+    Style/TrivialAccessors:
+    Style/UnlessElse:
+    Style/UnneededCapitalW:
+    Style/UnneededInterpolation:
+    Style/UnneededPercentQ:
+    Style/VariableInterpolation:
+    Style/WhenThen:
+    Style/WhileUntilDo:
+    Style/WhileUntilModifier:
+    Style/WordArray:
+    Style/YodaCondition:
+    Style/ZeroLengthPredicate:
+
+  profiles:
+    # no rubocops enabled, caveat emptor!
+    off:
+      enabled_cops: []
+
+    # a sanitized list of cops that'll cleanup a code base without much effort
+    # they all support autocorrect, and should be fairly uncontroversial across
+    # wide segments of the Community.
+    cleanups_only:
+      configs: *default_configs
+      enabled_cops: *cleanup_cops
+
+    # a good mix of cops with community recommended settings
+    strict:
+      configs: *default_configs
+      enabled_cops:
+        <<: *cleanup_cops
+        Bundler/DuplicatedGem:
+        Layout/EmptyLinesAroundBeginBody:
+        Layout/EndOfLine:
+        Lint/AmbiguousBlockAssociation:
+        Lint/AmbiguousOperator:
+        Lint/AmbiguousRegexpLiteral:
+        Lint/AssignmentInCondition:
+        Lint/CircularArgumentReference:
+        Lint/ConditionPosition:
+        Lint/Debugger:
+        Lint/DuplicateCaseCondition:
+        Lint/DuplicateMethods:
+        Lint/DuplicatedKey:
+        Lint/EachWithObjectArgument:
+        Lint/ElseLayout:
+        Lint/EmptyEnsure:
+        Lint/EmptyExpression:
+        Lint/EmptyWhen:
+        Lint/EndAlignment:
+        Lint/EndInMethod:
+        Lint/EnsureReturn:
+        Lint/FloatOutOfRange:
+        Lint/FormatParameterMismatch:
+        Lint/HandleExceptions:
+        Lint/ImplicitStringConcatenation:
+        Lint/IneffectiveAccessModifier:
+        Lint/InheritException:
+        Lint/InvalidCharacterLiteral:
+        Lint/LiteralInCondition:
+        Lint/Loop:
+        Lint/NestedMethodDefinition:
+        Lint/NextWithoutAccumulator:
+        Lint/NonLocalExitFromIterator:
+        Lint/ParenthesesAsGroupedExpression:
+        Lint/RandOne:
+        Lint/RequireParentheses:
+        Lint/RescueException:
+        Lint/ScriptPermission:
+        Lint/ShadowedException:
+        Lint/ShadowingOuterLocalVariable:
+        Lint/UnderscorePrefixedVariableName:
+        Lint/UnneededDisable:
+        Lint/UnreachableCode:
+        Lint/UselessAccessModifier:
+        Lint/UselessAssignment:
+        Lint/UselessComparison:
+        Lint/UselessElseWithoutRescue:
+        Lint/UselessSetterCall:
+        Lint/Void:
+        Metrics/BlockNesting:
+        Metrics/LineLength:
+        Performance/Caller:
+        Performance/EndWith:
+        Performance/FixedSize:
+        Performance/HashEachMethods:
+        RSpec/AnyInstance:
+        RSpec/AroundBlock:
+        RSpec/BeforeAfterAll:
+        RSpec/DescribeMethod:
+        RSpec/DescribeSymbol:
+        RSpec/EmptyExampleGroup:
+        RSpec/ExampleLength:
+        RSpec/ExpectActual:
+        RSpec/ExpectOutput:
+        RSpec/FilePath:
+        RSpec/Focus:
+        RSpec/InstanceVariable:
+        RSpec/IteratedExpectation:
+        RSpec/LetSetup:
+        RSpec/MessageChain:
+        RSpec/MessageSpies:
+        RSpec/MultipleDescribes:
+        RSpec/MultipleExpectations:
+        RSpec/NamedSubject:
+        RSpec/NestedGroups:
+        RSpec/OverwritingSetup:
+        RSpec/RepeatedDescription:
+        RSpec/RepeatedExample:
+        RSpec/ScatteredLet:
+        RSpec/ScatteredSetup:
+        RSpec/SubjectStub:
+        RSpec/VerifiedDoubles:
+        Security/Eval:
+        Security/MarshalLoad:
+        Style/AccessorMethodName:
+        Style/AsciiIdentifiers:
+        Style/BeginBlock:
+        Style/CaseEquality:
+        Style/ClassAndModuleCamelCase:
+        Style/ClassAndModuleChildren:
+        Style/ClassVars:
+        Style/ConstantName:
+        Style/Documentation:
+        Style/DoubleNegation:
+        Style/EndBlock:
+        Style/FileName:
+        Style/FlipFlop:
+        Style/For:
+        Style/FormatStringToken:
+        Style/GlobalVars:
+        Style/GuardClause:
+        Style/IdenticalConditionalBranches:
+        Style/IfInsideElse:
+        Style/IfUnlessModifierOfIfUnless:
+        Style/IfWithSemicolon:
+        Style/MethodCalledOnDoEndBlock:
+        Style/MethodMissing:
+        Style/MethodName:
+        Style/ModuleFunction:
+        Style/MultilineBlockChain:
+        Style/MultilineIfModifier:
+        Style/MultilineTernaryOperator:
+        Style/MultipleComparison:
+        Style/NestedTernaryOperator:
+        Style/NumericPredicate:
+        Style/OpMethod:
+        Style/OptionalArguments:
+        Style/PredicateName:
+        Style/SelfAssignment:
+        Style/StructInheritance:
+        Style/VariableName:
+        Style/VariableNumber:
+
+    # Uses rubocop default cops
+    hardcore:
+      configs: *default_configs
+      enabled_cops: all
 Gemfile:
   required:
     ':development':
