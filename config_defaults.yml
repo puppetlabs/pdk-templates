@@ -491,7 +491,7 @@ Gemfile:
           - mingw
           - x64_mingw
       - gem: beaker
-        version: '>= 3'
+        version: '~> 3.13'
         from_env: BEAKER_VERSION
       - gem: beaker-pe
       - gem: beaker-rspec
