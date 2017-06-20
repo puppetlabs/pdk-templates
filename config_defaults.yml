@@ -458,30 +458,30 @@ spec/spec_opts:
 Gemfile:
   required:
     ':development':
+      - gem: fast_gettext
+        version: '1.1.0'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')"
+      - gem: fast_gettext
+        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')"
+      # json_pure 2.0.2 added a requirement on ruby >= 2. We pin to
+      # json_pure <= 2.0.1 if using ruby 1.x
+      - gem: json_pure
+        version: '<= 2.0.1'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')"
       - gem: 'puppet-module-posix-default-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-posix-dev-r#{minor_version}'
         platforms: ruby
       - gem: 'puppet-module-win-default-r#{minor_version}'
         platform:
           - mswin
           - mingw
           - x64_mingw
-      - gem: 'puppet-module-posix-dev-r#{minor_version}'
-        platforms: ruby
       - gem: 'puppet-module-win-dev-r#{minor_version}'
         platforms:
           - mswin
           - mingw
           - x64_mingw
-      # json_pure 2.0.2 added a requirement on ruby >= 2. We pin to
-      # json_pure <= 2.0.1 if using ruby 1.x
-      - gem: json_pure
-        version: '<= 2.0.1'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')"
-      - gem: fast_gettext
-        version: '1.1.0'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')"
-      - gem: fast_gettext
-        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')"
     ':system_tests':
       - gem: 'puppet-module-posix-system-r#{minor_version}'
         platforms: ruby
@@ -493,11 +493,11 @@ Gemfile:
       - gem: beaker
         version: '~> 3.13'
         from_env: BEAKER_VERSION
-      - gem: beaker-pe
-      - gem: beaker-rspec
-        from_env: BEAKER_RSPEC_VERSION
-      - gem: beaker-hostgenerator
-        from_env: BEAKER_HOSTGENERATOR_VERSION
       - gem: beaker-abs
         from_env: BEAKER_ABS_VERSION
         version: '~> 0.1'
+      - gem: beaker-pe
+      - gem: beaker-hostgenerator
+        from_env: BEAKER_HOSTGENERATOR_VERSION
+      - gem: beaker-rspec
+        from_env: BEAKER_RSPEC_VERSION

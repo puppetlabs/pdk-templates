@@ -6,12 +6,14 @@ defaults = {
     'TargetRubyVersion' => '2.1',
     'Include' => [
       './**/*.rb',
+      '**/Gemfile',
     ],
     'Exclude'=> [
       "vendor/**/*",
       ".vendor/**/*",
       "pkg/**/*",
       "spec/fixtures/**/*",
+      'bin/*',
     ],
   },
 }

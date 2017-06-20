@@ -9,7 +9,7 @@ if Dir.exist?(File.expand_path('../../lib', __FILE__))
   SimpleCov.formatters = [
     SimpleCov::Formatter::HTMLFormatter,
     SimpleCov::Formatter::Console,
-    Coveralls::SimpleCov::Formatter
+    Coveralls::SimpleCov::Formatter,
   ]
   SimpleCov.start do
     track_files 'lib/**/*.rb'
@@ -20,19 +20,19 @@ if Dir.exist?(File.expand_path('../../lib', __FILE__))
 end
 
 default_facts = {
-  :puppetversion => Puppet.version,
-  :facterversion => Facter.version,
+  puppetversion: Puppet.version,
+  facterversion: Facter.version,
 }
 
 default_facts_path = File.expand_path(File.join(File.dirname(__FILE__), 'default_facts.yml'))
 default_module_facts_path = File.expand_path(File.join(File.dirname(__FILE__), 'default_module_facts.yml'))
 
 if File.exist?(default_facts_path) && File.readable?(default_facts_path)
-  default_facts.merge!(YAML.load(File.read(default_facts_path)))
+  default_facts.merge!(YAML.safe_load(File.read(default_facts_path)))
 end
 
 if File.exist?(default_module_facts_path) && File.readable?(default_module_facts_path)
-  default_facts.merge!(YAML.load(File.read(default_module_facts_path)))
+  default_facts.merge!(YAML.safe_load(File.read(default_module_facts_path)))
 end
 
 RSpec.configure do |c|
@@ -44,7 +44,6 @@ RSpec.configure do |c|
   c.hiera_config = <%= @configs['hiera_config'] %>
   <%- end -%>
 end
-
 <%- [@configs['spec_overrides']].flatten.compact.each do |line| -%>
 <%= line %>
 <%- end -%>
