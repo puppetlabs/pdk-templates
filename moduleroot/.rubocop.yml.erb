@@ -23,9 +23,20 @@ profile = @configs['profiles'][@configs['selected_profile']]
 configs = defaults.dup
 DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
 
+# rubocop's dependencies have native extensions and are not available on windows currently
+# to preserve the dynamic behaviour, and still work in its current state, this workaround
+# will keep the lights on
+version = begin
+  require 'rubocop/version'
+  RuboCop::Version.version
+rescue
+  '0.49.1'
+end
+path = File.absolute_path(File.join(__FILE__, '..', '..', 'rubocop', "defaults-#{version}.yml"))
+
+raise "no defaults for rubocop #{version} available" unless File.exist?(path)
+
 require 'yaml'
-require 'rubocop/version'
-path = File.absolute_path(File.join(__FILE__, '..', '..', 'rubocop', "defaults-#{RuboCop::Version.version}.yml"))
 default_enabled_cops = YAML.load(File.read(path))[:default_enabled_cops]
 
 enabled_cops = (profile['enabled_cops'] || {}).keys
