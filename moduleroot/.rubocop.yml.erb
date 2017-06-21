@@ -29,7 +29,7 @@ DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", prese
 version = begin
   require 'rubocop/version'
   RuboCop::Version.version
-rescue
+rescue LoadError
   '0.49.1'
 end
 path = File.absolute_path(File.join(__FILE__, '..', '..', 'rubocop', "defaults-#{version}.yml"))
