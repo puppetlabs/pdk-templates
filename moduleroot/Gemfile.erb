@@ -26,7 +26,7 @@ def gem_spec(gem, max_len)
   options << "branch: '#{gem['branch']}'" unless gem['branch'].nil?
   options << "ref: '#{gem['ref']}'" unless gem['branch'].nil?
   options << "platforms: #{gem['platforms'].inspect}" unless gem['platforms'].nil?
-  
+
   unless options.empty?
     output += ', '
     output += ' ' * (max_len - gem['length'])
@@ -64,8 +64,7 @@ end
 ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
 minor_version = ruby_version_segments[0..1].join('.')
 
-# rubocop:disable Bundler/DuplicatedGem, Bundler/OrderedGems, Style/StringLiterals, Layout/ExtraSpacing
-<% 
+<%
   groups = {}
   (@configs['required'].keys + ((@configs['optional'] || {}).keys)).uniq.each do |key|
     groups[key] = (@configs['required'][key] || []) + ((@configs['optional'] || {})[key] || [])
@@ -95,7 +94,6 @@ group <%= group %> do
 <%   end -%>
 end
 <% end -%>
-# rubocop:enable Bundler/DuplicatedGem, Bundler/OrderedGems, Style/StringLiterals, Layout/ExtraSpacing
 
 puppet_version = ENV['PUPPET_GEM_VERSION']
 puppet_type = gem_type(puppet_version)
@@ -183,7 +181,7 @@ extra_gemfiles = [
 
 extra_gemfiles.each do |gemfile|
   if File.file?(gemfile) && File.readable?(gemfile)
-    eval(File.read(gemfile), binding) # rubocop:disable Security/Eval
+    eval(File.read(gemfile), binding)
   end
 end
 # vim: syntax=ruby
