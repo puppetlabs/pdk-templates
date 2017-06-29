@@ -473,7 +473,7 @@ Gemfile:
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
         platforms: ruby
       - gem: 'puppet-module-win-default-r#{minor_version}'
-        platform:
+        platforms:
           - mswin
           - mingw
           - x64_mingw
