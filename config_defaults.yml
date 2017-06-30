@@ -468,6 +468,10 @@ Gemfile:
       - gem: json_pure
         version: '<= 2.0.1'
         condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')"
+      # hardcode JSON version to what's shipped in pdk for now
+      - gem: json
+        version: '= 1.8.1'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')"
       - gem: 'puppet-module-posix-default-r#{minor_version}'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
