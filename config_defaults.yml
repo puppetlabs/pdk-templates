@@ -389,7 +389,6 @@ spec/spec_opts:
         RSpec/DescribeMethod:
         RSpec/DescribeSymbol:
         RSpec/EmptyExampleGroup:
-        RSpec/ExampleLength:
         RSpec/ExpectActual:
         RSpec/ExpectOutput:
         RSpec/FilePath:
@@ -400,9 +399,7 @@ spec/spec_opts:
         RSpec/MessageChain:
         RSpec/MessageSpies:
         RSpec/MultipleDescribes:
-        RSpec/MultipleExpectations:
         RSpec/NamedSubject:
-        RSpec/NestedGroups:
         RSpec/OverwritingSetup:
         RSpec/RepeatedDescription:
         RSpec/RepeatedExample:
