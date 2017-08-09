@@ -1,4 +1,4 @@
-<% name = @configs['userdata']['name'].split('-').last || '[modulename]' %>
+<% name = @configs['userdata']['name'].split('-').last rescue '[modulename]' %>
 # <%= name %>
 
 #### Table of Contents
