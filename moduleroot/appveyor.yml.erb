@@ -1,5 +1,5 @@
 version: 1.1.x.{build}
-skip_comments:
+skip_commits:
   message: /^\(?doc\)?.*/
 clone_depth: 10
 init:
@@ -12,18 +12,20 @@ environment:
   matrix:
 <% (@configs['matrix'] + (@configs['matrix_extras'] || [])).each do |matrix| -%>
     - PUPPET_GEM_VERSION: <%= matrix['PUPPET_GEM_VERSION'] %>
-      RUBY_VER: <%= matrix['RUBY_VER'] %>
+      RUBY_VERSION: <%= matrix['RUBY_VERSION'] %>
 <% end -%>
 matrix:
   fast_finish: true
 install:
-  - SET PATH=C:\Ruby%RUBY_VER%\bin:%PATH%
+  - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
   - <%= @configs['appveyor_bundle_install'] %>
   - type Gemfile.lock
 build: off
 test_script:
   - bundle exec puppet -V
   - ruby -v
+  - gem -v
+  - bundle -v
 <% @configs['test_script'].each do |script| -%>
   - <%= script %>
 <% end -%>
