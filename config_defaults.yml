@@ -97,6 +97,9 @@ spec/spec_opts:
     Style/SymbolArray:
       Description: Using percent style obscures symbolic intent of array's contents.
       EnforcedStyle: brackets
+
+    Style/EndOfLine:
+      EnforcedStyle: lf
   cleanup_cops: &cleanup_cops
     Bundler/OrderedGems:
     Layout/AccessModifierIndentation:
