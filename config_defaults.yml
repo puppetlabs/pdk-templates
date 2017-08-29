@@ -99,7 +99,7 @@ spec/spec_opts:
       EnforcedStyle: brackets
 
     Style/EndOfLine:
-      EnforcedStyle: lf
+      Enabled: false
   cleanup_cops: &cleanup_cops
     Bundler/OrderedGems:
     Layout/AccessModifierIndentation:
