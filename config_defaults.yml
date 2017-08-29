@@ -6,6 +6,12 @@
     '*.pp': 'eol=lf'
     '*.sh': 'eol=lf'
 .travis.yml:
+  ruby_versions:
+    - 2.3.1
+    - 2.1.7
+  bundler_args: --without system_tests
+  env:
+    - PUPPET_GEM_VERSION="~> 4.0" CHECK=spec
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
@@ -16,12 +22,9 @@
     env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_set=@@SET@@
     script: bundle exec rake beaker
   includes:
-    - rvm: 2.3.1
-      env: PUPPET_GEM_VERSION="~> 4.0"
-      bundler_args: --without system_tests
-    - rvm: 2.1.7
-      env: PUPPET_GEM_VERSION="~> 4.0"
-      bundler_args: --without system_tests
+    - env: CHECK=rubocop
+    - env: CHECK="syntax lint"
+    - env: CHECK=metadata_lint
 appveyor.yml:
   appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
   matrix:
