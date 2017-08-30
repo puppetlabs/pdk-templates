@@ -26,30 +26,36 @@ before_install:
   - bundle -v
 script:
   - 'bundle exec rake $CHECK'
+bundler_args: <%= @configs['bundler_args'] %>
+rvm:
+<% @configs['ruby_versions'].each do |ruby_version| -%>
+  - <%= ruby_version %>
+<% end -%>
+env:
+<% @configs['env'].each do |env| -%>
+  - <%= env %>
+<% end -%>
 matrix:
   fast_finish: true
   include:
 <% (@configs['docker_sets'] || []).each do |set| -%>
 <%   job = @configs['docker_defaults'].merge(set['options'] || {}) -%>
-    - rvm: <%= job['rvm'] %>
+    -
 <%   job.keys.sort.each do |key| -%>
-<%     next if key == 'rvm' -%>
       <%= key %>: <%= job[key].gsub(/@@SET@@/, set['set']) %>
 <%   end -%>
 <% end -%>
 <% (@configs['includes'] + (@configs['extras'] || [])).each do |job| -%>
-    - rvm: <%= job['rvm'] %>
+    -
 <%   job.keys.sort.each do |key| -%>
-<%     next if key == 'rvm' -%>
       <%= key %>: <%= job[key] %>
 <%   end -%>
 <% end -%>
 <% if @configs['allow_failures'] -%>
   allow_failures:
 <%   @configs['allow_failures'].each do |job| -%>
-    - rvm: <%= job['rvm'] %>
+    -
 <%     job.keys.sort.each do |key| -%>
-<%       next if key == 'rvm' -%>
       <%= key %>: <%= job[key] %>
 <%     end -%>
 <%   end -%>
