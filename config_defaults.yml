@@ -27,13 +27,21 @@
     - env: CHECK=metadata_lint
 appveyor.yml:
   appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
+  environment:
+    PUPPET_GEM_VERSION: "~> 4.0"
   matrix:
-    - PUPPET_GEM_VERSION: "~> 4.0"
-      RUBY_VERSION: 21-x64
-    - PUPPET_GEM_VERSION: "~> 4.0"
-      RUBY_VERSION: 23-x64
+    - RUBY_VERSION: 23-x64
+      CHECK: "syntax lint"
+    - RUBY_VERSION: 23-x64
+      CHECK: metadata_lint
+    - RUBY_VERSION: 23-x64
+      CHECK: rubocop
+    - RUBY_VERSION: 23-x64
+      CHECK: spec
+    - RUBY_VERSION: 21-x64
+      CHECK: spec
   test_script:
-    - bundle exec rake spec
+    - bundle exec rake %CHECK%
 Rakefile:
   default_disabled_lint_checks:
     - 'relative'

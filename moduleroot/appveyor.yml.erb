@@ -9,11 +9,16 @@ init:
   - 'mkdir C:\ProgramData\PuppetLabs\hiera && exit 0'
   - 'mkdir C:\ProgramData\PuppetLabs\puppet\var && exit 0'
 environment:
+<%- (@configs['environment'] || []).each do |key, value| -%>
+  <%= key %>: <%= value %>
+<%- end -%>
   matrix:
-<% (@configs['matrix'] + (@configs['matrix_extras'] || [])).each do |matrix| -%>
-    - PUPPET_GEM_VERSION: <%= matrix['PUPPET_GEM_VERSION'] %>
-      RUBY_VERSION: <%= matrix['RUBY_VERSION'] %>
-<% end -%>
+<%- (@configs['matrix'] + (@configs['matrix_extras'] || [])).each do |matrix| -%>
+    -
+  <%- matrix.each do |key, value| -%>
+      <%= key %>: <%= value %>
+  <%- end -%>
+<%- end -%>
 matrix:
   fast_finish: true
 install:
