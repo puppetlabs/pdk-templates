@@ -101,8 +101,6 @@ spec/spec_opts:
       Description: Using percent style obscures symbolic intent of array's contents.
       EnforcedStyle: brackets
 
-    Style/EndOfLine:
-      Enabled: false
   cleanup_cops: &cleanup_cops
     Bundler/OrderedGems:
     Layout/AccessModifierIndentation:
@@ -330,7 +328,6 @@ spec/spec_opts:
         <<: *cleanup_cops
         Bundler/DuplicatedGem:
         Layout/EmptyLinesAroundBeginBody:
-        Layout/EndOfLine:
         Lint/AmbiguousBlockAssociation:
         Lint/AmbiguousOperator:
         Lint/AmbiguousRegexpLiteral:
