@@ -7,15 +7,15 @@
     '*.sh': 'eol=lf'
 .travis.yml:
   ruby_versions:
-    - 2.3.1
-    - 2.1.7
+    - 2.4.1
+    - 2.1.9
   bundler_args: --without system_tests
   env:
     - PUPPET_GEM_VERSION="~> 4.0" CHECK=spec
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.3.1
+    rvm: 2.4.1
     sudo: required
     dist: trusty
     services: docker
