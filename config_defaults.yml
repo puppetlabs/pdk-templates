@@ -45,8 +45,6 @@ appveyor.yml:
 Rakefile:
   default_disabled_lint_checks:
     - 'relative'
-spec/spec_opts:
-  delete: true
 .rubocop.yml:
   selected_profile: strict
   default_configs: &default_configs
