@@ -508,3 +508,11 @@ Gemfile:
     #     from_env: BEAKER_HOSTGENERATOR_VERSION
     #   - gem: beaker-rspec
     #     from_env: BEAKER_RSPEC_VERSION
+.gitlab-ci.yml:
+  ruby_versions:
+    - 2.4.1
+    - 2.1.9
+  variables:
+    PUPPET_GEM_VERSION: "~> 4.0"
+    CHECK: spec
+  bundler_args: --without system_tests
