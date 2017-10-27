@@ -1,0 +1,46 @@
+---
+stages:
+<% @configs['ruby_versions'].each do |ruby_version| -%>
+  - test_<%= ruby_version %>
+<% end -%>
+
+before_script:
+  - bundle -v
+  - rm Gemfile.lock || true
+  - gem update --system
+  - gem update bundler
+  - gem --version
+  - bundle -v
+  - bundle install <%= @configs['bundler_args'] %>
+
+<% @configs['ruby_versions'].each do |ruby_version| -%>
+rubocop-<%= ruby_version %>:
+  stage: test_<%= ruby_version %>
+  image: ruby:<%= ruby_version %>
+  script:
+    - bundle exec rake rubocop
+
+syntax-<%= ruby_version %>:
+  stage: test_<%= ruby_version %>
+  image: ruby:<%= ruby_version %>
+  script:
+    - bundle exec rake syntax lint
+
+metadata-<%= ruby_version %>:
+  stage: test_<%= ruby_version %>
+  image: ruby:<%= ruby_version %>
+  script:
+    - bundle exec rake metadata_lint
+
+rspec-puppet-<%= ruby_version %>:
+  stage: test_<%= ruby_version %>
+  image: ruby:<%= ruby_version %>
+  variables:
+<%   @configs['variables'].each do |key, val| -%>
+    <%= key %>: <%= val %>
+<% end -%>
+  script:
+    - bundle update
+    - bundle exec rake $CHECK
+
+<% end -%>
