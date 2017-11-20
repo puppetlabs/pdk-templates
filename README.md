@@ -1,8 +1,23 @@
 # PDK Module Template
 
-## config_defaults values
+The PDK Module Template is the default template for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. These can be found within the moduleroot and moduleroot\_init directories of this repository. The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
 
-The following is a description and explaination of each of the keys within config_defaults. This will help clarify the default settings we choose to apply to pdk modules.
+* [Basic usage](#basic-usage)
+* [Config_defaults Values](#config_defaults values)
+* [Further Notes](#further notes)
+
+## Basic Usage
+
+Templates like this one can be used in conjunction with the PDK. As default the PDK itself uses the templates within this repository to render files for use within a module. Templates can be passed to the PDK as a flag for several of the commands.
+
+> pdk convert --template_url https://github.com/puppetlabs/pdk-module-template
+
+Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
+For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
+
+## Config_defaults Values
+
+The following is a description and explaination of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
 ### .gitattributes
 
@@ -66,3 +81,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module.|
+
+## Further Notes
+
+Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.
