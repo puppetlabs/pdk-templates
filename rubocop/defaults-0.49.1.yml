@@ -22,7 +22,6 @@
 - Layout/EmptyLinesAroundExceptionHandlingKeywords
 - Layout/EmptyLinesAroundMethodBody
 - Layout/EmptyLinesAroundModuleBody
-- Layout/EndOfLine
 - Layout/ExtraSpacing
 - Layout/FirstParameterIndentation
 - Layout/IndentArray
