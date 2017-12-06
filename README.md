@@ -1,6 +1,6 @@
-# PDK Module Template
+# PDK Templates
 
-The PDK Module Template is the default template for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. These can be found within the moduleroot and moduleroot\_init directories of this repository. The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
+The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. These can be found within the moduleroot and moduleroot\_init directories of this repository. The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
 
 * [Basic usage](#basic-usage)
 * [Config_default Values](#values)
