@@ -1,6 +1,11 @@
 # PDK Templates
 
-The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. These can be found within the moduleroot and moduleroot\_init directories of this repository. The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
+The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. Look into these directories to find the templates:
+* `moduleroot` templates get deployed on `new module` and `convert`; use them to enforce a common boilerplate for central files.
+* `moduleroot\_init` templates get only deployed when the target file does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
+* `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
+
+The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
 
 * [Basic usage](#basic-usage)
 * [Config_default Values](#values)
@@ -10,7 +15,7 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 
 Templates like this one can be used in conjunction with the PDK. As default the PDK itself uses the templates within this repository to render files for use within a module. Templates can be passed to the PDK as a flag for several of the commands.
 
-> pdk convert --template_url https://github.com/puppetlabs/pdk-module-template
+> pdk convert --template_url https://github.com/puppetlabs/pdk-templates
 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
 For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
