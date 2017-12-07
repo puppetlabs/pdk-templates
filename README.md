@@ -5,7 +5,7 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 * `moduleroot_init` templates get only deployed when the target file does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
 * `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
 
-The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
+The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
 
 * [Basic usage](#basic-usage)
 * [Config_default Values](#values)
