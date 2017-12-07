@@ -2,7 +2,7 @@
 
 The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. Look into these directories to find the templates:
 * `moduleroot` templates get deployed on `new module` and `convert`; use them to enforce a common boilerplate for central files.
-* `moduleroot\_init` templates get only deployed when the target file does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
+* `moduleroot_init` templates get only deployed when the target file does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
 * `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
 
 The PDK also absorbs the config\_defaults.yml file to apply a set of default configurations to the module.
