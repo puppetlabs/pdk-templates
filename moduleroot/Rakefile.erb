@@ -1,15 +1,13 @@
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'yaml'
-<% config = YAML.load_file('.sync.yml') %>
-<% if !config['Rakefile']['required'].nil? %>
-  <% config['Rakefile']['required'].each do |item| %>
-    <%= item -%>
-  <% end %>
-<% end %>
-
-<% if !config['Rakefile']['included'].nil? %>
-  <% config['Rakefile']['included'].each do |item| %>
-    <%= item -%>
-  <% end %>
-<% end %>
+<% if ! @configs['requires'].nil? -%>
+<%   @configs['requires'].each do |item| -%>
+require '<%= item %>'
+<%   end -%>
+<% end -%>
+<% if ! @configs['imports'].nil? %>
+<%   @configs['imports'].each do |item| -%>
+import '<%= item %>'
+<%   end -%>
+<% end -%>
