@@ -64,11 +64,11 @@ branches:
   only:
     - master
     - /^v\d/
-<% if @configs['branches']['only'] -%>
+<% if ! @configs['branches']['only'].nil? -%>
 <%   @configs['branches']['only'].each do |branch| -%>
-    - <%= branch%>
-<%   end-%>
-<% end-%>
+    - <%= branch %>
+<%   end -%>
+<% end -%>
 notifications:
   email: false
 deploy:
