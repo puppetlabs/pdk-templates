@@ -15,7 +15,7 @@ The PDK also absorbs the `config_defaults.yml` file to apply a set of default co
 
 Templates like this one can be used in conjunction with the PDK. As default the PDK itself uses the templates within this repository to render files for use within a module. Templates can be passed to the PDK as a flag for several of the commands.
 
-> pdk convert --template_url https://github.com/puppetlabs/pdk-templates
+> pdk convert --template-url https://github.com/puppetlabs/pdk-templates
 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
 For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
