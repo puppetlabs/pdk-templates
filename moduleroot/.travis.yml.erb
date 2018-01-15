@@ -64,8 +64,8 @@ branches:
   only:
     - master
     - /^v\d/
-<% if ! @configs['branches']['only'].nil? -%>
-<%   @configs['branches']['only'].each do |branch| -%>
+<% if @configs['branches'] -%>
+<%   @configs['branches'].each do |branch| -%>
     - <%= branch %>
 <%   end -%>
 <% end -%>
