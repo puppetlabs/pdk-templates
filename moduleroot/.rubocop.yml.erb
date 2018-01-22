@@ -41,9 +41,13 @@ raise "no defaults for rubocop #{version} available" unless File.exist?(path)
 require 'yaml'
 default_enabled_cops = YAML.load(File.read(path))[:default_enabled_cops]
 
-enabled_cops = (profile['enabled_cops'] || {}).keys
+cop_configs = (profile['enabled_cops'] || {})
+
+enabled_cops = cop_configs.keys
 enabled_cops = default_enabled_cops if enabled_cops == 'all'
-(enabled_cops - default_enabled_cops).sort.each { |c| configs[c] ||= {}; configs[c]['Enabled'] = true }
-(default_enabled_cops - enabled_cops).sort.each { |c| configs[c] ||= {}; configs[c]['Enabled'] = false }
+
+(enabled_cops & default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] if cop_configs[c] }
+(enabled_cops - default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = true }
+(default_enabled_cops - enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = false }
 -%>
 <%= YAML.dump(configs) -%>
