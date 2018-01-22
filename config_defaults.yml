@@ -405,6 +405,7 @@ Rakefile:
         RSpec/LetSetup:
         RSpec/MessageChain:
         RSpec/MessageSpies:
+          EnforcedStyle: receive
         RSpec/MultipleDescribes:
         RSpec/NamedSubject:
         RSpec/OverwritingSetup:
