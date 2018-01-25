@@ -73,6 +73,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+|include\_todos|Allows you to use rubocop's "TODOs" to temporarily skip checks by setting this to `true`. See rubocop's `--auto-gen-config` option for details. Defaults to `false`.|
 |selected\_profile|Allows you to define which profile is used by default, which is set to ```strict```, which is fully defined within the ```profiles``` section.|
 |default\_configs |Allows you to define the default configuration of which cops will run. Includes the full name of the cop followed by a description of it and an enforced style. Can also make use of the key ```excludes``` to exclude any files from that specific cop.|
 |cleanup\_cops    |Defines a set of cleanup cops to then be included within a rubocop profile. Cops are defined by their full name, and further configuration can be done by specifying secondary keys. By default we specify a large amount of cleanup cops using their default configuration.|
