@@ -41,10 +41,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 | ruby versions  |Define the ruby versions on which you want your builds to be executed.|
-| bunder\_args   |Define any arguments you want to pass through to bundler. The default is ```--without system_tests``` which avoids installing unnessesary gems.|
-| env            |Allows you to set any environment variables for the travis build. Currently includes setting the Puppet gem version alongside the variable ```CHECK``` which determines what tests to run.|
-|docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  ```set: docker/ubuntu-14.04``` to my docker\_sets attribute.|
-|docker_defaults |Defines what values are used as default when using the ```docker_sets``` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
+| bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
+| env            |Allows you to set any environment variables for the travis build. Currently includes setting the Puppet gem version alongside the variable `CHECK` which determines what tests to run.|
+|docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set: docker/ubuntu-14.04` to my docker\_sets attribute.|
+|docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 
 
@@ -54,10 +54,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
-|appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install ```--without system_tests``` as default, therefore avoiding redundant gem installation.|
+|appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install `--without system_tests` as default, therefore avoiding redundant gem installation.|
 |environment|Defines any environment variables wanted for the job run. In our case we default to the latest Puppet 4 gem version.|
 |matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
-|test\_script|This defines the test script that will be executed. For our purposes the default is set to ```bundle exec rake %CHECK%```. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as ```bundle exec rake spec```, which would run the spec tests of the module.|
+|test\_script|This defines the test script that will be executed. For our purposes the default is set to `bundle exec rake %CHECK%`. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as `bundle exec rake spec`, which would run the spec tests of the module.|
 
 ### Rakefile
 
@@ -65,7 +65,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
-|default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the ```--relative``` lint check, which compares the module layout relative to the module root. |
+|default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. |
 
 ### .rubocop.yml
 
@@ -74,10 +74,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |include\_todos|Allows you to use rubocop's "TODOs" to temporarily skip checks by setting this to `true`. See rubocop's `--auto-gen-config` option for details. Defaults to `false`.|
-|selected\_profile|Allows you to define which profile is used by default, which is set to ```strict```, which is fully defined within the ```profiles``` section.|
-|default\_configs |Allows you to define the default configuration of which cops will run. Includes the full name of the cop followed by a description of it and an enforced style. Can also make use of the key ```excludes``` to exclude any files from that specific cop.|
+|selected\_profile|Allows you to define which profile is used by default, which is set to `strict`, which is fully defined within the `profiles` section.|
+|default\_configs |Allows you to define the default configuration of which cops will run. Includes the full name of the cop followed by a description of it and an enforced style. Can also make use of the key `excludes` to exclude any files from that specific cop.|
 |cleanup\_cops    |Defines a set of cleanup cops to then be included within a rubocop profile. Cops are defined by their full name, and further configuration can be done by specifying secondary keys. By default we specify a large amount of cleanup cops using their default configuration.|
-|profiles         |Defines the profiles that can be enabled and used within rubocop through the ```selected_profile``` option. By default we have set up three profiles: cleanups\_only, strict, hardcore and off.|
+|profiles         |Defines the profiles that can be enabled and used within rubocop through the `selected_profile` option. By default we have set up three profiles: cleanups\_only, strict, hardcore and off.|
 
 
 ### Gemfile
