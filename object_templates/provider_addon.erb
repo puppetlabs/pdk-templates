@@ -1,0 +1,35 @@
+require 'puppet/resource_api'
+require 'puppet/resource_api/command'
+require 'puppet/resource_api/simple_provider'
+
+# Implementation for the <%= name %> type using the Resource API.
+class Puppet::Provider::<%= provider_class %>::<%= provider_class %> < Puppet::ResourceApi::SimpleProvider
+  def initialize
+    @echo_cmd = Puppet::ResourceApi::Command.new 'echo'
+  end
+
+  def get(context)
+    # nonsensical resource emulation for this example
+    @echo_cmd.run(context).stdout.split('').each do |c|
+      {
+        name: c,
+        ensure: :present,
+      }
+    end || []
+  end
+
+  def create(context, name, should)
+    # nonsensical resource emulation for this example
+    @echo_cmd.run(context, "create: #{name}, #{should.inspect}")
+  end
+
+  def update(context, name, should)
+    # nonsensical resource emulation for this example
+    @echo_cmd.run(context, "update: #{name}, #{should.inspect}")
+  end
+
+  def delete(context, name)
+    # nonsensical resource emulation for this example
+    @echo_cmd.run(context, "delete: #{name}")
+  end
+end
