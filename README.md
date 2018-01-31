@@ -32,6 +32,22 @@ The following is a description and explaination of each of the keys within confi
 | :-----------------|:--------------|
 | include           | Defines which extensions are handled by git automatic conversions (see the [gitattributes](https://git-scm.com/docs/gitattributes) documentation). The default configuration helps to keep line endings consistent between windows and linux users.|
 
+### .gitignore
+
+>A .gitignore file in your repo allows you to specify intentionally untracked files to ignore.
+
+| Key               | Description   |
+| :-----------------|:--------------|
+| paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
+
+### .pdkignore
+
+>A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
+
+| Key               | Description   |
+| :-----------------|:--------------|
+| paths             | Defines which files or paths for PDK to ignore when building a module package. The default configuration helps to set up commonly ignored files in a module project when building a package.
+
 ### .travis.yml
 
 >[Travis CI](https://travis-ci.org/) is a hosted continuous integration platform that is free for all open source projects hosted on Github.
