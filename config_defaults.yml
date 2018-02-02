@@ -17,7 +17,7 @@
       - '/.vagrant/'
       - '/coverage/'
       - '/bin/'
-      - '/doc/'
+      - '/docs/'
       - '/Gemfile.local'
       - '/Gemfile.lock'
       - '/junit/'
