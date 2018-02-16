@@ -53,6 +53,8 @@
     - env: CHECK=rubocop
     - env: CHECK="syntax lint"
     - env: CHECK=metadata_lint
+.yardopts:
+  markup: markdown
 appveyor.yml:
   appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
   environment:

@@ -63,6 +63,14 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 
+### .yardopts
+
+>[YARD](https://yardoc.org/) is a documentation generation tool for the Ruby programming language. It enables the user to generate consistent, usable documentation that can be exported to a number of formats very easily, and also supports extending for custom Ruby constructs such as custom class level definitions.
+
+| Key            | Description   |
+| :------------- |:--------------|
+| markup         |Specifies the markup formatting of your documentation. Default is `markdown`.|
+| optional       |Define any additional arguments you want to pass through to the `yardoc` command.|
 
 ### appveyor.yml
 
