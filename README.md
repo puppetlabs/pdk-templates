@@ -105,6 +105,18 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module.|
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
 
+### spec/default_facts.yml
+> The spec/default_facts.yml file contains a list of facts to be used by default when running rspec tests
+
+| Key            | Description   |
+| :------------- |:--------------|
+|concat_basedir|Overrides the concat_basedir fact's value in the base template. Defaults to "/tmp".|
+|ipaddress|Overrides the ipaddress fact's value in the base template. Defaults to "172.16.254.254".|
+|is_pe|Overrides the is_pe fact's value in the base template. Defaults to false.
+|macaddress|Overrides the macaddress fact's value in the base template. Defaults to "AA:AA:AA:AA:AA:AA".
+|facts|List of extra facts to be added to the default_facts.yml file. They are in the form: `name:"name of fact"`, `value: "value of fact"`.|
+ 
+
 ## Further Notes <a name="notes"></a>
 
 Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.

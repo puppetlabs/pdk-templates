@@ -2,7 +2,28 @@
 #
 # Facts specified here will override the values provided by rspec-puppet-facts.
 ---
+<% if !@configs['concat_basedir'].nil? -%>
+concat_basedir: "<%= @configs['concat_basedir'] %>"
+<% else -%>
 concat_basedir: "/tmp"
+<% end -%>
+<% if !@configs['ipaddress'].nil? -%>
+ipaddress: "<%= @configs['ipaddress'] %>"
+<% else -%>
 ipaddress: "172.16.254.254"
+<% end -%>
+<% if !@configs['is_pe'].nil? -%>
+is_pe: <%= @configs['is_pe'] %>
+<% else -%>
 is_pe: false
+<% end -%>
+<% if !@configs['macaddress'].nil? -%>
+macaddress: "<%= @configs['macaddress'] %>"
+<% else -%>
 macaddress: "AA:AA:AA:AA:AA:AA"
+<% end -%>
+<% if !@configs['facts'].nil? -%>
+<%   @configs['facts'].each do |item| -%>
+<%= item['name'] %>: <%= item['value'] %>
+<%   end -%>
+<% end -%>
