@@ -20,6 +20,10 @@ defaults = {
   },
 }
 
+if @configs['include_todos']
+  defaults['inherit_from'] = '.rubocop_todo.yml'
+end
+
 require 'deep_merge/core'
 profile = @configs['profiles'][@configs['selected_profile']]
 configs = defaults.dup
