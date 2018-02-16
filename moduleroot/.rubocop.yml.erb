@@ -25,6 +25,8 @@ profile = @configs['profiles'][@configs['selected_profile']]
 configs = defaults.dup
 DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
 
+default_version = '0.49.1'
+
 # rubocop's dependencies have native extensions and are not available on windows currently
 # to preserve the dynamic behaviour, and still work in its current state, this workaround
 # will keep the lights on
@@ -32,11 +34,16 @@ version = begin
   require 'rubocop/version'
   RuboCop::Version.version
 rescue LoadError
-  '0.49.1'
+  default_version
 end
-path = File.absolute_path(File.join(__FILE__, '..', '..', 'rubocop', "defaults-#{version}.yml"))
 
-raise "no defaults for rubocop #{version} available" unless File.exist?(path)
+# If people have a different rubocop installed, and supported in their template
+# this allows them to use that configuration.
+# If the rubocop version is not installed, fall back to the default
+base_path = File.join(__FILE__, '..', '..', 'rubocop')
+dynamic_path = File.absolute_path(File.join(base_path, "defaults-#{version}.yml"))
+default_path = File.absolute_path(File.join(base_path, "defaults-#{default_version}.yml"))
+path = File.exist?(dynamic_path) ? dynamic_path : default_path
 
 require 'yaml'
 default_enabled_cops = YAML.load(File.read(path))[:default_enabled_cops]
