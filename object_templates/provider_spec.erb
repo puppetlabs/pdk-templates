@@ -8,77 +8,43 @@ RSpec.describe Puppet::Provider::<%= provider_class %>::<%= provider_class %> do
   subject(:provider) { described_class.new }
 
   let(:context) { instance_double('Puppet::ResourceApi::BaseContext', 'context') }
-  let(:echo_cmd) { instance_double('Puppet::ResourceApi::Command', 'echo_cmd') }
-
-  before(:each) do
-    allow(context).to receive(:is_a?).with(Puppet::ResourceApi::BaseContext).and_return(true)
-    allow(Puppet::ResourceApi::Command).to receive(:new).with('echo').and_return(echo_cmd)
-
-    # the provider should never call into the system on its own
-    expect(provider).not_to receive(:`) # rubocop:disable RSpec/ExpectInHook
-  end
 
   describe '#get' do
-    before(:each) do
-      # fake output for the tests
-      allow(echo_cmd).to receive(:run)
-        .with(context)
-        .and_return(OpenStruct.new(stdout: resources))
-    end
-
-    context 'with no resources on the system' do
-      let(:resources) { '' }
-
-      it 'returns an empty list' do
-        expect(provider.get(context)).to eq []
-      end
-    end
-
-    context 'with some resources on the system' do
-      let(:resources) { 'abc' }
-
-      it 'processes resources' do
-        expect(provider.get(context)).to eq %w[a b c]
-      end
+    it 'processes resources' do
+      expect(provider.get(context)).to eq [
+        {
+          name: 'foo',
+          ensure: :present,
+        },
+        {
+          name: 'bar',
+          ensure: :present,
+        },
+      ]
     end
   end
 
   describe 'create(context, name, should)' do
     it 'creates the resource' do
-      allow(context).to receive(:creating).and_yield
-      expect(echo_cmd).to receive(:run)
-        .with(context, 'create: a, {:name=>"a", :ensure=>"present"}')
+      expect(context).to receive(:notice).with(%r{\ACreating 'a'})
 
-      provider.set(context, a: {
-                     is:     { name: 'a', ensure: 'absent' },
-                     should: { name: 'a', ensure: 'present' },
-                   })
+      provider.create(context, 'a', name: 'a', ensure: 'present')
     end
   end
 
   describe 'update(context, name, should)' do
     it 'updates the resource' do
-      allow(context).to receive(:updating).and_yield
-      expect(echo_cmd).to receive(:run)
-        .with(context, 'update: a, {:name=>"a", :ensure=>"present"}')
+      expect(context).to receive(:notice).with(%r{\AUpdating 'foo'})
 
-      provider.set(context, a: {
-                     is:     { name: 'a', ensure: 'present' },
-                     should: { name: 'a', ensure: 'present' },
-                   })
+      provider.update(context, 'foo', name: 'foo', ensure: 'present')
     end
   end
 
   describe 'delete(context, name, should)' do
     it 'deletes the resource' do
-      allow(context).to receive(:deleting).and_yield
-      expect(echo_cmd).to receive(:run)
-        .with(context, 'delete: a')
+      expect(context).to receive(:notice).with(%r{\ADeleting 'foo'})
 
-      provider.set(context, a: {
-                     is:     { name: 'a', ensure: 'present' },
-                     should: { name: 'a', ensure: 'absent' },
-                   })
+      provider.delete(context, 'foo')
     end
   end
 end
