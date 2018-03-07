@@ -19,7 +19,7 @@ addons:
 <% end -%>
 before_install:
   - bundle -v
-  - rm Gemfile.lock || true
+  - rm -f Gemfile.lock
   - gem update --system
   - gem update bundler
   - gem --version
