@@ -123,7 +123,13 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |is_pe|Overrides the is_pe fact's value in the base template. Defaults to false.
 |macaddress|Overrides the macaddress fact's value in the base template. Defaults to "AA:AA:AA:AA:AA:AA".
 |extra_facts|List of extra facts to be added to the default_facts.yml file. They are in the form: "`name of fact`: `value of fact`"|
- 
+
+### spec/spec_helper.rb
+> The spec/spec_helper.rb file contains setup for rspec tests
+
+| Key            | Description   |
+| :------------- |:--------------|
+|strict_level| Defines the [Puppet Strict configuration parameter](https://puppet.com/docs/puppet/5.4/configuration.html#strict). Defaults to `:warning`. Other values are: `:error` and `:off`. `:error` provides strictest level checking and is encouraged.|
 
 ## Further Notes <a name="notes"></a>
 
