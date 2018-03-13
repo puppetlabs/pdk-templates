@@ -24,7 +24,7 @@ def gem_spec(gem, max_len)
   options << "require: false" if gem['from_env'].nil?
   options << "git: '#{gem['git']}'" unless gem['git'].nil?
   options << "branch: '#{gem['branch']}'" unless gem['branch'].nil?
-  options << "ref: '#{gem['ref']}'" unless gem['branch'].nil?
+  options << "ref: '#{gem['ref']}'" unless gem['ref'].nil?
   options << "platforms: #{gem['platforms'].inspect}" unless gem['platforms'].nil?
 
   unless options.empty?
