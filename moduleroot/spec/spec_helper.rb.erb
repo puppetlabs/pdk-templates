@@ -33,6 +33,13 @@ RSpec.configure do |c|
   <%- if @configs['hiera_config'] -%>
   c.hiera_config = <%= @configs['hiera_config'] %>
   <%- end -%>
+  <%- if @configs['strict_level'] -%>
+  c.before :each do
+    # set to strictest setting for testing
+    # by default Puppet runs at warning level
+    Puppet.settings[:strict] = <%= @configs['strict_level'] %>
+  end
+  <%- end -%>
 end
 <%- [@configs['spec_overrides']].flatten.compact.each do |line| -%>
 <%= line %>

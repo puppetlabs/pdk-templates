@@ -556,3 +556,5 @@ spec/default_facts.yml:
   ipaddress: "172.16.254.254"
   is_pe: false
   macaddress: "AA:AA:AA:AA:AA:AA"
+spec/spec_helper.rb:
+  strict_level: ":warning"
