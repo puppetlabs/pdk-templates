@@ -11,3 +11,8 @@ require '<%= item %>'
 import '<%= item %>'
 <%   end -%>
 <% end -%>
+
+<% checks = @configs['default_disabled_lint_checks'] + ( @configs['extra_disabled_lint_checks'] || [] ) -%>
+<% checks.each do |check| -%>
+PuppetLint.configuration.send('<%= check %>')
+<% end -%>
