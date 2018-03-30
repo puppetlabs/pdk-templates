@@ -551,10 +551,11 @@ Gemfile:
     #     from_env: BEAKER_RSPEC_VERSION
 .gitlab-ci.yml:
   ruby_versions:
-    - 2.4.1
-    - 2.1.9
+    2.4.1:
+      puppet_version: 5.0
+    2.1.9:
+      puppet_version: 4.0
   variables:
-    PUPPET_GEM_VERSION: "~> 4.0"
     CHECK: spec
   bundler_args: --without system_tests
 spec/default_facts.yml:
