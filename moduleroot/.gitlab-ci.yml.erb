@@ -4,6 +4,13 @@ stages:
   - test_<%= ruby_version %>
 <% end -%>
 
+<% if @configs['global_variables'] -%>
+variables:
+<%   @configs['global_variables'].each do |key, val| -%>
+  <%= key %>: <%= val %>
+<% end -%>
+
+<% end -%>
 before_script:
   - bundle -v
   - rm Gemfile.lock || true
