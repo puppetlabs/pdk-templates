@@ -1,7 +1,7 @@
 ---
 stages:
-<% @configs['ruby_versions'].each do |ruby_version| -%>
-  - test_<%= ruby_version %>
+<% @configs['stages'].each do |stage| -%>
+  - <%= stage %>
 <% end -%>
 
 before_script:
@@ -13,34 +13,16 @@ before_script:
   - bundle -v
   - bundle install <%= @configs['bundler_args'] %>
 
-<% @configs['ruby_versions'].each do |ruby_version| -%>
-rubocop-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
-  script:
-    - bundle exec rake rubocop
-
-syntax-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
-  script:
-    - bundle exec rake syntax lint
-
-metadata-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
-  script:
-    - bundle exec rake metadata_lint
-
-rspec-puppet-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
-  variables:
-<%   @configs['variables'].each do |key, val| -%>
-    <%= key %>: <%= val %>
-<% end -%>
-  script:
-    - bundle update
-    - bundle exec rake $CHECK
-
+<% @configs['jobs'].each do |job, params| -%>
+<%= job %>:
+<%-   params.keys.sort.each do |key| -%>
+<%-     if params[key].is_a?(Array) -%>
+  <%= key -%>:
+    <%-   params[key].each do |element| -%>
+    - <%= element %>
+    <%-   end -%>
+<%-     else -%>
+  <%= key %>: <%= params[key] %>
+<%     end -%>
+<%   end -%>
 <% end -%>
