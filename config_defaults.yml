@@ -352,6 +352,7 @@ Rakefile:
     Style/WhileUntilDo:
     Style/WhileUntilModifier:
     Style/WordArray:
+      EnforcedStyle: brackets
     Style/YodaCondition:
     Style/ZeroLengthPredicate:
 
