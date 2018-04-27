@@ -7,7 +7,6 @@ ipaddress: "<%= @configs['ipaddress'] %>"
 is_pe: <%= @configs['is_pe'] %>
 macaddress: "<%= @configs['macaddress'] %>"
 <% if !@configs['extra_facts'].nil? -%>
-<%   @configs['extra_facts'].each do |fact, value| -%>
-<%= fact %>: "<%= value %>"
-<%   end -%>
+<% require 'yaml' -%>
+<%= @configs['extra_facts'].to_yaml[4..-1] %>
 <% end -%>
