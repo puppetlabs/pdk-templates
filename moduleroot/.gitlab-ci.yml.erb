@@ -1,6 +1,6 @@
 ---
 stages:
-<% @configs['ruby_versions'].each do |ruby_version| -%>
+<% @configs['ruby_versions'].each do |ruby_version,hash| -%>
   - test_<%= ruby_version %>
 <% end -%>
 
@@ -13,7 +13,7 @@ before_script:
   - bundle -v
   - bundle install <%= @configs['bundler_args'] %>
 
-<% @configs['ruby_versions'].each do |ruby_version| -%>
+<% @configs['ruby_versions'].each do |ruby_version,hash| -%>
 rubocop-<%= ruby_version %>:
   stage: test_<%= ruby_version %>
   image: ruby:<%= ruby_version %>
@@ -39,6 +39,7 @@ rspec-puppet-<%= ruby_version %>:
 <%   @configs['variables'].each do |key, val| -%>
     <%= key %>: <%= val %>
 <% end -%>
+    PUPPET_GEM_VERSION: '~> <%= hash['puppet_version'] %>'
   script:
     - bundle update
     - bundle exec rake $CHECK
