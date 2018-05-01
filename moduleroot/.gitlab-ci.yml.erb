@@ -28,6 +28,10 @@ variables:
 <%   end -%>
 <% end -%>
 
+cache:
+  paths:
+    - vendor/bundle
+
 before_script:
   - bundle -v
   - rm Gemfile.lock || true
