@@ -13,7 +13,7 @@ before_script:
   - bundle -v
   - bundle install <%= @configs['bundler_args'] %>
 
-<% @configs['ruby_versions'].each do |ruby_version| -%>
+<% ruby_version = @configs['ruby_versions'].first -%>
 rubocop-<%= ruby_version %>:
   stage: test_<%= ruby_version %>
   image: ruby:<%= ruby_version %>
@@ -32,6 +32,7 @@ metadata-<%= ruby_version %>:
   script:
     - bundle exec rake metadata_lint
 
+<% @configs['ruby_versions'].each do |ruby_version| -%>
 rspec-puppet-<%= ruby_version %>:
   stage: test_<%= ruby_version %>
   image: ruby:<%= ruby_version %>
