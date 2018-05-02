@@ -16,3 +16,7 @@ import '<%= item %>'
 <% checks.each do |check| -%>
 PuppetLint.configuration.send('<%= check %>')
 <% end -%>
+
+<%- [@configs['extras']].flatten.compact.each do |line| -%>
+<%= line %>
+<%- end -%>
