@@ -39,6 +39,7 @@ The following is a description and explaination of each of the keys within confi
 | Key               | Description   |
 | :-----------------|:--------------|
 | paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
+| excludes           | Defined which files or paths for git that should not be ignored or untracked. This setting is used to override the default ignored paths. |
 
 ### .pdkignore
 
