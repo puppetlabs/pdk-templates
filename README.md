@@ -47,8 +47,9 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 
  Key            | Description   |
 | :------------- |:--------------|
+| override       |Defines whether your local `.sync.yml` will ignore the default values in pdk-templates. Defaults to `false`|
 | stages         |Defines a job stage for when the CI/CD jobs will be executed in the pipeline.|
-| env            |Allows you to set any environment variables for the travis build. Currently includes setting the Puppet gem version.|
+| variables      |Allows you to set any environment variables for the travis build. Currently includes setting the Puppet gem version.|
 | bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
 | jobs           |Define the actual Gitlab CI jobs that will be executed. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics. Default jobs are created for `rubocop`, `syntax`, `metadata_lint`, and `rspec-puppet` tests on ruby versions `2.1.9` and `2.4.1`.|
 
