@@ -40,6 +40,18 @@ The following is a description and explaination of each of the keys within confi
 | :-----------------|:--------------|
 | paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
 
+### .gitlab-ci.yml
+
+>[Gitlab CI](https://about.gitlab.com/features/gitlab-ci-cd/) is a continuous integration platform that is free for all open source projects hosted on Github and Gitlab.com, it also has a self-hosted option that is free as well. We can trigger automated pipelines with ever change to our code base in the master branch, other branches, tags, or additional triggers.
+Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab CI what jobs to run when in the pipeline.
+
+ Key            | Description   |
+| :------------- |:--------------|
+| stages         |Defines a job stage for when the CI/CD jobs will be executed in the pipeline.|
+| env            |Allows you to set any environment variables for the travis build. Currently includes setting the Puppet gem version.|
+| bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
+| jobs           |Define the actual Gitlab CI jobs that will be executed. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics. Default jobs are created for `rubocop`, `syntax`, `metadata_lint`, and `rspec-puppet` tests on ruby versions `2.1.9` and `2.4.1`.|
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
