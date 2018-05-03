@@ -16,8 +16,10 @@ stages:
 <% if configs['beaker'] -%>
   - acceptance
 <% end -%>
-<% configs['extra_stages'].each do |stage| -%>
+<% if configs['extra_stags'] -%>
+<%   configs['extra_stages'].each do |stage| -%>
   - <%= stage %>
+<%   end -%>
 <% end -%>
 
 <% if configs.has_key?('global_variables') -%>
@@ -36,34 +38,67 @@ before_script:
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
 
-<% unless @configs['override'] -%>
-<%   if configs['ruby_version'] -%>
-<%     configs['ruby_version'].each do |ruby_version, options| -%>
-<%       options['checks'].each do |check| -%>
-<%= check %>:
-<%         if check == 'unit' -%>
+<% if configs['ruby_versions'] -%>
+<%   configs['ruby_versions'].each do |ruby_version, options| -%>
+<%     options['checks'].each do |check| -%>
+<%= check %>-<%= ruby_version %>:
+<%       if check == 'spec' -%>
   stage: unit
-<%         else -%>
+<%       else -%>
   stage: syntax
-<%         end -%>
+<%       end -%>
   image: ruby:<%= ruby_version %>
   script:
     - bundle exec rake <%= check %>
+  variables:
+    PUPPET_GEM_VERSION: '<%= options['puppet_version'] %>'
+<%       if options['allow_failure'] -%>
+<%         if options['allow_failure'].include?(check) -%>
+  allow_failure: true
+<%         end -%>
 <%       end -%>
+<%       if options['tags'] -%>
+  tags:
+<%         options['tags'].each do |tag| -%>
+    - <%= tag %>
+<%         end -%>
+<%       end %>
 <%     end -%>
 <%   end -%>
 <% end -%>
 
-<% configs['jobs'].each do |job, params| -%>
+<% if configs['beaker'] -%>
+acceptance:
+  stage: acceptance
+  variables:
+<%   configs['beaker']['variables'].each do |key, value| -%>
+    <%= key %>: <%= value %>
+<%   end -%>
+  services:
+    - docker:dind
+  script:
+    - bundle install
+    - bundle exec rake acceptance
+<%   if configs['beaker']['tags'] -%>
+  tags:
+<%     configs['beaker']['tags'].each do |tag| -%>
+    - <%= tag %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+
+<% if configs['extra_jobs'] -%>
+<%   configs['extra_jobs'].each do |job, params| -%>
 <%= job %>:
-<%-   params.keys.sort.each do |key| -%>
-<%-     if params[key].is_a?(Array) -%>
+<%-    params.keys.sort.each do |key| -%>
+<%-      if params[key].is_a?(Array) -%>
   <%= key -%>:
-    <%-   params[key].each do |element| -%>
+    <%-    params[key].each do |element| -%>
     - <%= element %>
-    <%-   end -%>
-<%-     else -%>
+    <%-    end -%>
+<%-      else -%>
   <%= key %>: <%= params[key] %>
+<%       end -%>
 <%     end -%>
 <%   end -%>
 <% end -%>
