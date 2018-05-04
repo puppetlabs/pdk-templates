@@ -13,10 +13,10 @@ stages:
   - <%= stage %>
 <% end -%>
 
-<% if configs.has_key?('variables') -%>
+<% if configs.has_key?('global_variables') -%>
 variables:
-<%   configs['variables'].each do |variable, value| -%>
-  <%= variable %>: <%= value %>
+<%   configs['global_variables'].each do |key, value| -%>
+  <%= key %>: <%= value %>
 <%   end -%>
 <% end -%>
 
