@@ -578,49 +578,63 @@ Gemfile:
     stages:
       - syntax
       - unit
-    variables:
-      PUPPET_GEM_VERSION: "~> 5.0"
     bundler_args: --without system_tests
     jobs:
       rubocop_2.1.9:
         stage: syntax
         image: ruby:2.1.9
+        variables:
+          PUPPET_GEM_VERSION: "~> 4.0"
         script:
           - bundle exec rake rubocop
       syntax_2.1.9:
         stage: syntax
         image: ruby:2.1.9
+        variables:
+          PUPPET_GEM_VERSION: "~> 4.0"
         script:
           - bundle exec rake syntax lint
       metadata_2.1.9:
         stage: syntax
         image: ruby:2.1.9
+        variables:
+          PUPPET_GEM_VERSION: "~> 4.0"
         script:
           - bundle exec rake metadata_lint
       rspec_puppet_2.1.9:
         stage: unit
         image: ruby:2.1.9
+        variables:
+          PUPPET_GEM_VERSION: "~> 4.0"
         script:
           - bundle update
           - bundle exec rake spec
       rubocop_2.4.1:
         stage: syntax
         image: ruby:2.4.1
+        variables:
+          PUPPET_GEM_VERSION: "~> 5.0"
         script:
           - bundle exec rake rubocop
       syntax_2.4.1:
         stage: syntax
         image: ruby:2.4.1
+        variables:
+          PUPPET_GEM_VERSION: "~> 5.0"
         script:
           - bundle exec rake syntax lint
       metadata_2.4.1:
         stage: syntax
         image: ruby:2.4.1
+        variables:
+          PUPPET_GEM_VERSION: "~> 5.0"
         script:
           - bundle exec rake metadata_lint
       rspec_puppet_2.4.1:
         stage: unit
         image: ruby:2.4.1
+        variables:
+          PUPPET_GEM_VERSION: "~> 5.0"
         script:
           - bundle update
           - bundle exec rake spec
