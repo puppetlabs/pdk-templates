@@ -9,6 +9,7 @@
 <%   configs = DeepMerge::deep_merge!(defaults, @configs['custom']) -%>
 <% end -%>
 stages:
+<<<<<<< HEAD
 <% unless @configs['override'] -%>
   - syntax
   - unit
@@ -16,8 +17,11 @@ stages:
 <% if configs['beaker'] -%>
   - acceptance
 <% end -%>
-<% if configs['extra_stags'] -%>
-<%   configs['extra_stages'].each do |stage| -%>
+<% if configs['custom_stages'] -%>
+<%   configs['custom_stages'].each do |stage| -%>
+=======
+<% configs['stages'].each do |stage| -%>
+>>>>>>> 02b6c88... Update gitlab template
   - <%= stage %>
 <%   end -%>
 <% end -%>
@@ -26,6 +30,13 @@ stages:
 variables:
 <%   configs['global_variables'].each do |key, value| -%>
   <%= key %>: <%= value %>
+<%   end -%>
+<% end -%>
+
+<% if configs.has_key?('variables') -%>
+variables:
+<%   configs['variables'].each do |variable, value| -%>
+  <%= variable %>: <%= value %>
 <%   end -%>
 <% end -%>
 
@@ -38,6 +49,7 @@ before_script:
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
 
+<<<<<<< HEAD
 <% if configs['ruby_versions'] -%>
 <%   configs['ruby_versions'].each do |ruby_version, options| -%>
 <%     options['checks'].each do |check| -%>
@@ -71,6 +83,7 @@ before_script:
 acceptance:
   stage: acceptance
   variables:
+    DOCKER_DRIVER: overlay2
 <%   configs['beaker']['variables'].each do |key, value| -%>
     <%= key %>: <%= value %>
 <%   end -%>
@@ -87,8 +100,11 @@ acceptance:
 <%   end -%>
 <% end -%>
 
-<% if configs['extra_jobs'] -%>
-<%   configs['extra_jobs'].each do |job, params| -%>
+<% if configs['custom_jobs'] -%>
+<%   configs['custom_jobs'].each do |job, params| -%>
+=======
+<% configs['jobs'].each do |job, params| -%>
+>>>>>>> 02b6c88... Update gitlab template
 <%= job %>:
 <%-    params.keys.sort.each do |key| -%>
 <%-      if params[key].is_a?(Array) -%>

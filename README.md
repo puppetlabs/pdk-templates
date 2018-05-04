@@ -47,11 +47,24 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 
  Key            | Description   |
 | :------------- |:--------------|
+<<<<<<< HEAD
+<<<<<<< HEAD
 | override       |Defines whether your local `.sync.yml` will ignore the default values in pdk-templates. Defaults to `false`|
+| custom_stages  |Defines a custom job stage for when the CI/CD jobs will be executed in the pipeline. By default `syntax` and `unit` are defined unless `override: true`.|
+| beaker         |Defines if you want the default, Docker-in-Docker acceptance job added. Can be set to `true` or you can specify the `variables` and `tags` subkeys. These subkeys function the same as the `global_variables` option and the `tags` subkey found in the `ruby_versions` option.|
+| global_variables |Allows you to set any global environment variables for the gitlab-ci pipeline. Currently includes setting the Puppet gem version.|
+| bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
+| ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags.
+| custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
+=======
+=======
+| override       |Defines whether your local `.sync.yml` will ignore the default values in pdk-templates. Defaults to `false`|
+>>>>>>> 02b6c88... Update gitlab template
 | stages         |Defines a job stage for when the CI/CD jobs will be executed in the pipeline.|
 | variables      |Allows you to set any environment variables for the travis build. Currently includes setting the Puppet gem version.|
 | bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
 | jobs           |Define the actual Gitlab CI jobs that will be executed. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics. Default jobs are created for `rubocop`, `syntax`, `metadata_lint`, and `rspec-puppet` tests on ruby versions `2.1.9` and `2.4.1`.|
+>>>>>>> 6890662... Add gitlab ci docs
 
 ### .pdkignore
 
