@@ -11,11 +11,13 @@ defaults = {
     'Exclude'=> [
       'bin/*',
       '.vendor/**/*',
-      'Gemfile',
-      'Rakefile',
+      '**/Gemfile',
+      '**/Rakefile',
       'pkg/**/*',
       'spec/fixtures/**/*',
       'vendor/**/*',
+      '**/Puppetfile',
+      '**/Vagrantfile',
     ],
   },
 }
