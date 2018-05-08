@@ -526,11 +526,6 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
-      - gem: puppet-blacksmith
-        version: '~> 3.4'
-        require: false
-        platforms:
-          - ruby
     # ':system_tests':
     #   - gem: 'puppet-module-posix-system-r#{minor_version}'
     #     platforms: ruby
