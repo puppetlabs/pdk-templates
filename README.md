@@ -40,6 +40,21 @@ The following is a description and explaination of each of the keys within confi
 | :-----------------|:--------------|
 | paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
 
+### .gitlab-ci.yml
+
+>[Gitlab CI](https://about.gitlab.com/features/gitlab-ci-cd/) is a continuous integration platform that is free for all open source projects hosted on Github and Gitlab.com, it also has a self-hosted option that is free as well. We can trigger automated pipelines with ever change to our code base in the master branch, other branches, tags, or additional triggers.
+Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab CI what jobs to run when in the pipeline.
+
+ Key            | Description   |
+| :------------- |:--------------|
+| override       |Defines whether your local `.sync.yml` will ignore the default values in pdk-templates. Defaults to `false`|
+| custom_stages  |Defines a custom job stage for when the CI/CD jobs will be executed in the pipeline. By default `syntax` and `unit` are defined unless `override: true`.|
+| beaker         |Defines if you want the default, Docker-in-Docker acceptance job added. Can be set to `true` to enable the default `acceptance` job, or you can specify the `variables` and `tags` subkeys. These subkeys function the same as the `global_variables` option and the `tags` subkey found in the `ruby_versions` option.|
+| global_variables |Allows you to set any global environment variables for the gitlab-ci pipeline. Currently includes setting the Puppet gem version.|
+| bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
+| ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags.
+| custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.

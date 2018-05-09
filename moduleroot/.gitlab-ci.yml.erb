@@ -1,7 +1,39 @@
 ---
+<% if @configs['override'] && @configs.has_key?('custom') -%>
+<%   configs = @configs['custom'] -%>
+<% elsif @configs['defaults'] && !@configs.has_key?('custom') -%>
+<%   configs = @configs['defaults'] -%>
+<% else -%>
+<%   require 'deep_merge/core' -%>
+<%   defaults = @configs['defaults'].dup -%>
+<%   configs = DeepMerge::deep_merge!(defaults, @configs['custom']) -%>
+<% end -%>
 stages:
-<% @configs['stages'].each do |stage| -%>
+<% unless @configs['override'] -%>
+  - syntax
+  - unit
+<% end -%>
+<% if configs['beaker'] -%>
+  - acceptance
+<% end -%>
+<% if configs['custom_stages'] -%>
+<%   configs['custom_stages'].each do |stage| -%>
   - <%= stage %>
+<%   end -%>
+<% end -%>
+
+<% if configs.has_key?('global_variables') -%>
+variables:
+<%   configs['global_variables'].each do |key, value| -%>
+  <%= key %>: <%= value %>
+<%   end -%>
+<% end -%>
+
+<% if configs.has_key?('global_variables') -%>
+variables:
+<%   configs['global_variables'].each do |key, value| -%>
+  <%= key %>: <%= value %>
+<%   end -%>
 <% end -%>
 
 before_script:
@@ -11,18 +43,70 @@ before_script:
   - gem update bundler
   - gem --version
   - bundle -v
-  - bundle install <%= @configs['bundler_args'] %>
+  - bundle install <%= configs['bundler_args'] %>
 
-<% @configs['jobs'].each do |job, params| -%>
+<% if configs['ruby_versions'] -%>
+<%   configs['ruby_versions'].each do |ruby_version, options| -%>
+<%     options['checks'].each do |check| -%>
+<%= check %>-<%= ruby_version %>:
+<%       if check == 'spec' -%>
+  stage: unit
+<%       else -%>
+  stage: syntax
+<%       end -%>
+  image: ruby:<%= ruby_version %>
+  script:
+    - bundle exec rake <%= check %>
+  variables:
+    PUPPET_GEM_VERSION: '<%= options['puppet_version'] %>'
+<%       if options['allow_failure'] -%>
+<%         if options['allow_failure'].include?(check) -%>
+  allow_failure: true
+<%         end -%>
+<%       end -%>
+<%       if options['tags'] -%>
+  tags:
+<%         options['tags'].each do |tag| -%>
+    - <%= tag %>
+<%         end -%>
+<%       end %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+
+<% if configs['beaker'] -%>
+acceptance:
+  stage: acceptance
+  variables:
+    DOCKER_DRIVER: overlay2
+<%   configs['beaker']['variables'].each do |key, value| -%>
+    <%= key %>: <%= value %>
+<%   end -%>
+  services:
+    - docker:dind
+  script:
+    - bundle install
+    - bundle exec rake acceptance
+<%   if configs['beaker']['tags'] -%>
+  tags:
+<%     configs['beaker']['tags'].each do |tag| -%>
+    - <%= tag %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+
+<% if configs['custom_jobs'] -%>
+<%   configs['custom_jobs'].each do |job, params| -%>
 <%= job %>:
-<%-   params.keys.sort.each do |key| -%>
-<%-     if params[key].is_a?(Array) -%>
+<%-    params.keys.sort.each do |key| -%>
+<%-      if params[key].is_a?(Array) -%>
   <%= key -%>:
-    <%-   params[key].each do |element| -%>
+    <%-    params[key].each do |element| -%>
     - <%= element %>
-    <%-   end -%>
-<%-     else -%>
+    <%-    end -%>
+<%-      else -%>
   <%= key %>: <%= params[key] %>
+<%       end -%>
 <%     end -%>
 <%   end -%>
 <% end -%>

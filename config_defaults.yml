@@ -553,56 +553,26 @@ Gemfile:
     #   - gem: beaker-rspec
     #     from_env: BEAKER_RSPEC_VERSION
 .gitlab-ci.yml:
-  stages:
-    - syntax
-    - unit
-  jobs:
-    rubocop_2.1.9:
-      stage: syntax
-      image: ruby:2.1.9
-      script:
-        - bundle exec rake rubocop
-    syntax_2.1.9:
-      stage: syntax
-      image: ruby:2.1.9
-      script:
-        - bundle exec rake syntax lint
-    metadata_2.1.9:
-      stage: syntax
-      image: ruby:2.1.9
-      script:
-        - bundle exec rake metadata_lint
-    rspec_puppet_2.1.9:
-      stage: unit
-      image: ruby:2.1.9
-      script:
-        - bundle update
-        - bundle exec rake spec
-    rubocop_2.4.1:
-      stage: syntax
-      image: ruby:2.4.1
-      script:
-        - bundle exec rake rubocop
-    syntax_2.4.1:
-      stage: syntax
-      image: ruby:2.4.1
-      script:
-        - bundle exec rake syntax lint
-    metadata_2.4.1:
-      stage: syntax
-      image: ruby:2.4.1
-      script:
-        - bundle exec rake metadata_lint
-    rspec_puppet_2.4.1:
-      stage: unit
-      image: ruby:2.4.1
-      script:
-        - bundle update
-        - bundle exec rake spec
-  variables:
-    PUPPET_GEM_VERSION: "~> 4.0"
-    CHECK: spec
-  bundler_args: --without system_tests
+  defaults:
+    bundler_args: '--without system_tests'
+    ruby_versions:
+      '2.1.9':
+        checks:
+          - 'lint validate metadata_lint'
+          - spec
+        puppet_version: '~> 4.0'
+      '2.4.1':
+        checks:
+          - 'lint validate metadata_lint'
+          - rubocop
+          - spec
+        puppet_version: '~> 5.0'
+      '2.4.4':
+        checks:
+          - 'lint validate metadata_lint'
+          - spec
+        puppet_version: '~> 5.5'
+    # beaker: true
 spec/default_facts.yml:
   concat_basedir: "/tmp"
   ipaddress: "172.16.254.254"
