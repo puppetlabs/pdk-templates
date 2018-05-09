@@ -21,18 +21,10 @@ stages:
   - <%= stage %>
 <%   end -%>
 <% end -%>
-
 <% if configs.has_key?('global_variables') -%>
 variables:
 <%   configs['global_variables'].each do |key, value| -%>
-  <%= key %>: <%= value %>
-<%   end -%>
-<% end -%>
-
-<% if configs.has_key?('global_variables') -%>
-variables:
-<%   configs['global_variables'].each do |key, value| -%>
-  <%= key %>: <%= value %>
+  <%= key %>: '<%= value %>''
 <%   end -%>
 <% end -%>
 
@@ -73,7 +65,6 @@ before_script:
 <%     end -%>
 <%   end -%>
 <% end -%>
-
 <% if configs['beaker'] -%>
 acceptance:
   stage: acceptance
@@ -94,7 +85,6 @@ acceptance:
 <%     end -%>
 <%   end -%>
 <% end -%>
-
 <% if configs['custom_jobs'] -%>
 <%   configs['custom_jobs'].each do |job, params| -%>
 <%= job %>:
@@ -102,7 +92,7 @@ acceptance:
 <%       if config.is_a?(Array) -%>
   <%= param %>:
 <%         config.each do |element| -%>
-    - '<%= element %>'
+    - <%= element %>
 <%         end -%>
 <%       elsif config.is_a?(Hash) -%>
   <%= param %>:
@@ -112,13 +102,13 @@ acceptance:
 <%             value.each do |content| -%>
       - <%= content %>
 <%             end -%>
-<%           else %>
-    <%= element %>: <%= value %>
+<%           else -%>
+    <%= element %>: '<%= value %>'
 <%           end -%>
 <%         end -%>
 <%       else -%>
-  <%= param %>: <%= config %>
+  <%= param %>: '<%= config %>'
 <%       end -%>
-<%     end -%>
+<%     end %>
 <%   end -%>
 <% end -%>
