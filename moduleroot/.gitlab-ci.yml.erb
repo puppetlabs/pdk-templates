@@ -98,14 +98,26 @@ acceptance:
 <% if configs['custom_jobs'] -%>
 <%   configs['custom_jobs'].each do |job, params| -%>
 <%= job %>:
-<%-    params.keys.sort.each do |key| -%>
-<%-      if params[key].is_a?(Array) -%>
-  <%= key -%>:
-    <%-    params[key].each do |element| -%>
-    - <%= element %>
-    <%-    end -%>
-<%-      else -%>
-  <%= key %>: <%= params[key] %>
+<%     params.each do |param, config| -%>
+<%       if config.is_a?(Array) -%>
+  <%= param %>:
+<%         config.each do |element| -%>
+    - '<%= element %>'
+<%         end -%>
+<%       elsif config.is_a?(Hash) -%>
+  <%= param %>:
+<%         config.each do |element, value| -%>
+<%           if value.is_a?(Array) -%>
+    <%= element %>:
+<%             value.each do |content| -%>
+      - <%= content %>
+<%             end -%>
+<%           else %>
+    <%= element %>: <%= value %>
+<%           end -%>
+<%         end -%>
+<%       else -%>
+  <%= param %>: <%= config %>
 <%       end -%>
 <%     end -%>
 <%   end -%>
