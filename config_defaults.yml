@@ -558,18 +558,12 @@ Gemfile:
     ruby_versions:
       '2.1.9':
         checks:
-          - 'lint validate metadata_lint'
           - spec
         puppet_version: '~> 4.0'
-      '2.4.1':
-        checks:
-          - 'lint validate metadata_lint'
-          - rubocop
-          - spec
-        puppet_version: '~> 5.0'
       '2.4.4':
         checks:
-          - 'lint validate metadata_lint'
+          - 'syntax lint metadata_lint'
+          - rubocop
           - spec
         puppet_version: '~> 5.5'
     # beaker: true
