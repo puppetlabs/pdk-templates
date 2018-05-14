@@ -554,7 +554,7 @@ Gemfile:
     #     from_env: BEAKER_RSPEC_VERSION
 .gitlab-ci.yml:
   defaults:
-    bundler_args: '--without system_tests'
+    bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
       '2.1.9':
         checks:
