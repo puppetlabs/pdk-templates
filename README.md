@@ -39,6 +39,7 @@ The following is a description and explaination of each of the keys within confi
 | Key               | Description   |
 | :-----------------|:--------------|
 | paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
+| excludes           | Defined which files or paths for git that should not be ignored or untracked. This setting is used to override the default ignored paths. |
 
 ### .gitlab-ci.yml
 
@@ -77,6 +78,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set: docker/ubuntu-14.04` to my docker\_sets attribute.|
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
+|excludes        |Ensures that the .travis file does not include checks listed in this array. Used to override a default included check.|
 
 ### .yardopts
 
