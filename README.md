@@ -77,6 +77,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set: docker/ubuntu-14.04` to my docker\_sets attribute.|
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
+|remove_includes |Allows you to remove includes set in config_defaults.yml.|
 
 ### .yardopts
 
