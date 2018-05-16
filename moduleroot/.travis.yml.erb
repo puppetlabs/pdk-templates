@@ -31,9 +31,20 @@ rvm:
 <% @configs['ruby_versions'].each do |ruby_version| -%>
   - <%= ruby_version %>
 <% end -%>
+<% if @configs.has_key?('env') || @configs.has_key?('global_env') -%>
 env:
-<% @configs['env'].each do |env| -%>
-  - <%= env %>
+<%   if @configs.has_key?('global_env') -%>
+  global:
+<%     @configs['global_env'].each do |env| -%>
+    - <%= env %>
+<%     end -%>
+<%   end -%>
+<%   if @configs.has_key?('env') -%>
+  matrix:
+<%     @configs['env'].each do |env| -%>
+    - <%= env %>
+<%     end -%>
+<%   end -%>
 <% end -%>
 matrix:
   fast_finish: true
