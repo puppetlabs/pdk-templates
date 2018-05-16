@@ -1,8 +1,36 @@
 ---
-stages:
-<% @configs['ruby_versions'].each do |ruby_version| -%>
-  - test_<%= ruby_version %>
+<% if @configs['override'] && @configs.has_key?('custom') -%>
+<%   configs = @configs['custom'] -%>
+<% elsif @configs['defaults'] && !@configs.has_key?('custom') -%>
+<%   configs = @configs['defaults'] -%>
+<% else -%>
+<%   require 'deep_merge/core' -%>
+<%   defaults = @configs['defaults'].dup -%>
+<%   configs = DeepMerge::deep_merge!(defaults, @configs['custom']) -%>
 <% end -%>
+stages:
+<% unless @configs['override'] -%>
+  - syntax
+  - unit
+<% end -%>
+<% if configs['beaker'] -%>
+  - acceptance
+<% end -%>
+<% if configs['custom_stages'] -%>
+<%   configs['custom_stages'].each do |stage| -%>
+  - <%= stage %>
+<%   end -%>
+<% end -%>
+<% if configs.has_key?('global_variables') -%>
+variables:
+<%   configs['global_variables'].each do |key, value| -%>
+  <%= key %>: '<%= value %>''
+<%   end -%>
+<% end -%>
+
+cache:
+  paths:
+    - vendor/bundle
 
 before_script:
   - bundle -v
@@ -11,36 +39,80 @@ before_script:
   - gem update bundler
   - gem --version
   - bundle -v
-  - bundle install <%= @configs['bundler_args'] %>
+  - bundle install <%= configs['bundler_args'] %>
 
-<% @configs['ruby_versions'].each do |ruby_version| -%>
-rubocop-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
+<% if configs['ruby_versions'] -%>
+<%   configs['ruby_versions'].each do |ruby_version, options| -%>
+<%     options['checks'].each do |check| -%>
+<%= check %>-Ruby <%= ruby_version %>-Puppet <%= options['puppet_version'] %>:
+<%       if check == 'spec' -%>
+  stage: unit
+<%       else -%>
+  stage: syntax
+<%       end -%>
   image: ruby:<%= ruby_version %>
   script:
-    - bundle exec rake rubocop
-
-syntax-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
-  script:
-    - bundle exec rake syntax lint
-
-metadata-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
-  script:
-    - bundle exec rake metadata_lint
-
-rspec-puppet-<%= ruby_version %>:
-  stage: test_<%= ruby_version %>
-  image: ruby:<%= ruby_version %>
+    - bundle exec rake <%= check %>
   variables:
-<%   @configs['variables'].each do |key, val| -%>
-    <%= key %>: <%= val %>
+    PUPPET_GEM_VERSION: '<%= options['puppet_version'] %>'
+<%       if options['allow_failure'] -%>
+<%         if options['allow_failure'].include?(check) -%>
+  allow_failure: true
+<%         end -%>
+<%       end -%>
+<%       if options['tags'] -%>
+  tags:
+<%         options['tags'].each do |tag| -%>
+    - <%= tag %>
+<%         end -%>
+<%       end %>
+<%     end -%>
+<%   end -%>
 <% end -%>
+<% if configs['beaker'] -%>
+acceptance:
+  stage: acceptance
+  variables:
+    DOCKER_DRIVER: overlay2
+<%   configs['beaker']['variables'].each do |key, value| -%>
+    <%= key %>: <%= value %>
+<%   end -%>
+  services:
+    - docker:dind
   script:
-    - bundle update
-    - bundle exec rake $CHECK
-
+    - bundle install
+    - bundle exec rake acceptance
+<%   if configs['beaker']['tags'] -%>
+  tags:
+<%     configs['beaker']['tags'].each do |tag| -%>
+    - <%= tag %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+<% if configs['custom_jobs'] -%>
+<%   configs['custom_jobs'].each do |job, params| -%>
+<%= job %>:
+<%     params.each do |param, config| -%>
+<%       if config.is_a?(Array) -%>
+  <%= param %>:
+<%         config.each do |element| -%>
+    - <%= element %>
+<%         end -%>
+<%       elsif config.is_a?(Hash) -%>
+  <%= param %>:
+<%         config.each do |element, value| -%>
+<%           if value.is_a?(Array) -%>
+    <%= element %>:
+<%             value.each do |content| -%>
+      - <%= content %>
+<%             end -%>
+<%           else -%>
+    <%= element %>: '<%= value %>'
+<%           end -%>
+<%         end -%>
+<%       else -%>
+  <%= param %>: '<%= config %>'
+<%       end -%>
+<%     end %>
+<%   end -%>
 <% end -%>

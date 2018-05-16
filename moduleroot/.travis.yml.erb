@@ -56,7 +56,7 @@ matrix:
       <%= key %>: <%= job[key].gsub(/@@SET@@/, set['set']) %>
 <%   end -%>
 <% end -%>
-<% (@configs['includes'] + (@configs['extras'] || [])).each do |job| -%>
+<% (@configs['includes'] - (@configs['remove_includes'] || []) + (@configs['extras'] || [])).each do |job| -%>
     -
 <%   job.keys.sort.each do |key| -%>
       <%= key %>: <%= job[key] %>
