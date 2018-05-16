@@ -1,7 +1,12 @@
 ---
-sudo: required
+sudo: false
 dist: trusty
 language: c
+before_install:
+  - wget https://apt.puppetlabs.com/puppet5-release-trusty.deb
+  - sudo dpkg -i puppet5-release-trusty.deb
+  - sudo apt-get -qq update
+  - sudo apt-get install pdk
 script:
   - '.travis/test_script.sh'
 notifications:
