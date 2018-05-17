@@ -108,6 +108,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. |
+|extras|An array of extra lines to add into your Rakefile|
 
 ### .rubocop.yml
 
