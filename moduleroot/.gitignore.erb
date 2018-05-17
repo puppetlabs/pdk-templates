@@ -1,3 +1,3 @@
-<% (@configs['required'] + (@configs['paths'] || [])).uniq.each do |path| -%>
+<% (@configs['required'] - (@configs['remove_paths'] || []) + (@configs['paths'] || [])).uniq.each do |path| -%>
 <%= path %>
 <% end -%>
