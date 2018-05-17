@@ -82,12 +82,14 @@ branches:
 <% end -%>
 notifications:
   email: false
+<% if @configs['deploy'] -%>
 deploy:
   provider: puppetforge
-  user: puppet
+  user: <%= @configs['user'] %>
   password:
     secure: "<%= @configs['secure'] %>"
   on:
     tags: true
     all_branches: true
     condition: "$DEPLOY_TO_FORGE = yes"
+<% end -%>
