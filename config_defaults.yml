@@ -462,6 +462,7 @@ Rakefile:
         Style/ClassVars:
         Style/ConstantName:
         Style/Documentation:
+          Exclude: [ 'lib/puppet/parser/functions/**/*' ]
         Style/DoubleNegation:
         Style/EndBlock:
         Style/FileName:
