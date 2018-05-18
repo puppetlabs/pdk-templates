@@ -55,6 +55,9 @@
       rvm: 2.1.9
   deploy: true
   user: 'puppet'
+  branches:
+    - master
+    - /^v\d/
 .yardopts:
   markup: markdown
 appveyor.yml:
