@@ -50,11 +50,6 @@ before_script:
 <%       else -%>
   stage: syntax
 <%       end -%>
-<%       if options['docker_image'] -%>
-  image: <%= options['docker_image'] %>
-<%       else -%>
-  image: ruby:<%= ruby_version %>
-<%       end -%>
   image: ruby:<%= ruby_version %>
   script:
     - bundle exec rake <%= check %>
