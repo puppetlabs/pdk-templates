@@ -61,6 +61,7 @@ def ensure_module_defined(name)
   lastmod
 end
 
+# 'spec_overrides' from sync.yml will appear below this line
 <%- [@configs['spec_overrides']].flatten.compact.each do |line| -%>
 <%= line %>
 <%- end -%>
