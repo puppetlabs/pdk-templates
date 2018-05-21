@@ -1,0 +1,7 @@
+---
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'puppet-resource_api'
+spec/spec_helper.rb:
+  mock_with: ':rspec'
