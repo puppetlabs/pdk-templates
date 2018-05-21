@@ -44,6 +44,23 @@ RSpec.configure do |c|
   end
   <%- end -%>
 end
+
+def ensure_module_defined(name)
+  name_parts = name.split('::')
+
+  lastmod = Object
+
+  name_parts.each do |modname|
+    lastmod = if lastmod.const_defined?(modname)
+                lastmod.const_get(modname)
+              else
+                lastmod.const_set(modname, Module.new)
+              end
+  end
+
+  lastmod
+end
+
 <%- [@configs['spec_overrides']].flatten.compact.each do |line| -%>
 <%= line %>
 <%- end -%>
