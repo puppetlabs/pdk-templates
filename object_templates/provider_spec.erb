@@ -1,7 +1,6 @@
 require 'spec_helper'
 
-# TODO: needs some cleanup/helper to avoid this misery
-module Puppet::Provider::<%= provider_class %>; end
+ensure_module_defined('Puppet::Provider::<%= provider_class %>')
 require 'puppet/provider/<%= name %>/<%= name %>'
 
 RSpec.describe Puppet::Provider::<%= provider_class %>::<%= provider_class %> do
