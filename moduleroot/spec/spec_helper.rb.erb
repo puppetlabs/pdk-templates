@@ -45,20 +45,11 @@ RSpec.configure do |c|
   <%- end -%>
 end
 
-def ensure_module_defined(name)
-  name_parts = name.split('::')
-
-  lastmod = Object
-
-  name_parts.each do |modname|
-    lastmod = if lastmod.const_defined?(modname)
-                lastmod.const_get(modname)
-              else
-                lastmod.const_set(modname, Module.new)
-              end
+def ensure_module_defined(module_name)
+  module_name.split('::').reduce(Object) do |last_module, next_module|
+    last_module.const_set(next_module, Module.new) unless last_module.const_defined?(next_module)
+    last_module.const_get(next_module)
   end
-
-  lastmod
 end
 
 # 'spec_overrides' from sync.yml will appear below this line
