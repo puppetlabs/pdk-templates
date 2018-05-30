@@ -353,7 +353,7 @@ Rakefile:
   profiles:
     # no rubocops enabled, caveat emptor!
     off:
-      enabled_cops: []
+      enabled_cops: {}
 
     # a sanitized list of cops that'll cleanup a code base without much effort
     # they all support autocorrect, and should be fairly uncontroversial across
