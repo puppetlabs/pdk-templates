@@ -42,6 +42,11 @@ before_script:
 
 <% if configs['ruby_versions'] -%>
 <%   configs['ruby_versions'].each do |ruby_version, options| -%>
+<%     if options['image'] -%>
+<%       image = options['image'] -%>
+<%     else -%>
+<%       image = 'ruby' -%>
+<%     end -%>
 <%     options['checks'].each do |check| -%>
 <%= check %>-Ruby <%= ruby_version %>-Puppet <%= options['puppet_version'] %>:
 <%       if check == 'spec' -%>
@@ -49,7 +54,7 @@ before_script:
 <%       else -%>
   stage: syntax
 <%       end -%>
-  image: ruby:<%= ruby_version %>
+  image: <%= image %>:<%= ruby_version %>
   script:
     - bundle exec rake <%= check %>
   variables:
