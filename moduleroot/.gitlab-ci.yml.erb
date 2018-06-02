@@ -14,7 +14,7 @@ stages:
   - unit
 <% end -%>
 <% if configs['beaker'] -%>
-  - acceptance
+  - beaker
 <% end -%>
 <% if configs['custom_stages'] -%>
 <%   configs['custom_stages'].each do |stage| -%>
@@ -24,7 +24,7 @@ stages:
 <% if configs.has_key?('global_variables') -%>
 variables:
 <%   configs['global_variables'].each do |key, value| -%>
-  <%= key %>: '<%= value %>''
+  <%= key %>: '<%= value %>'
 <%   end -%>
 <% end -%>
 
@@ -73,17 +73,17 @@ before_script:
 <%   end -%>
 <% end -%>
 <% if configs['beaker'] -%>
-acceptance:
-  stage: acceptance
+beaker:
+  stage: beaker
   variables:
-    DOCKER_DRIVER: overlay2
+    DOCKER_DRIVER: 'overlay2'
 <%   configs['beaker']['variables'].each do |key, value| -%>
-    <%= key %>: <%= value %>
+    <%= key %>: '<%= value %>'
 <%   end -%>
   services:
     - docker:dind
   script:
-    - bundle install
+    - bundle install --with-system_tests
     - bundle exec rake acceptance
 <%   if configs['beaker']['tags'] -%>
   tags:
