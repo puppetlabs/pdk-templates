@@ -458,7 +458,9 @@ Rakefile:
         Style/ClassVars:
         Style/ConstantName:
         Style/Documentation:
-          Exclude: [ 'lib/puppet/parser/functions/**/*' ]
+          Exclude:
+          - 'lib/puppet/parser/functions/**/*'
+          - 'spec/**/*'
         Style/DoubleNegation:
         Style/EndBlock:
         Style/FileName:
