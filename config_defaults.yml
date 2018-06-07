@@ -7,6 +7,7 @@
     '*.sh': 'eol=lf'
 .gitignore:
   required: &ignorepaths
+      - '.git/'
       - '.*.sw[op]'
       - '.metadata'
       - '.yardoc'
@@ -457,7 +458,9 @@ Rakefile:
         Style/ClassVars:
         Style/ConstantName:
         Style/Documentation:
-          Exclude: [ 'lib/puppet/parser/functions/**/*' ]
+          Exclude:
+          - 'lib/puppet/parser/functions/**/*'
+          - 'spec/**/*'
         Style/DoubleNegation:
         Style/EndBlock:
         Style/FileName:
@@ -547,6 +550,9 @@ Gemfile:
     #     from_env: BEAKER_RSPEC_VERSION
 .gitlab-ci.yml:
   defaults:
+    cache:
+      paths:
+        - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
       '2.1.9':

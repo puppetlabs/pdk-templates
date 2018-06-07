@@ -5,7 +5,7 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 * `moduleroot_init` templates get only deployed when the target file does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
 * `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
 
-The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
+The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. You can remove default values by adding the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) of `---` to the value in the `.sync.yml`. The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file. 
 
 * [Basic usage](#basic-usage)
 * [Config_default Values](#values)
@@ -48,10 +48,12 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
  Key            | Description   |
 | :------------- |:--------------|
 | override       |Defines whether your local `.sync.yml` will ignore the default values in pdk-templates. Defaults to `false`|
+| defaults/custom | The `defaults` and `custom` keys are special keys used to denote when configuration is coming from `config_defaults.yml` or `.sync.yml`. While it is possible for users to extend the defaults provided by PDK, it's suggested that the user should only use the `custom` key to separate their overrides/extended configuration from the PDK provided defaults. |
 | custom_stages  |Defines a custom job stage for when the CI/CD jobs will be executed in the pipeline. By default `syntax` and `unit` are defined unless `override: true`.|
 | beaker         |Defines if you want the default, Docker-in-Docker acceptance job added. Can be set to `true` to enable the default `acceptance` job, or you can specify the `variables` and `tags` subkeys. These subkeys function the same as the `global_variables` option and the `tags` subkey found in the `ruby_versions` option.|
 | global_variables |Allows you to set any global environment variables for the gitlab-ci pipeline. Currently includes setting the Puppet gem version.|
-| bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
+| cache          | If this setting exists, it expects a single sub-key called `paths`. `paths` is an array of paths that will be cached for each subsequent job. Defaults to `['vendor/bundle']`|
+| bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests --path vendor/bundle --jobs $(nproc)` which avoids installing unnessesary gems while installing them to the `vendor/bundler.|
 | ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags.
 | custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
 

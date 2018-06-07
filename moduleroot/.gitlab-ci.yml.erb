@@ -28,9 +28,13 @@ variables:
 <%   end -%>
 <% end -%>
 
+<% if configs['cache'] -%>
 cache:
   paths:
-    - vendor/bundle
+<%   configs['cache']['paths'].each do |path| -%>
+    - <%= path %>
+<%   end -%>
+<% end -%>
 
 before_script:
   - bundle -v
