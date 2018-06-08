@@ -7,6 +7,7 @@
     '*.sh': 'eol=lf'
 .gitignore:
   required: &ignorepaths
+      - '.git/'
       - '.*.sw[op]'
       - '.metadata'
       - '.yardoc'
@@ -353,7 +354,7 @@ Rakefile:
   profiles:
     # no rubocops enabled, caveat emptor!
     off:
-      enabled_cops: []
+      enabled_cops: {}
 
     # a sanitized list of cops that'll cleanup a code base without much effort
     # they all support autocorrect, and should be fairly uncontroversial across
@@ -457,7 +458,9 @@ Rakefile:
         Style/ClassVars:
         Style/ConstantName:
         Style/Documentation:
-          Exclude: [ 'lib/puppet/parser/functions/**/*' ]
+          Exclude:
+          - 'lib/puppet/parser/functions/**/*'
+          - 'spec/**/*'
         Style/DoubleNegation:
         Style/EndBlock:
         Style/FileName:
@@ -526,11 +529,6 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
-      - gem: puppet-blacksmith
-        version: '~> 3.4'
-        require: false
-        platforms:
-          - ruby
     # ':system_tests':
     #   - gem: 'puppet-module-posix-system-r#{minor_version}'
     #     platforms: ruby
@@ -552,6 +550,9 @@ Gemfile:
     #     from_env: BEAKER_RSPEC_VERSION
 .gitlab-ci.yml:
   defaults:
+    cache:
+      paths:
+        - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
       '2.1.9':
