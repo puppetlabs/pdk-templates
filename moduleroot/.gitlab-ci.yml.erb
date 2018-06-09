@@ -48,7 +48,7 @@ before_script:
 <%   configs['ruby_versions'].each do |ruby_version, options| -%>
 <%     options['checks'].each do |check| -%>
 <%= check %>-Ruby <%= ruby_version %>-Puppet <%= options['puppet_version'] %>:
-<%       if check == 'spec' -%>
+<%       if check == 'parallel_spec' -%>
   stage: unit
 <%       else -%>
   stage: syntax
