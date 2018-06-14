@@ -24,7 +24,11 @@ before_install:
   - gem --version
   - bundle -v
 script:
+<% if @configs['simplecov'] -%>
+  - 'SIMPLECOV=yes bundle exec rake $CHECK'
+<% else -%>  
   - 'bundle exec rake $CHECK'
+<% end -%>
 bundler_args: <%= @configs['bundler_args'] %>
 rvm:
 <% @configs['ruby_versions'].each do |ruby_version| -%>
