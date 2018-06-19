@@ -1,9 +1,20 @@
+<%
+def requires(item)
+  if item.is_a? String
+    line = "require '#{item}'"
+  elsif item.is_a? Hash
+    line = "require '#{item['require']}'" unless item['require'].nil?
+    line = "#{line} if #{item['conditional']}" unless item['require'].nil? and item['conditional'].nil?
+  end
+  line
+end
+-%>
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
 require 'puppet_blacksmith/rake_tasks' if Bundler.rubygems.find_name('puppet-blacksmith').any?
 <% if ! @configs['requires'].nil? -%>
 <%   @configs['requires'].each do |item| -%>
-require '<%= item %>'
+<%= requires(item) %>
 <%   end -%>
 <% end -%>
 <% if ! @configs['imports'].nil? %>
