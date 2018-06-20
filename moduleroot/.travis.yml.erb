@@ -26,7 +26,7 @@ before_install:
 script:
 <% if @configs['simplecov'] -%>
   - 'SIMPLECOV=yes bundle exec rake $CHECK'
-<% else -%>  
+<% else -%>
   - 'bundle exec rake $CHECK'
 <% end -%>
 bundler_args: <%= @configs['bundler_args'] %>
