@@ -78,7 +78,9 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
 | env            |Allows you to add new travis job matrix entries based on the included environmnet variables, one per `env` entry; for example, for adding jobs with specific `PUPPET_GEM_VERSION` and/or `CHECK` values.  See the [Travis Environment Variables](https://docs.travis-ci.com/user/environment-variables) documentation for details.|
 | global_env     |Allows you to set global environment variables which will be defined for all travis jobs; for example, `PARALLEL_TEST_PROCESSORS` or `TIMEOUT`.  See the [Travis Global Environment Variables](https://docs.travis-ci.com/user/environment-variables/#Global-Variables) documentation for details.|
-|docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set: docker/ubuntu-14.04` to my docker\_sets attribute.|
+|docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set:docker/ubuntu-14.04` to my docker\_sets attribute.  docker_sets is a hash that supports the 'set' and 'testmode' key|
+|docker_sets['set']| this should refrence the docker nodeset that you wish to run|
+|docker_sets['testmode']| this configueres the `BEAKER_TESTMODE` to use when testing the docker instance.  the two options are `apply` and `agent` if omitted `apply` is used by default|
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in config_defaults.yml.|
