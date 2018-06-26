@@ -24,7 +24,6 @@
 - Layout/IndentArray
 - Layout/IndentAssignment
 - Layout/IndentHash
-- Layout/IndentHeredoc
 - Layout/IndentationConsistency
 - Layout/IndentationWidth
 - Layout/InitialIndentation
