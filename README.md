@@ -74,6 +74,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+| simplecov      |Set to `true` to enable collecting ruby code coverage.|
 | ruby versions  |Define the ruby versions on which you want your builds to be executed.|
 | bunder\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
 | env            |Allows you to add new travis job matrix entries based on the included environmnet variables, one per `env` entry; for example, for adding jobs with specific `PUPPET_GEM_VERSION` and/or `CHECK` values.  See the [Travis Environment Variables](https://docs.travis-ci.com/user/environment-variables) documentation for details.|
@@ -109,6 +110,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+|requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.|
+|changelog_user|Sets the github user for the change_log_generator rake task.Optional, if not set it will read the 'author' from the metadata.json file|
+|changelog_project|Sets the github project for the change_log_generator rake task.Optional, if not set it will read the 'name' from the metadata.json file|
+|changelog_since_tag|Sets the github since_tag for the change_log_generator rake task.Required for the changlog rake task|
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. |
 |extras|An array of extra lines to add into your Rakefile|
