@@ -35,14 +35,14 @@
   required: *ignorepaths
 .travis.yml:
   ruby_versions:
-    - 2.4.1
+    - 2.4.4
   global_env:
     - BEAKER_PUPPET_COLLECTION=puppet5 PUPPET_GEM_VERSION="~> 5.0"
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.4.1
+    rvm: 2.4.4
     sudo: required
     dist: trusty
     services: docker
