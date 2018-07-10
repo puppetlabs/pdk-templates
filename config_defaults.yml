@@ -514,6 +514,10 @@ Gemfile:
       - gem: json
         version: '<= 2.0.4'
         condition: "Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.4.4')"
+      # Parser 2.5.1.1 released on 10 Jul 2018 is broken
+      # See https://github.com/whitequark/parser/issues/518
+      - gem: parser
+        version: '= 2.5.1.0'
       - gem: 'puppet-module-posix-default-r#{minor_version}'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
