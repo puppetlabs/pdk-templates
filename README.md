@@ -84,6 +84,9 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in config_defaults.yml.|
+|branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
+|branches_except |Allows you to specify branches that travis will not build on.|
+|remove_branches |Allows you to remove default branches set in config_defaults.yml.|
 
 ### .yardopts
 
