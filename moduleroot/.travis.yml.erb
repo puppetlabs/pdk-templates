@@ -75,12 +75,16 @@ matrix:
 <%   end -%>
 <% end -%>
 branches:
+<% if ((@configs['branches'] || []) - (@configs['remove_branches'] || [])).any? -%>
   only:
-    - master
-    - /^v\d/
-<% if @configs['branches'] -%>
-<%   @configs['branches'].each do |branch| -%>
-    - <%= branch %>
+<%   (@configs['branches'] - (@configs['remove_branches'] || [])).each do |branch| -%>
+    - <%= branch %> 
+<%   end -%>
+<% end -%>
+<% if @configs['branches_except'] -%>
+  except:
+<%   @configs['branches_except'].each do |branch| -%>
+    - <%= branch %> 
 <%   end -%>
 <% end -%>
 notifications:
