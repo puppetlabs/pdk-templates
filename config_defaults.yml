@@ -561,7 +561,6 @@ Gemfile:
     CHECK: spec
   bundler_args: --without system_tests
 spec/default_facts.yml:
-  concat_basedir: "/tmp"
   ipaddress: "172.16.254.254"
   is_pe: false
   macaddress: "AA:AA:AA:AA:AA:AA"
