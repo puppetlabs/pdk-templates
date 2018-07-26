@@ -17,7 +17,11 @@ environment:
 <%- (@configs['matrix'] + (@configs['matrix_extras'] || [])).each do |matrix| -%>
     -
   <%- matrix.each do |key, value| -%>
+    <%- if (@configs['spec_type'] && value =~ %r{spec}) -%>
+      <%= key %>: <%= @configs['spec_type'] %>
+    <%- else -%>
       <%= key %>: <%= value %>
+    <%- end -%>
   <%- end -%>
 <%- end -%>
 matrix:
