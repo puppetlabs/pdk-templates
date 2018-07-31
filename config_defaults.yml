@@ -574,3 +574,4 @@ spec/default_facts.yml:
   macaddress: "AA:AA:AA:AA:AA:AA"
 spec/spec_helper.rb:
   strict_level: ":warning"
+notifications: true

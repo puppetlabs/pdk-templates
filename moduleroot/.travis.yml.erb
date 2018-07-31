@@ -87,8 +87,25 @@ branches:
     - <%= branch %> 
 <%   end -%>
 <% end -%>
+<% if @configs['notifications'] -%>
 notifications:
   email: false
+<%   if @configs['notifications']['custom'] -%>
+<%     @configs['notifications']['custom'].each do |notification, opts| -%>
+  <%= notification %>:
+<%       opts.each do |option, value| -%>
+<%         if value.is_a?(Array) -%>
+    <%= option %>:
+<%           value.each do |item| -%>
+      - "<%= item %>"
+<%           end -%>
+<%         else -%>    
+    <%= option %>: <%= value %>
+<%         end -%>
+<%       end -%>  
+<%     end -%>
+<%   end -%>
+<% end -%>  
 <% if @configs['deploy'] -%>
 deploy:
   provider: puppetforge
