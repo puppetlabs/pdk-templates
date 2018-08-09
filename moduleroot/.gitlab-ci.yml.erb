@@ -53,7 +53,7 @@ before_script:
 <%     end -%>
 <%     options['checks'].each do |check| -%>
 <%= check %>-Ruby <%= ruby_version %>-Puppet <%= options['puppet_version'] %>:
-<%       if check == 'spec' -%>
+<%       if check =~ /spec/ -%>
   stage: unit
 <%       else -%>
   stage: syntax
