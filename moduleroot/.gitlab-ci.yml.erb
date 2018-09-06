@@ -28,6 +28,10 @@ variables:
 <%   end -%>
 <% end -%>
 
+<% if configs['image'] -%>
+image: <%= configs['image'] %>
+
+<% end -%>
 <% if configs['cache'] -%>
 cache:
   paths:
