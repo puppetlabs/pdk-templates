@@ -42,10 +42,13 @@ end
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
 def location_for(place_or_version, fake_version = nil)
-  if place_or_version && m = place_or_version.match(%r{\A(?<git>(https?|git)[:@][^#]*)(#(?<branch>.*))?})
-    [fake_version, { git: m[:git], branch: m[:branch], require: false }].compact
-  elsif place_or_version && m = place_or_version.match(%r{\Afile:\/\/(?<path>.*)})
-    ['>= 0', { path: File.expand_path(m[:path]), require: false }]
+  git_url_regex = %r{\A(?<protocol>(https?|git)[:@][^#]*)(#(?<branch>.*))?}
+  file_url_regex = %r{\Afile:\/\/(?<path>.*)}
+
+  if place_or_version && (git_url = place_or_version.match(git_url_regex))
+    [fake_version, { git: git_url[:protocol], branch: git_url[:branch], require: false }].compact
+  elsif place_or_version && (file_url = place_or_version.match(file_url_regex))
+    ['>= 0', { path: File.expand_path(file_url[:path]), require: false }]
   else
     [place_or_version, { require: false }]
   end
