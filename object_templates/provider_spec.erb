@@ -40,7 +40,7 @@ RSpec.describe Puppet::Provider::<%= provider_class %>::<%= provider_class %> do
     end
   end
 
-  describe 'delete(context, name, should)' do
+  describe 'delete(context, name)' do
     it 'deletes the resource' do
       expect(context).to receive(:notice).with(%r{\ADeleting 'foo'})
 
