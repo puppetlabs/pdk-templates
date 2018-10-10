@@ -43,6 +43,11 @@ RSpec.configure do |c|
     Puppet.settings[:strict] = <%= @configs['strict_level'] %>
   end
   <%- end -%>
+  <%- if @configs['coverage_report'] -%>
+  c.after :suite do
+    RSpec::Puppet::Coverage.report!(<%= @configs['coverage_report'] %>)
+  end
+  <%- end -%>
 end
 
 def ensure_module_defined(module_name)
