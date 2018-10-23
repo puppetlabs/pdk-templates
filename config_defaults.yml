@@ -5,6 +5,7 @@
     '*.erb': 'eol=lf'
     '*.pp': 'eol=lf'
     '*.sh': 'eol=lf'
+    '*.epp': 'eol=lf'
 .gitignore:
   required: &ignorepaths
       - '.git/'
