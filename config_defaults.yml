@@ -88,6 +88,8 @@ appveyor.yml:
       CHECK: parallel_spec
   test_script:
     - bundle exec rake %CHECK%
+  branches:
+    - master
 Rakefile:
   default_disabled_lint_checks:
     - 'relative'
