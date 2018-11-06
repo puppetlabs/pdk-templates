@@ -1,5 +1,18 @@
 ---
 version: 1.1.x.{build}
+branches:
+<% if ((@configs['branches'] || []) - (@configs['remove_branches'] || [])).any? -%>
+  only:
+<%   (@configs['branches'] - (@configs['remove_branches'] || [])).each do |branch| -%>
+    - <%= branch %>
+<%   end -%>
+<% end -%>
+<% if @configs['branches_except'] -%>
+  except:
+<%   @configs['branches_except'].each do |branch| -%>
+    - <%= branch %>
+<%   end -%>
+<% end -%>
 skip_commits:
   message: /^\(?doc\)?.*/
 clone_depth: 10
