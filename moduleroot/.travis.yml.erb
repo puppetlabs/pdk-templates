@@ -89,7 +89,7 @@ branches:
 <% end -%>
 notifications:
 <% notifications_arr = ((@configs['notifications'].to_a || []) - (@configs['remove_notifications'].to_a || [])) -%>
-<% if notifications_arr.any? -%>
+<% unless notifications_arr.empty? -%>
 <%   notifications = Hash[*notifications_arr.flatten] -%>
 <%   notifications.keys.sort.each do |key| -%>
 <%     if notifications[key].is_a?(Array) or notifications[key].is_a?(Hash) -%>
