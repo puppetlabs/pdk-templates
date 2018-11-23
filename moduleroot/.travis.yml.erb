@@ -49,6 +49,19 @@ env:
 <%     end -%>
 <%   end -%>
 <% end -%>
+<% if @configs.has_key?('stages') -%>
+stages:
+<%   @configs['stages'].each do |stage| -%>
+<%     if stage.is_a?(String) -%>
+  - <%= stage %>
+<%     elsif stage.is_a?(Hash) -%>
+  -
+<%       stage.keys.sort.each do |key| -%>
+    <%= key %>: <%= stage[key] %>
+<%       end -%>
+<%     end -%>
+<%   end -%>
+<% end -%>
 matrix:
   fast_finish: true
   include:

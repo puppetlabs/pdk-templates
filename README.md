@@ -83,6 +83,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_sets['set']| this should refrence the docker nodeset that you wish to run|
 |docker_sets['testmode']| this configueres the `BEAKER_TESTMODE` to use when testing the docker instance.  the two options are `apply` and `agent` if omitted `apply` is used by default|
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
+|stages          |Allows you to specify order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in config_defaults.yml.|
 |branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
