@@ -36,14 +36,14 @@
   required: *ignorepaths
 .travis.yml:
   ruby_versions:
-    - 2.5.0
+    - 2.5.1
   global_env:
     - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6.0"
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.5.0
+    rvm: 2.5.1
     sudo: required
     dist: trusty
     services: docker
@@ -88,6 +88,8 @@ appveyor.yml:
       CHECK: parallel_spec
   test_script:
     - bundle exec rake %CHECK%
+  branches:
+    - master
 Rakefile:
   default_disabled_lint_checks:
     - 'relative'
