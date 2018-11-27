@@ -61,6 +61,8 @@
   branches:
     - master
     - /^v\d/
+  notifications:
+    email: false
 .yardopts:
   markup: markdown
 appveyor.yml:

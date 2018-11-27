@@ -101,7 +101,18 @@ branches:
 <%   end -%>
 <% end -%>
 notifications:
-  email: false
+<% notifications_arr = ((@configs['notifications'].to_a || []) - (@configs['remove_notifications'].to_a || [])) -%>
+<% unless notifications_arr.empty? -%>
+<%   notifications = Hash[*notifications_arr.flatten] -%>
+<%   notifications.keys.sort.each do |key| -%>
+<%     if notifications[key].is_a?(Array) or notifications[key].is_a?(Hash) -%>
+  <%= key %>:
+    <%= notifications[key].to_yaml.sub(/---\R/, '').gsub(/\R/, "\n    ").strip %>
+<%     else -%>
+  <%= key %>: <%= notifications[key] %>
+<%     end -%>
+<%   end -%>
+<% end -%>
 <% if @configs['deploy'] -%>
 deploy:
   provider: puppetforge

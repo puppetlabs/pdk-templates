@@ -89,6 +89,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
 |branches_except |Allows you to specify branches that travis will not build on.|
 |remove_branches |Allows you to remove default branches set in config_defaults.yml.|
+|notifications   |Allows you to specify the notifications configuration in the .travis.yml file.|
+|remove_notifications   |Allows you to remove default branches set in config_defaults.yml.|
 
 ### .yardopts
 
