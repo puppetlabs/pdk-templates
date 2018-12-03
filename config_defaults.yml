@@ -34,6 +34,20 @@
       - '.DS_Store'
 .pdkignore:
   required: *ignorepaths
+  paths:
+    - '/appveyor.yml'
+    - '/.fixtures.yml'
+    - '/Gemfile'
+    - '/.gitattributes'
+    - '/.gitignore'
+    - '/.gitlab-ci.yml'
+    - '/.pdkignore'
+    - '/Rakefile'
+    - '/.rspec'
+    - '/.rubocop.yml'
+    - '/.travis.yml'
+    - '/.yardopts'
+    - '/spec/'
 .travis.yml:
   ruby_versions:
     - 2.5.1
