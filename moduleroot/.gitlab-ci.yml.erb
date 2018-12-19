@@ -44,7 +44,7 @@ before_script:
   - bundle config mirror.http://rubygems.org/ <%= configs['rubygems_mirror'] %>
   - bundle config mirror.https://rubygems.org/ <%= configs['rubygems_mirror'] %>
 <% end -%>
-  - gem update --system
+  - gem update --system $RUBYGEMS_VERSION
   - gem --version
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
@@ -68,6 +68,9 @@ before_script:
     - bundle exec rake <%= check %>
   variables:
     PUPPET_GEM_VERSION: '<%= options['puppet_version'] %>'
+<%       if options['rubygems_version'] -%>
+    RUBYGEMS_VERSION: '<%= options['rubygems_version'] -%>'
+<%       end -%>
 <%       if options['allow_failure'] -%>
 <%         if options['allow_failure'].include?(check) -%>
   allow_failure: true
