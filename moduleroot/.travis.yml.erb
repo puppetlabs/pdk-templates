@@ -19,7 +19,7 @@ addons:
 before_install:
   - bundle -v
   - rm -f Gemfile.lock
-  - gem update --system
+  - gem update --system $RUBYGEMS_VERSION
   - gem --version
   - bundle -v
 script:
