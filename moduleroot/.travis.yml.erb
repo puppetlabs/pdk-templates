@@ -17,6 +17,9 @@ addons:
 <%   end -%>
 <% end -%>
 before_install:
+  - if [ $BUNDLER_VERSION ]; then
+      gem install -v $BUNDLER_VERSION bundler --no-rdoc --no-ri;
+    fi
   - bundle -v
   - rm -f Gemfile.lock
   - gem update --system $RUBYGEMS_VERSION
