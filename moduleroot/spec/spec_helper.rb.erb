@@ -44,6 +44,11 @@ RSpec.configure do |c|
   end
   <%- end -%>
   c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
+  c.after(:suite) do
+    <%- if @configs['coverage_report'] -%>
+    RSpec::Puppet::Coverage.report!(<%= @configs['minimum_code_coverage_percentage'] %>)
+    <%- end -%>
+  end
 end
 
 def ensure_module_defined(module_name)
