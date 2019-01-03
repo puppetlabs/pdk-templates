@@ -54,10 +54,14 @@
     - '/.yardopts'
     - '/spec/'
 .travis.yml:
+  stages:
+    - static
+    - spec
+    - beaker
+    - name: deploy
+      if: tag =~ ^v\d
   ruby_versions:
     - 2.5.3
-  global_env:
-    - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6"
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
@@ -66,13 +70,25 @@
     sudo: required
     dist: trusty
     services: docker
+    bundler_args: --with system_tests
     env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
     script: bundle exec rake beaker
+    stage: beaker
   includes:
-    - env: CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
-    - env: CHECK=parallel_spec
-    - env: PUPPET_GEM_VERSION="~> 5" CHECK=parallel_spec
-      rvm: 2.4.5
+    - env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file"
+      stage: static
+    - env: CHECK="syntax lint metadata_lint"
+      stage: static
+    - env: CHECK="rubocop"
+      stage: static
+    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec RUBYGEMS_VERSION=2.7.8 BUNDLER_VERSION=1.17.3
+      rvm: 2.1.9
+      stage: spec
+    - env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+      rvm: 2.4.4
+      stage: spec
+    - env: DEPLOY_TO_FORGE=yes
+      stage: deploy
   deploy: true
   user: 'puppet'
   branches:
