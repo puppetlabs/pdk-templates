@@ -5,10 +5,11 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 * `moduleroot_init` templates get only deployed when the target file does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
 * `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
 
-The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. You can remove default values by adding the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) of `---` to the value in the `.sync.yml`. The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
+The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. You can remove default values by using the [knockout prefix](#removing-default-configuration-values). The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
 
 * [Basic usage](#basic-usage)
 * [Config_default Values](#values)
+* [Removing default configuration values](#removing-default-configuration-values)
 * [Further Notes](#notes)
 
 ## Basic Usage
@@ -168,6 +169,27 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |mock_with|Defaults to `':mocha'`. Recommended to be set to `':rspec'`, which uses RSpec's built-in mocking library, instead of a third-party one.|
 |spec_overrides|An array of extra lines to add into your `spec_helper.rb`. Can be used as an alternative to `spec_helper_local`|
 |strict_level| Defines the [Puppet Strict configuration parameter](https://puppet.com/docs/puppet/5.4/configuration.html#strict). Defaults to `:warning`. Other values are: `:error` and `:off`. `:error` provides strictest level checking and is encouraged.|
+
+## Removing default configuration values
+
+Values can be removed from the data passed to the templates using the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) `---` in `.sync.yml`.
+
+To remove a value from an array, prefix the value `---`. For example, to remove
+`2.5.1` from the `ruby_versions` array in `.travis.yml`:
+
+```yaml
+.travis.yml:
+  ruby_versions:
+    - '---2.5.1'
+```
+
+To remove a key from a hash, set the value to `---`. For example, to remove the
+`ipaddress` fact from `spec/default_facts.yml`:
+
+```yaml
+spec/default_facts.yml:
+  ipaddress: '---'
+```
 
 ## Further Notes <a name="notes"></a>
 
