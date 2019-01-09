@@ -68,8 +68,6 @@
     - env: CHECK=parallel_spec
     - env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
       rvm: 2.4.4
-    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec RUBYGEMS_VERSION=2.7.8 BUNDLER_VERSION=1.17.3
-      rvm: 2.1.9
   deploy: true
   user: 'puppet'
   branches:
@@ -84,12 +82,6 @@ appveyor.yml:
   matrix:
     - RUBY_VERSION: 24-x64
       CHECK: "syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
-    - PUPPET_GEM_VERSION: ~> 4.0
-      RUBY_VERSION: 21
-      CHECK: parallel_spec
-    - PUPPET_GEM_VERSION: ~> 4.0
-      RUBY_VERSION: 21-x64
-      CHECK: parallel_spec
     - PUPPET_GEM_VERSION: ~> 5.0
       RUBY_VERSION: 24
       CHECK: parallel_spec
