@@ -9,7 +9,7 @@ The PDK also absorbs the `config_defaults.yml` file to apply a set of default co
 
 * [Basic usage](#basic-usage)
 * [Config_default Values](#values)
-* [Removing default configuration values](#removing-default-configuration-values)
+* [Making local changes to the Template](#making-local-changes-to-the-template)
 * [Further Notes](#notes)
 
 ## Basic Usage
@@ -170,7 +170,24 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |spec_overrides|An array of extra lines to add into your `spec_helper.rb`. Can be used as an alternative to `spec_helper_local`|
 |strict_level| Defines the [Puppet Strict configuration parameter](https://puppet.com/docs/puppet/5.4/configuration.html#strict). Defaults to `:warning`. Other values are: `:error` and `:off`. `:error` provides strictest level checking and is encouraged.|
 
-## Removing default configuration values
+## Making local changes to the template
+
+> While we provide a basic template it is likely that it will not match what you need exactly, as such we allow it to be altered or added to through the use of the `.sync.yml` file.
+
+### Adding configuration values
+
+Values can be added to the data passed to the templates by adding them to your local `.sync.yml` file, thus allowing you to make changes such as testing against additional operating systems or adding new rubocop rules.
+
+To add a value to an array simply place it into the `.sync.yml` file as shown below, here I am adding an additional unit test run against Puppet 4:
+
+```yaml
+.travis.yml:
+  includes:
+    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
+      rvm: 2.1.9
+```
+
+### Removing default configuration values
 
 Values can be removed from the data passed to the templates using the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) `---` in `.sync.yml`.
 
