@@ -1,3 +1,15 @@
+# PDK Template for dev-sec/puppet-* projects
+
+## Main changes
+
+`moduleroot/Rakefile.erb`
+
+* config attributes for changelog_generator
+
+## *>> Original README starts here <<*
+
+---
+
 # PDK Templates
 
 The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. Look into these directories to find the templates:
