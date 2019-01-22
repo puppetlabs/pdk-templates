@@ -1,5 +1,4 @@
 ---
-sudo: false
 dist: trusty
 language: ruby
 cache: bundler
@@ -20,7 +19,7 @@ addons:
 before_install:
   - bundle -v
   - rm -f Gemfile.lock
-  - gem update --system
+  - gem update --system $RUBYGEMS_VERSION
   - gem --version
   - bundle -v
 script:
@@ -46,6 +45,19 @@ env:
   matrix:
 <%     @configs['env'].each do |env| -%>
     - <%= env %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+<% if @configs.has_key?('stages') -%>
+stages:
+<%   @configs['stages'].each do |stage| -%>
+<%     if stage.is_a?(String) -%>
+  - <%= stage %>
+<%     elsif stage.is_a?(Hash) -%>
+  -
+<%       stage.keys.sort.each do |key| -%>
+    <%= key %>: <%= stage[key] %>
+<%       end -%>
 <%     end -%>
 <%   end -%>
 <% end -%>
@@ -88,7 +100,18 @@ branches:
 <%   end -%>
 <% end -%>
 notifications:
-  email: false
+<% notifications_arr = (@configs['notifications'].to_a - @configs['remove_notifications'].to_a) -%>
+<% unless notifications_arr.empty? -%>
+<%   notifications = Hash[*notifications_arr.flatten] -%>
+<%   notifications.keys.sort.each do |key| -%>
+<%     if notifications[key].is_a?(Array) or notifications[key].is_a?(Hash) -%>
+  <%= key %>:
+    <%= notifications[key].to_yaml.sub(/---\R/, '').gsub(/\R/, "\n    ").strip %>
+<%     else -%>
+  <%= key %>: <%= notifications[key] %>
+<%     end -%>
+<%   end -%>
+<% end -%>
 <% if @configs['deploy'] -%>
 deploy:
   provider: puppetforge

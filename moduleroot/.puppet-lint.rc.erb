@@ -1,0 +1,18 @@
+<%-
+  if respond_to?(:config_for)
+    rakefile_config = config_for('Rakefile')
+    disabled_checks = [
+      rakefile_config['default_disabled_lint_checks'].to_a,
+      rakefile_config['extra_disabled_lint_checks'].to_a,
+    ].flatten.uniq
+  else
+    disabled_checks = []
+  end
+-%>
+<% disabled_checks.each do |check_name| -%>
+<%- if check_name == 'relative' -%>
+--relative
+<%- else -%>
+--no-<%= check_name %>-check
+<%- end -%>
+<% end -%>

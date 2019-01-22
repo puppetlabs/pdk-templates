@@ -2,7 +2,8 @@ require 'puppet/resource_api/simple_provider'
 
 # Implementation for the <%= name %> type using the Resource API.
 class Puppet::Provider::<%= provider_class %>::<%= provider_class %> < Puppet::ResourceApi::SimpleProvider
-  def get(_context)
+  def get(context)
+    context.debug('Returning pre-canned example data')
     [
       {
         name: 'foo',

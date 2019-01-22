@@ -5,6 +5,7 @@
     '*.erb': 'eol=lf'
     '*.pp': 'eol=lf'
     '*.sh': 'eol=lf'
+    '*.epp': 'eol=lf'
 .gitignore:
   required: &ignorepaths
       - '.git/'
@@ -33,31 +34,47 @@
       - '.DS_Store'
 .pdkignore:
   required: *ignorepaths
+  paths:
+    - '/appveyor.yml'
+    - '/.fixtures.yml'
+    - '/Gemfile'
+    - '/.gitattributes'
+    - '/.gitignore'
+    - '/.gitlab-ci.yml'
+    - '/.pdkignore'
+    - '/Rakefile'
+    - '/.rspec'
+    - '/.rubocop.yml'
+    - '/.travis.yml'
+    - '/.yardopts'
+    - '/spec/'
 .travis.yml:
   ruby_versions:
-    - 2.4.4
+    - 2.5.1
   global_env:
-    - BEAKER_PUPPET_COLLECTION=puppet5 PUPPET_GEM_VERSION="~> 5.0"
+    - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6.0"
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.4.4
+    rvm: 2.5.1
     sudo: required
     dist: trusty
     services: docker
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet5 BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
     script: bundle exec rake beaker
   includes:
     - env: CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
     - env: CHECK=parallel_spec
-    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
-      rvm: 2.1.9
+    - env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+      rvm: 2.4.4
   deploy: true
   user: 'puppet'
   branches:
     - master
     - /^v\d/
+  notifications:
+    email: false
 .yardopts:
   markup: markdown
 appveyor.yml:
@@ -65,20 +82,22 @@ appveyor.yml:
   matrix:
     - RUBY_VERSION: 24-x64
       CHECK: "syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
-    - PUPPET_GEM_VERSION: ~> 4.0
-      RUBY_VERSION: 21
-      CHECK: parallel_spec
-    - PUPPET_GEM_VERSION: ~> 4.0
-      RUBY_VERSION: 21-x64
-      CHECK: parallel_spec
     - PUPPET_GEM_VERSION: ~> 5.0
       RUBY_VERSION: 24
       CHECK: parallel_spec
     - PUPPET_GEM_VERSION: ~> 5.0
       RUBY_VERSION: 24-x64
       CHECK: parallel_spec
+    - PUPPET_GEM_VERSION: ~> 6.0
+      RUBY_VERSION: 25
+      CHECK: parallel_spec
+    - PUPPET_GEM_VERSION: ~> 6.0
+      RUBY_VERSION: 25-x64
+      CHECK: parallel_spec
   test_script:
     - bundle exec rake %CHECK%
+  branches:
+    - master
 Rakefile:
   default_disabled_lint_checks:
     - 'relative'
@@ -89,6 +108,12 @@ Rakefile:
     Metrics/LineLength:
       Description: People have wide screens, use them.
       Max: 200
+
+    # i18n cops
+    GetText/DecorateString:
+      Description: We don't want to decorate test output.
+      Exclude:
+        - 'spec/*'
 
     # RSpec cops
     RSpec/BeforeAfterAll:
@@ -515,8 +540,11 @@ Gemfile:
         version: '= 1.8.1'
         condition: "Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')"
       - gem: json
-        version: '<= 2.0.4'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.4.4')"
+        version: '= 2.0.4'
+        condition: "Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: json
+        version: '= 2.1.0'
+        condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'puppet-module-posix-default-r#{minor_version}'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
@@ -561,6 +589,7 @@ Gemfile:
         checks:
           - parallel_spec
         puppet_version: '~> 4.0'
+        rubygems_version: '2.7.8'
       '2.4.4':
         checks:
           - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
@@ -568,7 +597,6 @@ Gemfile:
         puppet_version: '~> 5.5'
     # beaker: true
 spec/default_facts.yml:
-  concat_basedir: "/tmp"
   ipaddress: "172.16.254.254"
   is_pe: false
   macaddress: "AA:AA:AA:AA:AA:AA"

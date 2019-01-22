@@ -2,11 +2,11 @@
 sudo: false
 dist: trusty
 language: generic
+env:
+  - PDK=release
+  - PDK=nightly
 before_install:
-  - wget https://apt.puppetlabs.com/puppet5-release-trusty.deb
-  - sudo dpkg -i puppet5-release-trusty.deb
-  - sudo apt-get -qq update
-  - sudo apt-get install pdk
+  - '.travis/install_pdk.sh'
 script:
   - '.travis/test_script.sh'
 branches:
