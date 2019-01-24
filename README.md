@@ -8,7 +8,7 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. You can remove default values by using the [knockout prefix](#removing-default-configuration-values). The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
 
 * [Basic usage](#basic-usage)
-* [Config_default Values](#values)
+* [Values of config\_defaults](#values-of-config_defaults)
 * [Making local changes to the Template](#making-local-changes-to-the-template)
 * [Further Notes](#notes)
 
@@ -21,7 +21,7 @@ Templates like this one can be used in conjunction with the PDK. As default the 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
 For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
 
-## Config_default Values <a name="values"></a>
+##  Values of config\_defaults
 
 The following is a description and explaination of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
@@ -123,9 +123,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |changelog_user|Sets the github user for the change_log_generator rake task.Optional, if not set it will read the 'author' from the metadata.json file|
 |changelog_project|Sets the github project for the change_log_generator rake task.Optional, if not set it will read the 'name' from the metadata.json file|
 |changelog_since_tag|Sets the github since_tag for the change_log_generator rake task.Required for the changlog rake task|
-|default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. |
-|extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. |
+|default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
+|extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
 |extras|An array of extra lines to add into your Rakefile|
+|linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
 
 ### .rubocop.yml
 
