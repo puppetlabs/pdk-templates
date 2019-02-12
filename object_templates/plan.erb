@@ -1,0 +1,16 @@
+#
+# Puppet Plan Name: <%= name %>
+#
+# This is where you put the puppet code for your plan.
+#
+# You can write Puppet Plans in puppet code
+#
+# Learn more at: https://puppet.com/docs/bolt/1.x/writing_plans.html
+
+plan <%= name %> (
+  String[1]   $parameter1,
+  TargetSpec  $parameter2,
+) {
+
+  run_task('modulename::task_name', $parameter1, some_parameter_name => $parameter2)
+}
