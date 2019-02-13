@@ -75,11 +75,7 @@
     script: bundle exec rake beaker
     stage: beaker
   includes:
-    - env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file"
-      stage: static
-    - env: CHECK="syntax lint metadata_lint"
-      stage: static
-    - env: CHECK="rubocop"
+    - env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
       stage: static
     - env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
       rvm: 2.4.5
