@@ -8,7 +8,7 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. You can remove default values by using the [knockout prefix](#removing-default-configuration-values). The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
 
 * [Basic usage](#basic-usage)
-* [Values of config\_defaults](#values-of-config_defaults)
+* [Values of config\_defaults](#values)
 * [Making local changes to the Template](#making-local-changes-to-the-template)
 * [Further Notes](#notes)
 
@@ -21,7 +21,7 @@ Templates like this one can be used in conjunction with the PDK. As default the 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
 For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
 
-##  Values of config\_defaults
+##  Values of config\_defaults <a name="values"></a>
 
 The following is a description and explaination of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
