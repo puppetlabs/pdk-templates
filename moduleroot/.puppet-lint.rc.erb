@@ -5,8 +5,10 @@
       rakefile_config['default_disabled_lint_checks'].to_a,
       rakefile_config['extra_disabled_lint_checks'].to_a,
     ].flatten.uniq
+    options = rakefile_config['linter_options'].to_a
   else
     disabled_checks = []
+    options = []
   end
 -%>
 <% disabled_checks.each do |check_name| -%>
@@ -15,4 +17,7 @@
 <%- else -%>
 --no-<%= check_name %>-check
 <%- end -%>
+<% end -%>
+<% options.each do |option| -%>
+--<%= option %>
 <% end -%>
