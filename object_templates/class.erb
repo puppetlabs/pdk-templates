@@ -1,6 +1,6 @@
-# A description of what this class does
-#
 # @summary A short summary of the purpose of this class
+#
+# A description of what this class does
 #
 # @example
 #   include <%= name %>
@@ -9,7 +9,7 @@
 <%-   params.each do |param| -%>
 # @param <%= param[:name] %> A description of this parameter.
 <%-   end -%>
-class <%= name %>(
+class <%= name %> (
 <%-   params.each do |param| -%>
   <%= param[:type].ljust(max_type_length) %> $<%= param[:name] %>,
 <%-   end -%>

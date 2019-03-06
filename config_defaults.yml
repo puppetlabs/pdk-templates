@@ -586,16 +586,15 @@ Gemfile:
         - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
-      '2.1.9':
-        checks:
-          - parallel_spec
-        puppet_version: '~> 4.0'
-        rubygems_version: '2.7.8'
-      '2.4.4':
+      '2.5.1':
         checks:
           - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
           - parallel_spec
-        puppet_version: '~> 5.5'
+        puppet_version: '~> 6.0'
+      '2.4.4':
+        checks:
+          - parallel_spec
+        puppet_version: '~> 5.0'
     # beaker: true
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
