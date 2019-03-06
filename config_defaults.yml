@@ -32,6 +32,7 @@
       - '/convert_report.txt'
       - '/update_report.txt'
       - '.DS_Store'
+      - '.envrc'
 .pdkignore:
   required: *ignorepaths
   paths:
