@@ -33,6 +33,7 @@
       - '/update_report.txt'
       - '.DS_Store'
       - '.project'
+      - '.envrc'
 .pdkignore:
   required: *ignorepaths
   paths:
