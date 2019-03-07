@@ -33,6 +33,7 @@
       - '/update_report.txt'
       - '.DS_Store'
       - '.project'
+      - '.vscode/'
       - '.envrc'
 .pdkignore:
   required: *ignorepaths
@@ -101,6 +102,7 @@ appveyor.yml:
   branches:
     - master
 Rakefile:
+  changelog_version_tag_pattern: 'v%s'
   default_disabled_lint_checks:
     - 'relative'
   extras: []
