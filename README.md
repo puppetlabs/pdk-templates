@@ -221,25 +221,28 @@ following entry to your `.sync.yml` and run `pdk update`.
 
 ```yaml
 Gemfile:
-  ':system_tests':
-    - gem: 'puppet-module-posix-system-r#{minor_version}'
-      platforms: ruby
-    - gem: 'puppet-module-win-system-r#{minor_version}'
-      platforms:
-        - mswin
-        - mingw
-        - x64_mingw
-    - gem: beaker
-      version: '~> 3.13'
-      from_env: BEAKER_VERSION
-    - gem: beaker-abs
-      from_env: BEAKER_ABS_VERSION
-      version: '~> 0.1'
-    - gem: beaker-pe
-    - gem: beaker-hostgenerator
-      from_env: BEAKER_HOSTGENERATOR_VERSION
-    - gem: beaker-rspec
-      from_env: BEAKER_RSPEC_VERSION
+  required:
+    ':system_tests':
+      - gem: 'puppet-module-posix-system-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-win-system-r#{minor_version}'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
+      - gem: beaker
+        version: '~> 3.13'
+        from_env: BEAKER_VERSION
+      - gem: beaker-abs
+        from_env: BEAKER_ABS_VERSION
+        version: '~> 0.1'
+      - gem: beaker-pe
+      - gem: beaker-hostgenerator
+        from_env: BEAKER_HOSTGENERATOR_VERSION
+      - gem: beaker-rspec
+        from_env: BEAKER_RSPEC_VERSION
+.travis.yml:
+  bundler_args: --with system_tests
 ```
 
 ## Further Notes <a name="notes"></a>
