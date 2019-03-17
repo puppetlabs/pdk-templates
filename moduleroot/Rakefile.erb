@@ -53,6 +53,10 @@ end
 <% checks.each do |check| -%>
 PuppetLint.configuration.send('disable_<%= check %>')
 <% end -%>
+<% linter_options =  @configs['linter_options'] || [] -%>
+<% linter_options.each do |option| -%>
+PuppetLint.configuration.send('<%= option %>')
+<% end -%>
 
 if Bundler.rubygems.find_name('github_changelog_generator').any?
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
