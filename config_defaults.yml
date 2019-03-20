@@ -46,6 +46,7 @@
     - '/.gitlab-ci.yml'
     - '/.pdkignore'
     - '/Rakefile'
+    - '/rakelib/'
     - '/.rspec'
     - '/.rubocop.yml'
     - '/.travis.yml'
