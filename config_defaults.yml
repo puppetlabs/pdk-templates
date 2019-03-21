@@ -35,6 +35,7 @@
       - '.project'
       - '.vscode/'
       - '.envrc'
+      - '/inventory.yaml'
 .pdkignore:
   required: *ignorepaths
   paths:
