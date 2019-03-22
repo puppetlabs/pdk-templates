@@ -55,14 +55,14 @@
     - '/spec/'
 .travis.yml:
   ruby_versions:
-    - 2.5.1
+    - 2.5.3
   global_env:
-    - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6.0"
+    - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6"
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.5.1
+    rvm: 2.5.3
     sudo: required
     dist: trusty
     services: docker
@@ -71,7 +71,7 @@
   includes:
     - env: CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
     - env: CHECK=parallel_spec
-    - env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
+    - env: PUPPET_GEM_VERSION="~> 5" CHECK=parallel_spec
       rvm: 2.4.5
   deploy: true
   user: 'puppet'
@@ -572,15 +572,15 @@ Gemfile:
         - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
-      '2.5.1':
+      '2.5.3':
         checks:
           - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
           - parallel_spec
-        puppet_version: '~> 6.0'
+        puppet_version: '~> 6'
       '2.4.5':
         checks:
           - parallel_spec
-        puppet_version: '~> 5.0'
+        puppet_version: '~> 5'
     # beaker: true
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
