@@ -35,6 +35,7 @@
       - '.project'
       - '.vscode/'
       - '.envrc'
+      - '/inventory.yaml'
 .pdkignore:
   required: *ignorepaths
   paths:
@@ -46,6 +47,7 @@
     - '/.gitlab-ci.yml'
     - '/.pdkignore'
     - '/Rakefile'
+    - '/rakelib/'
     - '/.rspec'
     - '/.rubocop.yml'
     - '/.travis.yml'
