@@ -52,6 +52,7 @@
     - '/.travis.yml'
     - '/.yardopts'
     - '/spec/'
+    - '/.vscode/'
 .travis.yml:
   stages:
     - static
