@@ -128,6 +128,8 @@ Rakefile:
       Max: 200
 
     # i18n cops
+    GetText:
+      Enabled: true
     GetText/DecorateString:
       Description: We don't want to decorate test output.
       Exclude:
