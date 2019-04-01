@@ -565,6 +565,9 @@ Gemfile:
       - gem: json
         version: '= 2.1.0'
         condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: 'rubocop-i18n'
+        version: '= 1.2.0'
+        platforms: ruby
       - gem: 'puppet-module-posix-default-r#{minor_version}'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
