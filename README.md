@@ -121,10 +121,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.|
-|changelog_user|Sets the github user for the change_log_generator rake task.Optional, if not set it will read the 'author' from the metadata.json file|
-|changelog_project|Sets the github project for the change_log_generator rake task.Optional, if not set it will read the 'name' from the metadata.json file|
-|changelog_since_tag|Sets the github since_tag for the change_log_generator rake task.Required for the changlog rake task|
-|changelog_version_tag_pattern|Template how the version tag is to be generated. Defaults to ```v%s``` which eventually align with tag_pattern property of puppet-blacksmith, thus changelog rake task generated changelog is referring to the correct  |
+|changelog_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the 'author' from the metadata.json file|
+|changelog_project|Sets the github project for the change_log_generator rake task. Optional, if not set it will read the 'name' from the metadata.json file|
+|changelog_since_tag|Sets the github since_tag for the change_log_generator rake task. Required for the changlog rake task|
+|changelog_version_tag_pattern|Template how the version tag is to be generated. Optional, if not set it will read the 'version' from the metadata.json file.|
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
 |extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
