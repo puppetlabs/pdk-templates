@@ -116,7 +116,7 @@ appveyor.yml:
   branches:
     - master
 Rakefile:
-  changelog_version_tag_pattern: 'v%s'
+  changelog_version_tag_pattern: ''
   default_disabled_lint_checks:
     - 'relative'
   extras: []
