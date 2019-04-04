@@ -1,5 +1,7 @@
 ---
-dist: trusty
+<% if @configs['dist'] -%>
+dist: <%= @configs['dist'] %>
+<% end -%>
 language: ruby
 cache: bundler
 <% if !@configs.nil? && @configs.has_key?('addons') -%>

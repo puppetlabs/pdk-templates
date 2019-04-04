@@ -76,6 +76,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+| dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
 | simplecov      |Set to `true` to enable collecting ruby code coverage.|
 | ruby versions  |Define the ruby versions on which you want your builds to be executed.|
 | bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
