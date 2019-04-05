@@ -1,6 +1,8 @@
 ---
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
+<% else -%>
+dist: xenial
 <% end -%>
 language: ruby
 cache: bundler
