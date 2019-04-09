@@ -115,6 +115,7 @@ appveyor.yml:
     - bundle exec rake %CHECK%
   branches:
     - master
+    - release
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
   default_disabled_lint_checks:
