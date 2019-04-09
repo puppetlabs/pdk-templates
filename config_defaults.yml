@@ -110,12 +110,11 @@ appveyor.yml:
       CHECK: parallel_spec
     - PUPPET_GEM_VERSION: ~> 6.0
       RUBY_VERSION: 25-x64
-      CHECK: parallel_spec
+      CHECK: spec
   test_script:
     - bundle exec rake %CHECK%
   branches:
     - master
-    - release
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
   default_disabled_lint_checks:
