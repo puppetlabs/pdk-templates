@@ -4,8 +4,9 @@ set -e # exit immediately on error
 
 TEMPLATE_PR_DIR=$PWD
 
-# Make a new branch from the PR commit to be tested
-git branch travis_commit "$TRAVIS_COMMIT"
+# Make a branch from checked out HEAD so that we can target
+# it specifically with --template-ref
+git checkout -b travis_commit
 
 # Test if new module from PR commit is still functional.
 pdk new module new_module --template-url="file://$TEMPLATE_PR_DIR" --template-ref=travis_commit --skip-interview
