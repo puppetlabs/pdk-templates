@@ -243,6 +243,11 @@ Gemfile:
         from_env: BEAKER_RSPEC_VERSION
 .travis.yml:
   bundler_args: --with system_tests
+.gitlab-ci.yml:
+  bundler_args: --with system_tests
+  beaker: true
+appveyor.yml:
+  appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --with system_tests"
 ```
 
 ## Further Notes <a name="notes"></a>
