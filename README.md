@@ -244,7 +244,7 @@ Gemfile:
 .travis.yml:
   bundler_args: --with system_tests
 .gitlab-ci.yml:
-  bundler_args: --with system_tests
+  bundler_args: --with system_tests --path vendor/bundle --jobs $(nproc)
   beaker: true
 appveyor.yml:
   appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --with system_tests"
