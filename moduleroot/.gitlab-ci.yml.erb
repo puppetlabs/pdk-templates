@@ -1,12 +1,13 @@
 ---
 <% if @configs['override'] && @configs.has_key?('custom') -%>
-<%   configs = @configs['custom'] -%>
+<%   configs = @configs['custom'].dup -%>
 <% elsif @configs['defaults'] && !@configs.has_key?('custom') -%>
-<%   configs = @configs['defaults'] -%>
+<%   configs = @configs['defaults'].dup -%>
 <% else -%>
 <%   require 'deep_merge/core' -%>
-<%   defaults = @configs['defaults'].dup -%>
-<%   configs = DeepMerge::deep_merge!(defaults, @configs['custom']) -%>
+<%   configs = {} -%>
+<%   configs.deep_merge!(@configs['defaults']) -%>
+<%   configs.deep_merge!(@configs['custom']) -%>
 <% end -%>
 stages:
 <% unless @configs['override'] -%>

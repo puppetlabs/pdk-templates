@@ -85,8 +85,6 @@
       stage: spec
     - env: DEPLOY_TO_FORGE=yes
       stage: deploy
-  deploy: true
-  user: 'puppet'
   branches:
     - master
     - /^v\d/
