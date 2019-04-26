@@ -114,7 +114,7 @@ notifications:
 <%     end -%>
 <%   end -%>
 <% end -%>
-<% if @configs['deploy'] -%>
+<% unless @configs['user'].nil? || @configs['secure'].nil? -%>
 deploy:
   provider: puppetforge
   user: <%= @configs['user'] %>
