@@ -1,23 +1,17 @@
----
 sudo: false
 dist: trusty
 language: generic
 env:
-  - PDK=release
-  - PDK=nightly
+- PDK=release
+- PDK=nightly
 before_install:
-  - '.travis/install_pdk.sh'
+- ".travis/install_pdk.sh"
 script:
-  - '.travis/test_script.sh'
+- ".travis/test_script.sh"
 branches:
   only:
-    - master
+  - master
 notifications:
   email: false
-  hipchat:
-    rooms:
-      secure: pXZo1noFzXPz4PN+f2jNUjBGxRnv3TBFh6n673/Rp6GO0RVh1zOAv7udzR9Pj84kOfFnRVg8zH98GR8rNLXZkNWhrwxXKiF8YzZhDfdm9EXUW05LY9AfJUw0Sc8iqPqtawBNzAMQolXFOnCMdVCl481b3vsKVyyh9HvfNe3eOPvQs7TsTpcvUPZQvMptIUDEYJQYBOklDVFYoT/mzTYFOTmVTtfzif6orYfzxEeDgN1gy/OcS6Ben66tKS4rzpxTLxKjg8mTUsBlOpx0hOy9KXcGErSpYMiRTwpTsftO02+c5xANobF4tVt6c8uSicZZ0yTLZEAUnnT1F0L4L/DKVH5fygDNgqt8bBNE5jt4QXAWQqBeNP9gKHGSSn15eMrhGRWNpp8wxzDwgFQ1byHWR83TW0/uH2nVdqVKdwSV8QAyD/pd3F5wh7uCaHdJulsFkdgMh7fC9GvLaNbyxosTUNtDTFUO/UN1ZUsWPbBBz28mIx50iIp03oLbN4LrDbTJqRPZ+etPqYJ292FC8ifiRQI7V9zpNMcIBO26EgboeNTqE7GQ403tYMG/L5XdVhGl7tEBqfFCEIQBWwywDa5xTpBjBex0IGb0mqsdHJ1iK8Qy2yJwXIfcsFkIto0Hq65Zm+HvMm+1ep/v6DAsyYVmNbwDGj7hXBVC8WHyxejnxeM=
-    template:
-      - '%{repository}#%{build_number} (%{branch} - %{commit} : %{author}): %{message}
-        (<a href="%{build_url}">Details</a> | <a href="%{compare_url}">PR/Diff</a>)'
-    format: html
+  slack:
+    secure: RuLR/yl5FTfo7jDywF/7p6ba2zsP5SEB2jiPLQPwN7VFi8i3kJDsElHVMVQIVD1Ubuuo+LAdCKhugDpgeO/TRBjEfFDAV9IAKb1l61GR4YZv51AUMT4L6PDUeCStDbbuqI1goDIIeZmHo1o2rPmOMLuOkQLB1r84Lre3bNTb9CAQXIqFqQmlVG8FbkaUhArWKHaWE6MWol6WX5Sq3We1nXo12javfDEdATJGzbLSzuwLMt7/oCT40w2WeJBN2+VjFPuLr6lA6UCXuLKCcgUCHl6ibM658calCDP6I14C/NwGFjUMV13PbML6iHgpK2xLUtOEvDSVuBmrmCn/0WVbm332feEOucg+SmI2LF1c+kn/52lnQAwQ17+B0Nl0CXW4de5oR47rvhvhWDJ+9AYHkOokO9Misd7arCLTJ2Z0pvqAysDxVaVQPcIZAsTHeWQPDVe2SHOMVP5LX8nvD3GNQBv7447uO32cDo9QWalLLUFF77uAVNSRgwDSMhHN2NnPV02oCOti0XUIn3Bz2gaqAsoXK2VszwrVk6GR+9rqXmvn+wTg1RizIcq3HuuvXIeDaGt7HYvdYPSC/EWsI+1UKuBhGCN1aiVOgfxyGHSC2WfIefbV4HNDPCbBdZluKWlHFuvUfQzCip3cfj2uyMCpfqPfw0LzrgPELPHwymCGzHY=

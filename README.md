@@ -76,6 +76,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+| dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
 | simplecov      |Set to `true` to enable collecting ruby code coverage.|
 | ruby versions  |Define the ruby versions on which you want your builds to be executed.|
 | bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
@@ -93,6 +94,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |remove_branches |Allows you to remove default branches set in config_defaults.yml.|
 |notifications   |Allows you to specify the notifications configuration in the .travis.yml file.|
 |remove_notifications   |Allows you to remove default branches set in config_defaults.yml.|
+|user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
+|secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
 
 ### .yardopts
 
@@ -127,7 +130,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |changelog_version_tag_pattern|Template how the version tag is to be generated. Defaults to ```v%s``` which eventually align with tag_pattern property of puppet-blacksmith, thus changelog rake task generated changelog is referring to the correct  |
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
-|extras|An array of extra lines to add into your Rakefile|
+|extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
 |linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
 
 ### .rubocop.yml
@@ -220,25 +223,33 @@ following entry to your `.sync.yml` and run `pdk update`.
 
 ```yaml
 Gemfile:
-  ':system_tests':
-    - gem: 'puppet-module-posix-system-r#{minor_version}'
-      platforms: ruby
-    - gem: 'puppet-module-win-system-r#{minor_version}'
-      platforms:
-        - mswin
-        - mingw
-        - x64_mingw
-    - gem: beaker
-      version: '~> 3.13'
-      from_env: BEAKER_VERSION
-    - gem: beaker-abs
-      from_env: BEAKER_ABS_VERSION
-      version: '~> 0.1'
-    - gem: beaker-pe
-    - gem: beaker-hostgenerator
-      from_env: BEAKER_HOSTGENERATOR_VERSION
-    - gem: beaker-rspec
-      from_env: BEAKER_RSPEC_VERSION
+  required:
+    ':system_tests':
+      - gem: 'puppet-module-posix-system-r#{minor_version}'
+        platforms: ruby
+      - gem: 'puppet-module-win-system-r#{minor_version}'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
+      - gem: beaker
+        version: '~> 3.13'
+        from_env: BEAKER_VERSION
+      - gem: beaker-abs
+        from_env: BEAKER_ABS_VERSION
+        version: '~> 0.1'
+      - gem: beaker-pe
+      - gem: beaker-hostgenerator
+        from_env: BEAKER_HOSTGENERATOR_VERSION
+      - gem: beaker-rspec
+        from_env: BEAKER_RSPEC_VERSION
+.travis.yml:
+  bundler_args: --with system_tests
+.gitlab-ci.yml:
+  bundler_args: --with system_tests --path vendor/bundle --jobs $(nproc)
+  beaker: true
+appveyor.yml:
+  appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --with system_tests"
 ```
 
 ## Further Notes <a name="notes"></a>
