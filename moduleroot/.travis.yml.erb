@@ -1,5 +1,7 @@
 ---
-dist: trusty
+<% if @configs['dist'] -%>
+dist: <%= @configs['dist'] %>
+<% end -%>
 language: ruby
 cache: bundler
 <% if !@configs.nil? && @configs.has_key?('addons') -%>
@@ -112,7 +114,7 @@ notifications:
 <%     end -%>
 <%   end -%>
 <% end -%>
-<% if @configs['deploy'] -%>
+<% unless @configs['user'].nil? || @configs['secure'].nil? -%>
 deploy:
   provider: puppetforge
   user: <%= @configs['user'] %>
