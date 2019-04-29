@@ -32,6 +32,9 @@
       - '/convert_report.txt'
       - '/update_report.txt'
       - '.DS_Store'
+      - '.project'
+      - '.envrc'
+      - '/inventory.yaml'
 .pdkignore:
   required: *ignorepaths
   paths:
@@ -43,31 +46,45 @@
     - '/.gitlab-ci.yml'
     - '/.pdkignore'
     - '/Rakefile'
+    - '/rakelib/'
     - '/.rspec'
     - '/.rubocop.yml'
     - '/.travis.yml'
     - '/.yardopts'
     - '/spec/'
+    - '/.vscode/'
 .travis.yml:
+  stages:
+    - static
+    - spec
+    - acceptance
+    - name: deploy
+      if: tag =~ ^v\d
   ruby_versions:
-    - 2.5.1
-  global_env:
-    - BEAKER_PUPPET_COLLECTION=puppet6 PUPPET_GEM_VERSION="~> 6.0"
+    - 2.5.3
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.5.1
+    rvm: 2.5.3
     sudo: required
     dist: trusty
     services: docker
+    bundler_args: --with system_tests
     env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
     script: bundle exec rake beaker
+    stage: acceptance
   includes:
-    - env: CHECK="syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
-    - env: CHECK=parallel_spec
+    - env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
+      stage: static
     - env: PUPPET_GEM_VERSION="~> 5.0" CHECK=parallel_spec
-      rvm: 2.4.4
+      rvm: 2.4.5
+      stage: spec
+    - env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
+      rvm: 2.5.3
+      stage: spec
+    - env: DEPLOY_TO_FORGE=yes
+      stage: deploy
   deploy: true
   user: 'puppet'
   branches:
@@ -99,6 +116,7 @@ appveyor.yml:
   branches:
     - master
 Rakefile:
+  changelog_version_tag_pattern: 'v%s'
   default_disabled_lint_checks:
     - 'relative'
   extras: []
@@ -559,25 +577,6 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
-    # ':system_tests':
-    #   - gem: 'puppet-module-posix-system-r#{minor_version}'
-    #     platforms: ruby
-    #   - gem: 'puppet-module-win-system-r#{minor_version}'
-    #     platforms:
-    #       - mswin
-    #       - mingw
-    #       - x64_mingw
-    #   - gem: beaker
-    #     version: '~> 3.13'
-    #     from_env: BEAKER_VERSION
-    #   - gem: beaker-abs
-    #     from_env: BEAKER_ABS_VERSION
-    #     version: '~> 0.1'
-    #   - gem: beaker-pe
-    #   - gem: beaker-hostgenerator
-    #     from_env: BEAKER_HOSTGENERATOR_VERSION
-    #   - gem: beaker-rspec
-    #     from_env: BEAKER_RSPEC_VERSION
 .gitlab-ci.yml:
   defaults:
     cache:
@@ -585,15 +584,15 @@ Gemfile:
         - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
-      '2.5.1':
+      '2.5.3':
         checks:
           - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
           - parallel_spec
-        puppet_version: '~> 6.0'
-      '2.4.4':
+        puppet_version: '~> 6'
+      '2.4.5':
         checks:
           - parallel_spec
-        puppet_version: '~> 5.0'
+        puppet_version: '~> 5'
     # beaker: true
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
