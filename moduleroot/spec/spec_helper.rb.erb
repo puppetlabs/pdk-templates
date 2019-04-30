@@ -35,6 +35,8 @@ RSpec.configure do |c|
   c.default_facts = default_facts
   <%- if @configs['hiera_config'] -%>
   c.hiera_config = '<%= @configs['hiera_config'] %>'
+  <%- elsif @configs['hiera_config_ruby'] -%>
+  c.hiera_config = <%= @configs['hiera_config_ruby'] %>
   <%- end -%>
   <%- if @configs['strict_level'] -%>
   c.before :each do
