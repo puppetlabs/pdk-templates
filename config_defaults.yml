@@ -126,7 +126,11 @@ Rakefile:
       Description: People have wide screens, use them.
       Max: 200
 
-    # i18n cops
+    # Disabled i18n cops by default
+    GetText:
+      Enabled: false
+
+    # Configure i18n cops for when they are enabled
     GetText/DecorateString:
       Description: We don't want to decorate test output.
       Exclude:
