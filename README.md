@@ -235,8 +235,6 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
-.travis.yml:
-  bundler_args: --with system_tests
 .gitlab-ci.yml:
   bundler_args: --with system_tests --path vendor/bundle --jobs $(nproc)
   beaker: true
