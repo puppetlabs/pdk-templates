@@ -567,15 +567,19 @@ Gemfile:
         version: '= 2.1.0'
         condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'puppet-module-posix-default-r#{minor_version}'
+        version: '~> 0.3'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
+        version: '~> 0.3'
         platforms: ruby
       - gem: 'puppet-module-win-default-r#{minor_version}'
+        version: '~> 0.3'
         platforms:
           - mswin
           - mingw
           - x64_mingw
       - gem: 'puppet-module-win-dev-r#{minor_version}'
+        version: '~> 0.3'
         platforms:
           - mswin
           - mingw
