@@ -1,0 +1,37 @@
+
+module Puppet::Transport
+  # The main connection class to a <%= transport_class %> endpoint
+  class <%= transport_class %>
+    # Initialise this transport with a set of credentials
+    def initialize(context, connection_info)
+      # because `password` is marked sensitive, we can log it here and it will be masked
+      context.debug("Connecting to #{connection_info[:user]}:#{connection_info[:password]}@#{connection_info[:host]}:#{connection_info[:port]}")
+      # store the credentials for later use
+      # alternatively, connect right here
+      @connection_info = connection_info
+    end
+
+    # Verifies that the stored credentials are valid, and that we can talk to the target
+    def verify(context)
+      context.debug("Checking connection to #{@connection_info[:host]}:#{@connection_info[:port]}")
+      # in a real world implementation, the password would be checked by connecting
+      # to the target device or checking that an existing connection is still alive
+      raise 'authentication error' if @connection_info[:password] == 'invalid'
+    end
+
+    # Retrieve facts from the target and return in a hash
+    def facts(context)
+      context.debug('Retrieving facts')
+      {
+        operatingsystem: 'example',
+        operatingsystemrelease: '1.2.3.4',
+      }
+    end
+
+    # Close the connection and release all resources
+    def close(context)
+      context.debug('Closing connection')
+      @connection_info = nil
+    end
+  end
+end
