@@ -2,7 +2,7 @@ require 'puppet/resource_api'
 
 Puppet::ResourceApi.register_transport(
   name: '<%= name %>',
-  docs: <<-EOS,
+  desc: <<-EOS,
       This transport provides Puppet with the capability to connect to <%= name %> targets.
     EOS
   features: [],
