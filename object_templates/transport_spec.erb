@@ -30,7 +30,7 @@ RSpec.describe Puppet::Transport::<%= transport_class %> do
     end
 
     context 'with invalid credentials' do
-      let(:connection_info) { super.merge(password: 'invalid') }
+      let(:connection_info) { super().merge(password: 'invalid') }
 
       it 'raises an error' do
         expect { transport.verify(context) }.to raise_error RuntimeError, %r{authentication error}
@@ -48,9 +48,9 @@ RSpec.describe Puppet::Transport::<%= transport_class %> do
 
   describe 'close(context)' do
     it 'releases resources' do
-      provider.close(context)
+      transport.close(context)
 
-      expect(provider.instance_variable_get(:@connection_info)).to be_nil
+      expect(transport.instance_variable_get(:@connection_info)).to be_nil
     end
   end
 end
