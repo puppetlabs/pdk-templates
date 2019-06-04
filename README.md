@@ -115,6 +115,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install `--without system_tests` as default, therefore avoiding redundant gem installation.|
 |environment|Defines any environment variables wanted for the job run. In our case we default to the latest Puppet 4 gem version.|
 |matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
+|simplecov|Set to `true` to enable collecting ruby code coverage.|
 |test\_script|This defines the test script that will be executed. For our purposes the default is set to `bundle exec rake %CHECK%`. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as `bundle exec rake spec`, which would run the spec tests of the module.|
 
 ### Rakefile

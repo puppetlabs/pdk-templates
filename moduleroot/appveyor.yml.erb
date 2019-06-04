@@ -26,6 +26,9 @@ environment:
 <%- (@configs['environment'] || []).each do |key, value| -%>
   <%= key %>: <%= value %>
 <%- end -%>
+<% if @configs['simplecov'] -%>
+  SIMPLECOV: yes
+<% end -%>
   matrix:
 <%- (@configs['matrix'] + (@configs['matrix_extras'] || [])).each do |matrix| -%>
     -
