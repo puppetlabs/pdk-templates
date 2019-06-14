@@ -134,7 +134,7 @@ Rakefile:
     GetText/DecorateString:
       Description: We don't want to decorate test output.
       Exclude:
-        - 'spec/*'
+        - 'spec/**/*'
 
     # RSpec cops
     RSpec/BeforeAfterAll:
