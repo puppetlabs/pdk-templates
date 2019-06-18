@@ -10,7 +10,7 @@ def gem_length(gem)
 end
 
 def gem_spec(gem, max_len)
-  output = "\"#{gem['gem']}\""
+  output = "'#{gem['gem']}'"
 
   if gem['version']
     if gem['from_env']
