@@ -115,6 +115,12 @@ notifications:
 <%   end -%>
 <% end -%>
 <% unless @configs['user'].nil? || @configs['secure'].nil? -%>
+<% if @configs['before_deploy'] -%>
+before_deploy:
+<%   @configs['before_deploy'].each do |b_deploy| -%>
+  - <%= b_deploy %>
+<%   end -%>
+<% end -%>
 deploy:
   provider: puppetforge
   user: <%= @configs['user'] %>
