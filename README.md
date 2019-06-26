@@ -59,6 +59,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
 | rubygems_mirror | Use a custom rubygems mirror url |
 | image          |Define the Docker image to use, when using the Docker runner. Please see the [Using Docker images](https://docs.gitlab.com/ee/ci/docker/using_docker_images.html) docs for specifics.|
+| custom_before_steps |Allows you to pass additional steps to the GitLab CI before_script. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/#before_script-and-after_script) docs for specifics.|
 
 ### .pdkignore
 

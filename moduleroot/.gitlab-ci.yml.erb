@@ -42,6 +42,11 @@ cache:
 <% end -%>
 
 before_script:
+<% if configs['custom_before_steps'] -%>
+<%   configs['custom_before_steps'].each do |step| -%>
+  - <%= step %>
+<%   end -%>
+<% end -%>
   - bundle -v
   - rm Gemfile.lock || true
 <% if configs['rubygems_mirror'] -%>
