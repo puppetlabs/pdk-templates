@@ -1,11 +1,12 @@
 # PDK Templates
 
 The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. Look into these directories to find the templates:
+
 * `moduleroot` templates get deployed on `new module`, `convert` and `update`; use them to enforce a common boilerplate for central files.
 * `moduleroot_init` templates get only deployed when the target module does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
 * `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
 
-The PDK also absorbs the `config_defaults.yml` file to apply a set of default configurations to the module. Each top-level key in the file corresponds to a target file, and will be merged with the `:global` section at the top. Within the template evaluation the values are available under `@config`. In the module itself, you can override/amend the values by putting new values into `.sync.yml` in the module's root. You can remove default values by using the [knockout prefix](#removing-default-configuration-values). The data for a target file also use `delete: true` and `unmanaged: true` to remove, or ignore the particular file.
+PDK builds the configuration of the module by reading a set of default configuration from `config_defaults.yml` and merging it with the contents of `.sync.yml` from module's root directory, if exists. Top-level keys of the resulting hash correspond to target files or represent a global configuration. Global configuration will be merged with the configuration hash for a particular target file. This allows a module developer to override/amend the configuration by putting new values into `.sync.yml`. A knockout prefix may be applied to elements within `.sync.yml` to [remove elements from the default set](#removing-default-configuration-values). Target files are created by rendering a corresponding template which is referring its configuration via the `@configs` hash. The data for a target file may include `delete: true` or `unmanaged: true` in order to have the particular file removed from the module or left unmanaged, respectively.
 
 * [Basic usage](#basic-usage)
 * [Values of config\_defaults](#values)
@@ -21,7 +22,7 @@ Templates like this one can be used in conjunction with the PDK. As default the 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
 For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
 
-##  Values of config\_defaults <a name="values"></a>
+## Values of config\_defaults <a name="values"></a>
 
 The following is a description and explaination of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
@@ -79,17 +80,17 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 | dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
 | simplecov      |Set to `true` to enable collecting ruby code coverage.|
-| ruby versions  |Define the ruby versions on which you want your builds to be executed.|
+| ruby\_versions  |Define the ruby versions on which you want your builds to be executed.|
 | bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
 | env            |Allows you to add new travis job matrix entries based on the included environmnet variables, one per `env` entry; for example, for adding jobs with specific `PUPPET_GEM_VERSION` and/or `CHECK` values.  See the [Travis Environment Variables](https://docs.travis-ci.com/user/environment-variables) documentation for details.|
-| global_env     |Allows you to set global environment variables which will be defined for all travis jobs; for example, `PARALLEL_TEST_PROCESSORS` or `TIMEOUT`.  See the [Travis Global Environment Variables](https://docs.travis-ci.com/user/environment-variables/#Global-Variables) documentation for details.|
-|docker_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set:docker/ubuntu-14.04` to my docker\_sets attribute.  docker_sets is a hash that supports the 'set' and 'testmode' key|
-|docker_sets['set']| this should refrence the docker nodeset that you wish to run|
-|docker_sets['testmode']| this configueres the `BEAKER_TESTMODE` to use when testing the docker instance.  the two options are `apply` and `agent` if omitted `apply` is used by default|
+| global\_env     |Allows you to set global environment variables which will be defined for all travis jobs; for example, `PARALLEL_TEST_PROCESSORS` or `TIMEOUT`.  See the [Travis Global Environment Variables](https://docs.travis-ci.com/user/environment-variables/#Global-Variables) documentation for details.|
+|docker\_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set:docker/ubuntu-14.04` to my docker\_sets attribute.  The docker_sets is a hash that supports the 'set' and 'testmode' key. |
+|docker\_sets['set']| This should refrence the docker nodeset that you wish to run. |
+|docker\_sets['testmode']| This configueres the `BEAKER_TESTMODE` to use when testing the docker instance. The two options are `apply` and `agent` if omitted `apply` is used by default. |
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
-|stages          |Allows you to specify order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
+|stages          |Allows the specification of order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
-|remove_includes |Allows you to remove includes set in config_defaults.yml.|
+|remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
 |branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
 |branches_except |Allows you to specify branches that travis will not build on.|
 |remove_branches |Allows you to remove default branches set in config_defaults.yml.|
@@ -127,10 +128,10 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.|
-|changelog_user|Sets the github user for the change_log_generator rake task.Optional, if not set it will read the 'author' from the metadata.json file|
-|changelog_project|Sets the github project for the change_log_generator rake task.Optional, if not set it will read the 'name' from the metadata.json file|
-|changelog_since_tag|Sets the github since_tag for the change_log_generator rake task.Required for the changlog rake task|
-|changelog_version_tag_pattern|Template how the version tag is to be generated. Defaults to ```v%s``` which eventually align with tag_pattern property of puppet-blacksmith, thus changelog rake task generated changelog is referring to the correct  |
+|changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.|
+|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will read the `name` from the `metadata.json` file|
+|changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the changlog rake task.|
+|changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
 |extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
@@ -148,7 +149,6 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |cleanup\_cops    |Defines a set of cleanup cops to then be included within a rubocop profile. Cops are defined by their full name, and further configuration can be done by specifying secondary keys. By default we specify a large amount of cleanup cops using their default configuration.|
 |profiles         |Defines the profiles that can be enabled and used within rubocop through the `selected_profile` option. By default we have set up three profiles: cleanups\_only, strict, hardcore and off.|
 
-
 ### Gemfile
 
 >A Gemfile is a file we create which is used for describing gem dependencies for Ruby programs. All modules should have an associated Gemfile for installing the relevant gems. As development and testing is somewhat consistant between modules we have used the template to define a set of gems relevant to these processes.
@@ -159,6 +159,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
 
 ### spec/default_facts.yml
+
 > The spec/default_facts.yml file contains a list of facts to be used by default when running rspec tests
 
 | Key            | Description   |
@@ -170,6 +171,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |extra_facts|List of extra facts to be added to the default_facts.yml file. They are in the form: "`name of fact`: `value of fact`"|
 
 ### spec/spec_helper.rb
+
 > The spec/spec_helper.rb file contains setup for rspec tests
 
 | Key            | Description   |
@@ -236,8 +238,6 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
-.travis.yml:
-  bundler_args: --with system_tests
 .gitlab-ci.yml:
   bundler_args: --with system_tests --path vendor/bundle --jobs $(nproc)
   beaker: true
