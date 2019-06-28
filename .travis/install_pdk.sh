@@ -25,8 +25,6 @@ main() {
     sudo apt-get update -qq
     sudo apt-get install -y pdk
 
-    env
-
     /usr/local/bin/pdk --version
 }
 
