@@ -2,15 +2,15 @@ sudo: false
 dist: trusty
 language: generic
 env:
-- PDK=release
-- PDK=nightly
+  - PDK=release PDK_FRONTEND=noninteractive
+  - PDK=nightly PDK_FRONTEND=noninteractive
 before_install:
-- ".travis/install_pdk.sh"
+  - ".travis/install_pdk.sh"
 script:
-- ".travis/test_script.sh"
+  - ".travis/test_script.sh"
 branches:
   only:
-  - master
+    - master
 notifications:
   email: false
   slack:
