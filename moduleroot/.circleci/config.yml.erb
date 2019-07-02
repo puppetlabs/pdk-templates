@@ -26,16 +26,17 @@ commands:
       - run: gem update --system $RUBYGEMS_VERSION
       - run: gem --version
       - run: bundle -v
+      - run: ruby -v | tee ruby_version.txt
       - restore_cache:
           keys:
-            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile" }}-{{ .Environment.CIRCLE_PR_NUMBER }}
-            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile" }}-
-            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ checksum "ruby_version.txt" }}-{{ checksum "Gemfile" }}-{{ .Environment.CIRCLE_PR_NUMBER }}
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ checksum "ruby_version.txt" }}-{{ checksum "Gemfile" }}-
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ checksum "ruby_version.txt" }}-
             - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-
       - run: bundle install --jobs $(nproc) --path vendor/bundle
       - run: bundle clean --force
       - save_cache:
-          key: cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile" }}-{{ .Environment.CIRCLE_PR_NUMBER }}
+          key: cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ checksum "ruby_version.txt" }}-{{ checksum "Gemfile" }}-{{ .Environment.CIRCLE_PR_NUMBER }}
           paths:
             - vendor/bundle
       - run: bundle exec rake << parameters.spec_command >>
