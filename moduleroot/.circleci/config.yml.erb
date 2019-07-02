@@ -41,39 +41,42 @@ commands:
       - run: bundle exec rake << parameters.spec_command >>
 
 jobs:
-  lint:
+  run_specs_on_ruby_puppet_combo:
+    parameters:
+      ruby_version:
+        type: string
+      puppet_gem_version:
+        type: string
+      spec_command:
+        type: string
     executor:
       name: rubypuppet
-      ruby_version: "2.5.3"
-      puppet_gem_version: "~> 6.0"
+      ruby_version: << parameters.ruby_version >>
+      puppet_gem_version: << parameters.puppet_gem_version >>
     steps:
       - runspecs:
-          spec_command: "check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
-  puppet6parallelspec:
-    executor:
-      name: rubypuppet
-      ruby_version: "2.5.3"
-      puppet_gem_version: "~> 6.0"
-    steps:
-      - runspecs:
-          spec_command: "parallel_spec"
-  puppet5parallelspec:
-    executor:
-      name: rubypuppet
-      ruby_version: "2.4.5"
-      puppet_gem_version: "~> 5.0"
-    steps:
-      - runspecs:
-          spec_command: "parallel_spec"
+          spec_command: << parameters.spec_command >>
 
 workflows:
   version: 2
-  test:
+  PDK:
     jobs:
-      - lint
-      - puppet6parallelspec:
+      - run_specs_on_ruby_puppet_combo:
+          name: lint
+          ruby_version: "2.5.3"
+          puppet_gem_version: "~> 6.0"
+          spec_command: "check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
+      - run_specs_on_ruby_puppet_combo:
+          name: puppet6specs
+          ruby_version: "2.5.3"
+          puppet_gem_version: "~> 6.0"
+          spec_command: "parallel_spec"
           requires:
             - lint
-      - puppet5parallelspec:
+      - run_specs_on_ruby_puppet_combo:
+          name: puppet5specs
+          ruby_version: "2.4.5"
+          puppet_gem_version: "~> 5.0"
+          spec_command: "parallel_spec"
           requires:
             - lint
