@@ -137,6 +137,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
 |extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
 |linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
+|linter\_fail\_on\_warnings| A boolean indicating if the linter should exit non-zero on warnings as well as failures. _Does affect **.puppet-lint.rc**._ |
 
 ### .rubocop.yml
 
