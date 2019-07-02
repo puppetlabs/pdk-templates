@@ -1,0 +1,79 @@
+version: 2.1
+
+executors:
+  rubypuppet:
+    parameters:
+      ruby_version:
+        type: string
+      puppet_gem_version:
+        type: string
+    docker:
+      - image: circleci/ruby:<< parameters.ruby_version >>
+    environment:
+      PUPPET_GEM_VERSION: << parameters.puppet_gem_version >>
+
+commands:
+  runspecs:
+    description: "A command for running rake spec"
+    parameters:
+      spec_command:
+        type: string
+        #default: "parallel_spec"
+    steps:
+      - checkout
+      - run: bundle -v
+      - run: rm -f Gemfile.lock
+      - run: gem update --system $RUBYGEMS_VERSION
+      - run: gem --version
+      - run: bundle -v
+      - restore_cache:
+          keys:
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile" }}-{{ .Environment.CIRCLE_PR_NUMBER }}
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile" }}-
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-
+            - cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-
+      - run: bundle install --jobs $(nproc) --path vendor/bundle
+      - run: bundle clean --force
+      - save_cache:
+          key: cache-{{ .Environment.CIRCLE_PROJECT_REPONAME }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "Gemfile" }}-{{ .Environment.CIRCLE_PR_NUMBER }}
+          paths:
+            - vendor/bundle
+      - run: bundle exec rake << parameters.spec_command >>
+
+jobs:
+  lint:
+    executor:
+      name: rubypuppet
+      ruby_version: "2.5.3"
+      puppet_gem_version: "~> 6.0"
+    steps:
+      - runspecs:
+          spec_command: "check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
+  puppet6parallelspec:
+    executor:
+      name: rubypuppet
+      ruby_version: "2.5.3"
+      puppet_gem_version: "~> 6.0"
+    steps:
+      - runspecs:
+          spec_command: "parallel_spec"
+  puppet5parallelspec:
+    executor:
+      name: rubypuppet
+      ruby_version: "2.4.5"
+      puppet_gem_version: "~> 5.0"
+    steps:
+      - runspecs:
+          spec_command: "parallel_spec"
+
+workflows:
+  version: 2
+  test:
+    jobs:
+      - lint
+      - puppet6parallelspec:
+          requires:
+            - lint
+      - puppet5parallelspec:
+          requires:
+            - lint

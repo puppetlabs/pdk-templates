@@ -1,0 +1,26 @@
+trigger:
+- master
+
+stages: 
+- stage: lint
+  jobs:
+  - template: azure-pipelines/spec_job.yml
+    parameters:
+      name: lint
+      ruby_version: '2.5'
+      puppet_gem_version: '~> 6.0'
+      spec_command: 'lint'
+- stage: spec
+  jobs:
+  - template: azure-pipelines/spec_job.yml
+    parameters:
+      name: 'puppet_6_spec'
+      ruby_version: '2.5'
+      puppet_gem_version: '~> 6.0'
+      spec_command: 'parallel_spec'
+  - template: azure-pipelines/spec_job.yml
+    parameters:
+      name: 'puppet_5_spec'
+      ruby_version: '2.4'
+      puppet_gem_version: '~> 5.0'
+      spec_command: 'parallel_spec'
