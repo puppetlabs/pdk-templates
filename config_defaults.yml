@@ -63,6 +63,9 @@
   ruby_versions:
     - 2.5.3
   bundler_args: --without system_tests
+  litmus_sets:
+  litmus_defaults:
+    collection: puppet6
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value

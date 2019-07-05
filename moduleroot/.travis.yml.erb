@@ -68,6 +68,25 @@ stages:
 matrix:
   fast_finish: true
   include:
+<% (@configs['litmus_sets'] || []).each do |set| -%>
+<%    job = @configs['litmus_defaults'].merge(set || {}) -%>
+    -
+      env: SET=<%= set['set'] %> PUPPET_COLLECTION=<%= job['collection'] %>
+      services: docker
+      sudo: required
+      bundler_args: --with system_tests
+      rvm: 2.5.3
+      stage: acceptance
+      before_script:
+      - bundler exec rake 'litmus:provision_list[<%= set['set'] %>]'
+<%    (job['commands'] || []).each do |cmd| -%>
+      - bundler exec bolt command run '<%= cmd %>' --inventoryfile inventory.yaml --nodes='localhost*'
+<%    end -%>
+      - bundler exec rake 'litmus:install_agent[<%= job['collection'] %>]'
+      - bundler exec rake litmus:install_module
+      script:
+      - bundler exec rake litmus:acceptance:parallel
+<% end -%>
 <% (@configs['docker_sets'] || []).each do |set| -%>
 <%   job = @configs['docker_defaults'].merge(set['options'] || {}) -%>
     -
