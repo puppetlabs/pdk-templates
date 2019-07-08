@@ -71,7 +71,7 @@
     dist: trusty
     services: docker
     bundler_args: --with system_tests
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=puppet6 BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=@@COLLECTION@@ BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
     script: bundle exec rake beaker
     stage: acceptance
   includes:
@@ -85,8 +85,6 @@
       stage: spec
     - env: DEPLOY_TO_FORGE=yes
       stage: deploy
-  deploy: true
-  user: 'puppet'
   branches:
     - master
     - /^v\d/
@@ -115,6 +113,7 @@ appveyor.yml:
     - bundle exec rake %CHECK%
   branches:
     - master
+    - release
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
   default_disabled_lint_checks:
@@ -127,11 +126,15 @@ Rakefile:
       Description: People have wide screens, use them.
       Max: 200
 
-    # i18n cops
+    # Disabled i18n cops by default
+    GetText:
+      Enabled: false
+
+    # Configure i18n cops for when they are enabled
     GetText/DecorateString:
       Description: We don't want to decorate test output.
       Exclude:
-        - 'spec/*'
+        - 'spec/**/*'
 
     # RSpec cops
     RSpec/BeforeAfterAll:
@@ -564,15 +567,19 @@ Gemfile:
         version: '= 2.1.0'
         condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'puppet-module-posix-default-r#{minor_version}'
+        version: '~> 0.3'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
+        version: '~> 0.3'
         platforms: ruby
       - gem: 'puppet-module-win-default-r#{minor_version}'
+        version: '~> 0.3'
         platforms:
           - mswin
           - mingw
           - x64_mingw
       - gem: 'puppet-module-win-dev-r#{minor_version}'
+        version: '~> 0.3'
         platforms:
           - mswin
           - mingw
