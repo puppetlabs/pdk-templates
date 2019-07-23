@@ -86,7 +86,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | global\_env     |Allows you to set global environment variables which will be defined for all travis jobs; for example, `PARALLEL_TEST_PROCESSORS` or `TIMEOUT`.  See the [Travis Global Environment Variables](https://docs.travis-ci.com/user/environment-variables/#Global-Variables) documentation for details.|
 |litmus\_sets     |Allow you to enable travis jobs using [Puppet Litmus](https://github.com/puppetlabs/puppet_litmus/wiki) to conduct acceptance tests.|
 |litmus\_sets['set'] |List name for which images should be provisioned. This must be the `list_name` as defined in your `provision.yaml` placed in the module root directory.|
-|litmus\_sets['collection'] |Name of the Puppet agent to be installed on the litmus VMs. Defaults to `puppet6`.|
+|litmus\_sets['collection'] |Name of the Puppet agent to be installed on the litmus targets. Defaults to `puppet6`.|
 |litmus\_sets['commands'] |Array of auxiliary command lines to be applied to all VMs of the set directy after provisioning (before the Puppet agent is installed).|
 |docker\_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set:docker/ubuntu-14.04` to my docker\_sets attribute.  The docker_sets is a hash that supports the 'set', 'testmode', and 'collection' keys. |
 |docker\_sets['set']| This should refrence the docker nodeset that you wish to run. |
