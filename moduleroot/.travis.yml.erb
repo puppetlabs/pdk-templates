@@ -78,14 +78,14 @@ matrix:
       rvm: 2.5.3
       stage: acceptance
       before_script:
-      - bundler exec rake 'litmus:provision_list[<%= set['set'] %>]'
+      - bundle exec rake 'litmus:provision_list[<%= set['set'] %>]'
 <%    (job['commands'] || []).each do |cmd| -%>
-      - bundler exec bolt command run '<%= cmd %>' --inventoryfile inventory.yaml --nodes='localhost*'
+      - bundle exec bolt command run '<%= cmd %>' --inventoryfile inventory.yaml --nodes='localhost*'
 <%    end -%>
-      - bundler exec rake 'litmus:install_agent[<%= job['collection'] %>]'
-      - bundler exec rake litmus:install_module
+      - bundle exec rake 'litmus:install_agent[<%= job['collection'] %>]'
+      - bundle exec rake litmus:install_module
       script:
-      - bundler exec rake litmus:acceptance:parallel
+      - bundle exec rake litmus:acceptance:parallel
 <% end -%>
 <% (@configs['docker_sets'] || []).each do |set| -%>
 <%   job = @configs['docker_defaults'].merge(set['options'] || {}) -%>
