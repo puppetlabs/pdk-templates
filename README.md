@@ -130,7 +130,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 |requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.|
 |changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.|
-|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will read the `name` from the `metadata.json` file|
+|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file|
 |changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the changlog rake task.|
 |changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
