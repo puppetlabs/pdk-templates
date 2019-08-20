@@ -96,11 +96,16 @@ else
   task :changelog do
     raise <<EOM
 The changelog tasks depends on unreleased features of the github_changelog_generator gem.
-Please manually add it to your .sync.yml for now, and run `pdk update`:
+If you installed your gems without release_prep, you will want to ensure you bundle install
+without skipping that gem group.
+
+If you did not specify without release_prep during your bundle install, it is possible your
+gemfile does not include the gem. Please manually add it to your .sync.yml for now, and run 
+`pdk update`:
 ---
 Gemfile:
   optional:
-    ':development':
+    ':release_prep':
       - gem: 'github_changelog_generator'
         git: 'https://github.com/skywinder/github-changelog-generator'
         ref: '20ee04ba1234e9e83eb2ffb5056e23d641c7a018'
