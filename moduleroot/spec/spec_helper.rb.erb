@@ -31,6 +31,38 @@ default_fact_files.each do |f|
   end
 end
 
+# @return [String] - the path to the fixtures directory
+def fixtures_dir
+  @fixtures_dir ||= File.join(__dir__, 'fixtures')
+end
+
+# @return [String] = the path the directory of external facterdb facts
+# Most users will likely not have a custom facterdb_facts git repo defined
+# but if they do then can add it to the fixtures file and name it facterdb_facts.
+# See https://github.com/camptocamp/facterdb#supplying-custom-external-facts
+def mock_facts
+  @mock_facts ||= File.join(fixtures_dir, 'facterdb_facts')
+end
+
+# @return [Hash] - returns a hash of testable operating systems
+# uncomment and replace empty hash
+# modify to your liking, default to all supported
+# operating systems defined in the metadata.json file
+# sometimes you don't want to test on 20 operating systems, this controls that
+def test_on
+  @test_on ||= {}
+  # {hardwaremodels: ['x86_64'],
+  # supported_os: [
+  #     {
+  #         'operatingsystem' => 'Ubuntu',
+  #         'operatingsystemrelease' => ['14.04'],
+  #     },
+  # ]},
+end
+
+# set the mock facts dir for facterdb 
+ENV['FACTERDB_SEARCH_PATHS'] = mock_facts
+
 # read default_facts and merge them over what is provided by facterdb
 default_facts.each do |fact, value|
   add_custom_fact fact, value
