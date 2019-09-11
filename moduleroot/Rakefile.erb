@@ -36,8 +36,18 @@ end
 
 def changelog_project
   return unless Rake.application.top_level_tasks.include? "changelog"
-  returnVal = <%= @configs['changelog_project'].inspect -%> || JSON.load(File.read('metadata.json'))['source'].match(%r{.*/([^/]*)})[1]
-  raise "unable to find the changelog_project in .sync.yml or the name in metadata.json" if returnVal.nil?
+
+  returnVal = <%= @configs['changelog_project'].inspect -%>
+
+  returnVal ||= begin
+    metadata_source = JSON.load(File.read('metadata.json'))['source']
+    metadata_source_match = metadata_source && metadata_source.match(%r{.*\/([^\/]*?)(?:\.git)?\Z})
+
+    metadata_source_match && metadata_source_match[1]
+  end
+
+  raise "unable to find the changelog_project in .sync.yml or calculate it from the source in metadata.json" if returnVal.nil?
+
   puts "GitHubChangelogGenerator project:#{returnVal}"
   returnVal
 end
@@ -53,6 +63,9 @@ end
 <% checks = @configs['default_disabled_lint_checks'] + ( @configs['extra_disabled_lint_checks'] || [] ) -%>
 <% checks.each do |check| -%>
 PuppetLint.configuration.send('disable_<%= check %>')
+<% end -%>
+<% if @configs['linter_fail_on_warnings'] -%>
+PuppetLint.configuration.fail_on_warnings = true
 <% end -%>
 <% linter_options =  @configs['linter_options'] || [] -%>
 <% linter_options.each do |option| -%>

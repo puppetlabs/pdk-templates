@@ -6,11 +6,16 @@
       rakefile_config['extra_disabled_lint_checks'].to_a,
     ].flatten.uniq
     options = rakefile_config['linter_options'].to_a
+    fail_on_warnings = rakefile_config['linter_fail_on_warnings']
   else
     disabled_checks = []
     options = []
+    fail_on_warnings = false
   end
 -%>
+<% if fail_on_warnings -%>
+--fail-on-warnings
+<% end -%>
 <% disabled_checks.each do |check_name| -%>
 <%- if check_name == 'relative' -%>
 --relative

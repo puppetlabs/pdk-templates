@@ -26,6 +26,7 @@ def gem_spec(gem, max_len)
   options << "branch: '#{gem['branch']}'" unless gem['branch'].nil?
   options << "ref: '#{gem['ref']}'" unless gem['ref'].nil?
   options << "platforms: #{gem['platforms'].inspect}" unless gem['platforms'].nil?
+  options << "source: #{gem['source'].inspect}" unless gem['source'].nil?
 
   unless options.empty?
     output += ', '
@@ -77,6 +78,7 @@ group <%= group %> do
          'length'        => gem_length(gem),
          'from_env'      => gem['from_env'],
          'condition'     => gem['condition'],
+         'source'        => gem['source'],
        }
      end
 

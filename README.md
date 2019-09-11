@@ -142,13 +142,14 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 |requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.|
 |changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.|
-|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will read the `name` from the `metadata.json` file|
+|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file|
 |changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the changlog rake task.|
 |changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
 |extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
 |linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
+|linter\_fail\_on\_warnings| A boolean indicating if the linter should exit non-zero on warnings as well as failures. _Does affect **.puppet-lint.rc**._ |
 
 ### .rubocop.yml
 
@@ -168,8 +169,22 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
-|required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module.|
+|required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module and the :system_tests gem group for gems relevant only to acceptance testing.|
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
+
+>Within each Gem group defined using the options above one or more gem item definitions may be listed in an array. Each item in that array must be a gem item hash.
+
+| Gem Item Hash Keys | Description  |
+| :----------------- |:-------------|
+|gem|Required option specifying the gem name.|
+|version|Required option to specify version or range of versions required using [RubyGem version syntax](https://guides.rubygems.org/patterns/#pessimistic-version-constraint).|
+|platforms|Defines an array of platforms for which the Gem should be included. See the [Gemfile platform guide](https://bundler.io/man/gemfile.5.html#PLATFORMS) for a list of valid platforms.|
+|git|If required, specify a specific Git repository in which this Gem is located. See the [Bundler docs](https://bundler.io/man/gemfile.5.html#GIT) for details.|
+|branch|Optionally specify a branch to use if using the `git` option. Defaults to `master`.|
+|ref|Optionally specify an arbitrary valid Git reference to use for the module version.|
+|source|Specify an alternate Rubygems repository to load the gem from.|
+|from_env|Specifies an environment variable containing either a Rubygem version specification indicating the version to use OR a URL indicating the location from which to load the gem.|
+|condition|An optional string containing a Ruby-code conditional controlling if this gem will be processed in the Gemfile.|
 
 ### spec/default_facts.yml
 
@@ -233,6 +248,20 @@ To remove a key from a hash, set the value to `---`. For example, to remove the
 ```yaml
 spec/default_facts.yml:
   ipaddress: '---'
+```
+
+## Setting custom gems in the Gemfile
+
+To add a custom internal `puppet-lint` plugin served from an internal Rubygems source, add
+an entry similar to the following in `.sync.yml` file and run `pdk update`.
+
+```yaml
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'puppet-lint-my_awesome_custom_module'
+        version: '>= 2.0'
+        source: 'https://myrubygems.example.com/'
 ```
 
 ## Enabling Beaker system tests
