@@ -24,7 +24,7 @@ For more on basic usage and more detailed description of the PDK in action pleas
 
 ## Values of config\_defaults <a name="values"></a>
 
-The following is a description and explaination of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
+The following is a description and explanation of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
 ### .gitattributes
 
@@ -55,7 +55,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | beaker         |Defines if you want the default, Docker-in-Docker acceptance job added. Can be set to `true` to enable the default `acceptance` job, or you can specify the `variables` and `tags` subkeys. These subkeys function the same as the `global_variables` option and the `tags` subkey found in the `ruby_versions` option.|
 | global_variables |Allows you to set any global environment variables for the gitlab-ci pipeline. Currently includes setting the Puppet gem version.|
 | cache          | If this setting exists, it expects a single sub-key called `paths`. `paths` is an array of paths that will be cached for each subsequent job. Defaults to `['vendor/bundle']`|
-| bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests --path vendor/bundle --jobs $(nproc)` which avoids installing unnessesary gems while installing them to the `vendor/bundler.|
+| bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests --path vendor/bundle --jobs $(nproc)` which avoids installing unnecessary gems while installing them to the `vendor/bundler.|
 | ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags.
 | custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
 | rubygems_mirror | Use a custom rubygems mirror url |
@@ -81,11 +81,11 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
 | simplecov      |Set to `true` to enable collecting ruby code coverage.|
 | ruby\_versions  |Define the ruby versions on which you want your builds to be executed.|
-| bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnessesary gems.|
-| env            |Allows you to add new travis job matrix entries based on the included environmnet variables, one per `env` entry; for example, for adding jobs with specific `PUPPET_GEM_VERSION` and/or `CHECK` values.  See the [Travis Environment Variables](https://docs.travis-ci.com/user/environment-variables) documentation for details.|
+| bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnecessary gems.|
+| env            |Allows you to add new travis job matrix entries based on the included environment variables, one per `env` entry; for example, for adding jobs with specific `PUPPET_GEM_VERSION` and/or `CHECK` values.  See the [Travis Environment Variables](https://docs.travis-ci.com/user/environment-variables) documentation for details.|
 | global\_env     |Allows you to set global environment variables which will be defined for all travis jobs; for example, `PARALLEL_TEST_PROCESSORS` or `TIMEOUT`.  See the [Travis Global Environment Variables](https://docs.travis-ci.com/user/environment-variables/#Global-Variables) documentation for details.|
 |docker\_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set:docker/ubuntu-14.04` to my docker\_sets attribute.  The docker_sets is a hash that supports the 'set', 'testmode', and 'collection' keys. |
-|docker\_sets['set']| This should refrence the docker nodeset that you wish to run. |
+|docker\_sets['set']| This should reference the docker nodeset that you wish to run. |
 |docker\_sets['testmode']| This configures the `BEAKER_TESTMODE` to use when testing the docker instance. The two options are `apply` and `agent` if omitted `apply` is used by default. |
 |docker_sets['collection]| This configures the `BEAKER_PUPPET_COLLECTION` to use when testing the docker instance. The default is `puppet6`.
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
@@ -126,22 +126,22 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 >[Rake](https://github.com/ruby/rake) is a Make-like program implemented in Ruby. Tasks and dependencies are specified in standard Ruby syntax within the Rakefile, present in the root directory of the code repository. Within modules context Rake tasks are used quite frequently, from ensuring the integrity of a module, running validation and tests, to tasks for releasing modules.
 
-| Key            | Description   |
-| :------------- |:--------------|
-|requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.|
-|changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.|
-|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file|
-|changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the changlog rake task.|
-|changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
-|default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
-|extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
-|extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
-|linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
-|linter\_fail\_on\_warnings| A boolean indicating if the linter should exit non-zero on warnings as well as failures. _Does affect **.puppet-lint.rc**._ |
+| Key            |Description                                                                                                                                                                                                                        |
+| :------------- |:----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|requires|A list of hashes with the library to `'require'`, and an optional `'conditional'`.                                                                                                                                                 |
+|changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.                                                                                         |
+|changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file                                                                               |
+|changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the changelog rake task.                                                                                                                          |
+|changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs.             |
+|default\_disabled\_lint\_checks|Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._|
+|extra\_disabled\_lint\_checks|Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._                                                                  |
+|extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.                       |
+|linter\_options|An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._                                                                                                                                            |
+|linter\_fail\_on\_warnings|A boolean indicating if the linter should exit non-zero on warnings as well as failures. _Does affect **.puppet-lint.rc**._                                                                                                        |
 
 ### .rubocop.yml
 
->[RuboCop](https://github.com/bbatsov/rubocop) is a Ruby static code analyzer. We use Rubocop to enforce a level of quility and consistancy within Ruby code. Rubocop can be configured within .rubocop.yml which is located in the root directory of the code repository. Rubocop works by defining a sanitized list of cops that'll cleanup a code base without much effort, all of which support autocorrect and that are fairly uncontroversial across wide segments of the Community.
+>[RuboCop](https://github.com/bbatsov/rubocop) is a Ruby static code analyzer. We use Rubocop to enforce a level of quality and consistency within Ruby code. Rubocop can be configured within .rubocop.yml which is located in the root directory of the code repository. Rubocop works by defining a sanitized list of cops that'll cleanup a code base without much effort, all of which support autocorrect and that are fairly uncontroversial across wide segments of the Community.
 
 | Key            | Description   |
 | :------------- |:--------------|
