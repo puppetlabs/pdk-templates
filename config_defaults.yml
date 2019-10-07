@@ -616,3 +616,15 @@ spec/spec_helper.rb:
   coverage_report: false
   minimum_code_coverage_percentage: 0
   strict_level: ":warning"
+
+# You must opt-in to templated CircleCI config
+.circleci/config.yml:
+  unmanaged: true
+
+# You must opt-in to templated Azure Pipelines config
+azure-pipelines.yml:
+  unmanaged: true
+azure-pipelines/README.md:
+  unmanaged: true
+azure-pipelines/spec_job.yml:
+  unmanaged: true
