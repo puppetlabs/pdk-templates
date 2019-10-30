@@ -16,7 +16,7 @@ module Puppet::Transport
       context.debug("Checking connection to #{@connection_info[:host]}:#{@connection_info[:port]}")
       # in a real world implementation, the password would be checked by connecting
       # to the target device or checking that an existing connection is still alive
-      raise 'authentication error' if @connection_info[:password] == 'invalid'
+      raise 'authentication error' if @connection_info[:password].unwrap == 'invalid'
     end
 
     # Retrieve facts from the target and return in a hash
