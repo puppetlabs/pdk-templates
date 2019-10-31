@@ -545,6 +545,7 @@ Rakefile:
       configs: *default_configs
       enabled_cops: all
 Gemfile:
+  use_litmus: false
   required:
     ':development':
       - gem: fast_gettext
