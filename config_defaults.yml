@@ -94,6 +94,7 @@
   markup: markdown
 appveyor.yml:
   appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
+  use_litmus: false
   matrix:
     - RUBY_VERSION: 24-x64
       CHECK: "syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
@@ -544,6 +545,7 @@ Rakefile:
       configs: *default_configs
       enabled_cops: all
 Gemfile:
+  use_litmus: false
   required:
     ':development':
       - gem: fast_gettext

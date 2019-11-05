@@ -40,6 +40,20 @@ environment:
     <%- end -%>
   <%- end -%>
 <%- end -%>
+<% if @configs['use_litmus'] -%>
+for:
+-
+  matrix:
+    only:
+      - ACCEPTANCE: yes
+  install:
+    - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+    - bundle install --jobs 4 --retry 2
+    - type Gemfile.lock
+  test_script:
+     - bundle exec rake spec_prep
+     - bundle exec rake litmus:acceptance:localhost
+<% end -%>
 matrix:
   fast_finish: true
 install:

@@ -121,6 +121,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
 |simplecov|Set to `true` to enable collecting ruby code coverage.|
 |test\_script|This defines the test script that will be executed. For our purposes the default is set to `bundle exec rake %CHECK%`. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as `bundle exec rake spec`, which would run the spec tests of the module.|
+|use_litmus|Configures Appveyor to be able to use Litmus for acceptance testing jobs|
 
 ### Rakefile
 
@@ -159,6 +160,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 |required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module and the :system_tests gem group for gems relevant only to acceptance testing.|
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
+|use_litmus|Configures development gems to include Litmus for acceptance testing.|
 
 >Within each Gem group defined using the options above one or more gem item definitions may be listed in an array. Each item in that array must be a gem item hash.
 
