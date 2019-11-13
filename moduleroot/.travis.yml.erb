@@ -1,3 +1,18 @@
+<%
+  if @configs['deploy_to_forge']['enabled']
+    # If Deploy To Forge is enabled..
+    # - Inject the deployment stage using the tag regex
+    @configs['stages'] << {
+      'name' => 'deploy',
+      'if'   => "tag =~ #{@configs['deploy_to_forge']['tag_regex']}"
+    }
+    # - Inject the deployment task into the includes
+    @configs['includes'] << {
+      'env'   => 'DEPLOY_TO_FORGE=yes',
+      'stage' => 'deploy'
+    }
+  end
+-%>
 ---
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
