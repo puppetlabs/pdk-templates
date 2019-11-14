@@ -97,6 +97,9 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |remove_branches |Allows you to remove default branches set in config_defaults.yml.|
 |notifications   |Allows you to specify the notifications configuration in the .travis.yml file.|
 |remove_notifications   |Allows you to remove default branches set in config_defaults.yml.|
+|deploy_to_forge|Allows you to change the automatic deployment of modules to the forge. Sub keys are `enabled` and `tag_regex` which are detailed below|
+|deploy_to_forge\\**enabled**|Allows you to enable or disable automatic forge deployments. Default is true|
+|deploy_to_forge\\**tag_regex**|Allows you to use a regular expression to define which tags will trigger a deployment.  The default is `^v\d`|
 |before_deploy|An array which can allow a user to specify the commands to run before kicking off a deployment. See [https://docs.travis-ci.com/user/deployment/releases/#setting-the-tag-at-deployment-time].|
 |user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
 |secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
