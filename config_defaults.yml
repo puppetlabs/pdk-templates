@@ -544,7 +544,6 @@ Rakefile:
       configs: *default_configs
       enabled_cops: all
 Gemfile:
-  use_litmus: false
   required:
     ':development':
       - gem: fast_gettext
@@ -574,19 +573,19 @@ Gemfile:
           - mingw
           - x64_mingw
       - gem: 'puppet-module-posix-default-r#{minor_version}'
-        version: '~> 0.3'
+        version: '~> 0.4'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
-        version: '~> 0.3'
+        version: '~> 0.4'
         platforms: ruby
       - gem: 'puppet-module-win-default-r#{minor_version}'
-        version: '~> 0.3'
+        version: '~> 0.4'
         platforms:
           - mswin
           - mingw
           - x64_mingw
       - gem: 'puppet-module-win-dev-r#{minor_version}'
-        version: '~> 0.3'
+        version: '~> 0.4'
         platforms:
           - mswin
           - mingw
