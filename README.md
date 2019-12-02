@@ -123,6 +123,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install `--without system_tests` as default, therefore avoiding redundant gem installation.|
+|install_pre  |Add install steps to the start of `install`. |
+|install_post |Add install steps to the end of `install`. |
 |environment|Defines any environment variables wanted for the job run. In our case we default to the latest Puppet 4 gem version.|
 |matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
 |simplecov|Set to `true` to enable collecting ruby code coverage.|

@@ -61,9 +61,19 @@ for:
 matrix:
   fast_finish: true
 install:
+<% if @configs['install_pre'] -%>
+<%   @configs['install_pre'].each do |ip| -%>
+  - <%= ip %>
+<%   end -%>
+<% end -%>
   - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
   - <%= @configs['appveyor_bundle_install'] %>
   - type Gemfile.lock
+<% if @configs['install_post'] -%>
+<%   @configs['install_post'].each do |ip| -%>
+  - <%= ip %>
+<%   end -%>
+<% end -%>
 build: off
 test_script:
   - bundle exec puppet -V
