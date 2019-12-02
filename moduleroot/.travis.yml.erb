@@ -14,6 +14,12 @@
   end
 -%>
 ---
+<% if @configs['os'] -%>
+os:
+<%   @configs['os'].each do |os| -%>
+  - <%= os %>
+<%   end -%>
+<% end -%>
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
 <% else -%>
