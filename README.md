@@ -91,6 +91,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_sets['collection]| This configures the `BEAKER_PUPPET_COLLECTION` to use when testing the docker instance. The default is `puppet6`.
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |stages          |Allows the specification of order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
+|before_install_pre  |Add install steps to the start of `before_install`. |
+|before_install_post |Add install steps to the end of `before_install`. |
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
 |branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
