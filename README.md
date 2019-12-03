@@ -78,6 +78,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+| os | Set to an array of operating systems to test. See the [TravisCI documentation](https://docs.travis-ci.com/user/multi-os/) for more details. |
 | dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
 | simplecov      |Set to `true` to enable collecting ruby code coverage.|
 | ruby\_versions  |Define the ruby versions on which you want your builds to be executed.|
@@ -90,6 +91,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_sets['collection]| This configures the `BEAKER_PUPPET_COLLECTION` to use when testing the docker instance. The default is `puppet6`.
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |stages          |Allows the specification of order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
+|before_install_pre  |Add install steps to the start of `before_install`. |
+|before_install_post |Add install steps to the end of `before_install`. |
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
 |branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
@@ -120,6 +123,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install `--without system_tests` as default, therefore avoiding redundant gem installation.|
+|install_pre  |Add install steps to the start of `install`. |
+|install_post |Add install steps to the end of `install`. |
 |environment|Defines any environment variables wanted for the job run. In our case we default to the latest Puppet 4 gem version.|
 |matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
 |simplecov|Set to `true` to enable collecting ruby code coverage.|

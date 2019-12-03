@@ -14,6 +14,12 @@
   end
 -%>
 ---
+<% if @configs['os'] -%>
+os:
+<%   @configs['os'].each do |os| -%>
+  - <%= os %>
+<%   end -%>
+<% end -%>
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
 <% else -%>
@@ -36,11 +42,21 @@ addons:
 <%   end -%>
 <% end -%>
 before_install:
+<% if @configs['before_install_pre'] -%>
+<%   @configs['before_install_pre'].each do |bip| -%>
+  - <%= bip %>
+<%   end -%>
+<% end -%>
   - bundle -v
   - rm -f Gemfile.lock
   - gem update --system $RUBYGEMS_VERSION
   - gem --version
   - bundle -v
+<% if @configs['before_install_post'] -%>
+<%   @configs['before_install_post'].each do |bip| -%>
+  - <%= bip %>
+<%   end -%>
+<% end -%>
 script:
 <% if @configs['simplecov'] -%>
   - 'SIMPLECOV=yes bundle exec rake $CHECK'
