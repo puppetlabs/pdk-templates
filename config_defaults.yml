@@ -84,6 +84,7 @@
   branches:
     - master
     - /^v\d/
+  use_litmus: false
   notifications:
     email: false
   deploy_to_forge:
