@@ -608,7 +608,7 @@ Gemfile:
           - parallel_spec
         puppet_version: '~> 5'
     # beaker: true
-    before_script: true
+    default_before_script: true
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
   ipaddress6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
