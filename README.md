@@ -61,6 +61,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | rubygems_mirror | Use a custom rubygems mirror url |
 | image          |Define the Docker image to use, when using the Docker runner. Please see the [Using Docker images](https://docs.gitlab.com/ee/ci/docker/using_docker_images.html) docs for specifics.|
 | custom_before_steps |Allows you to pass additional steps to the GitLab CI before_script. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/#before_script-and-after_script) docs for specifics.|
+| default_before_script  |If false, removes the default `before_script` section. Useful if you need a customised Bundler install, or to remove Bundler entirely. If the key is unset the default behaviour is to add `before_script`.|
 
 ### .pdkignore
 

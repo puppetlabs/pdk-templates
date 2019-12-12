@@ -41,6 +41,7 @@ cache:
 <%   end -%>
 <% end -%>
 
+<% if !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
 before_script:
 <% if configs['custom_before_steps'] -%>
 <%   configs['custom_before_steps'].each do |step| -%>
@@ -58,6 +59,7 @@ before_script:
   - gem --version
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
+<% end -%>
 
 <% if configs['ruby_versions'] -%>
 <%   configs['ruby_versions'].each do |ruby_version, options| -%>
