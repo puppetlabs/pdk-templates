@@ -118,35 +118,5 @@ beaker:
 <%   end -%>
 <% end -%>
 <% if configs['custom_jobs'] -%>
-<%   configs['custom_jobs'].each do |job, params| -%>
-<%= job %>:
-<%     params.each do |param, config| -%>
-<%       if (config.is_a?(Array) || config.is_a?(Hash)) && config.empty? -%>
-  <%= param %>: <%= config.inspect %>
-<%       elsif config.is_a?(Array) -%>
-  <%= param %>:
-<%         config.each do |element| -%>
-    - <%= element %>
-<%         end -%>
-<%       elsif config.is_a?(Hash) -%>
-  <%= param %>:
-<%         config.each do |element, value| -%>
-<%           if value.is_a?(Array) -%>
-<%             if value.empty? -%>
-    <%= element %>: <%= value.inspect %>
-<%             else -%>
-    <%= element %>:
-<%               value.each do |content| -%>
-      - <%= content %>
-<%               end -%>
-<%             end -%>
-<%           else -%>
-    <%= element %>: '<%= value %>'
-<%           end -%>
-<%         end -%>
-<%       else -%>
-  <%= param %>: '<%= config %>'
-<%       end -%>
-<%     end %>
-<%   end -%>
+<%=  YAML.dump(configs['custom_jobs']).sub(%r{\A---\r?\n}m, '') %>
 <% end -%>
