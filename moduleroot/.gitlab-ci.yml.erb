@@ -57,7 +57,7 @@ before_script:
 <% end -%>
   - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
   - "# Set `rubygems_version` in the .sync.yml to set a value"
-  - '[ -z "$RUBYGEMS_VERSION" ] || gem update --system $RUBYGEMS_VERSION'
+  - '[ -z "$RUBYGEMS_VERSION" ] || gem update --force --system $RUBYGEMS_VERSION'
   - gem --version
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
