@@ -55,7 +55,9 @@ before_script:
   - bundle config mirror.http://rubygems.org/ <%= configs['rubygems_mirror'] %>
   - bundle config mirror.https://rubygems.org/ <%= configs['rubygems_mirror'] %>
 <% end -%>
-  - gem update --system $RUBYGEMS_VERSION
+  - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
+  - "# Set `rubygems_version` in the .sync.yml to set a value"
+  - '[ -z "$RUBYGEMS_VERSION" ] || gem update --system $RUBYGEMS_VERSION'
   - gem --version
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
