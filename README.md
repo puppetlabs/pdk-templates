@@ -73,6 +73,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | rubygems_mirror | Use a custom rubygems mirror url |
 | image          |Define the Docker image to use, when using the Docker runner. Please see the [Using Docker images](https://docs.gitlab.com/ee/ci/docker/using_docker_images.html) docs for specifics.|
 | custom_before_steps |Allows you to pass additional steps to the GitLab CI before_script. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/#before_script-and-after_script) docs for specifics.|
+| default_before_script  |If false, removes the default `before_script` section. Useful if you need a customised Bundler install, or to remove Bundler entirely. If the key is unset the default behaviour is to add `before_script`.|
 
 ### .pdkignore
 
@@ -90,6 +91,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+| os | Set to an array of operating systems to test. See the [TravisCI documentation](https://docs.travis-ci.com/user/multi-os/) for more details. |
 | dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
 | simplecov      |Set to `true` to enable collecting ruby code coverage.|
 | ruby\_versions  |Define the ruby versions on which you want your builds to be executed.|
@@ -102,6 +104,8 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |docker_sets['collection]| This configures the `BEAKER_PUPPET_COLLECTION` to use when testing the docker instance. The default is `puppet6`.
 |docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
 |stages          |Allows the specification of order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
+|before_install_pre  |Add install steps to the start of `before_install`. |
+|before_install_post |Add install steps to the end of `before_install`. |
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
 |branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
@@ -109,6 +113,9 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |remove_branches |Allows you to remove default branches set in config_defaults.yml.|
 |notifications   |Allows you to specify the notifications configuration in the .travis.yml file.|
 |remove_notifications   |Allows you to remove default branches set in config_defaults.yml.|
+|deploy_to_forge|Allows you to change the automatic deployment of modules to the forge. Sub keys are `enabled` and `tag_regex` which are detailed below|
+|deploy_to_forge\\**enabled**|Allows you to enable or disable automatic forge deployments. Default is true|
+|deploy_to_forge\\**tag_regex**|Allows you to use a regular expression to define which tags will trigger a deployment.  The default is `^v\d`|
 |before_deploy|An array which can allow a user to specify the commands to run before kicking off a deployment. See [https://docs.travis-ci.com/user/deployment/releases/#setting-the-tag-at-deployment-time].|
 |user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
 |secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
@@ -129,10 +136,13 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | Key            | Description   |
 | :------------- |:--------------|
 |appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install `--without system_tests` as default, therefore avoiding redundant gem installation.|
+|install_pre  |Add install steps to the start of `install`. |
+|install_post |Add install steps to the end of `install`. |
 |environment|Defines any environment variables wanted for the job run. In our case we default to the latest Puppet 4 gem version.|
 |matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
 |simplecov|Set to `true` to enable collecting ruby code coverage.|
 |test\_script|This defines the test script that will be executed. For our purposes the default is set to `bundle exec rake %CHECK%`. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as `bundle exec rake spec`, which would run the spec tests of the module.|
+|use_litmus|Configures Appveyor to be able to use Litmus for acceptance testing jobs|
 
 ### Rakefile
 
@@ -171,6 +181,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 |required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module and the :system_tests gem group for gems relevant only to acceptance testing.|
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
+|use_litmus|Configures development gems to include Litmus for acceptance testing.|
 
 >Within each Gem group defined using the options above one or more gem item definitions may be listed in an array. Each item in that array must be a gem item hash.
 

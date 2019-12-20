@@ -6,11 +6,12 @@ RSpec.describe Puppet::Transport::<%= transport_class %> do
   subject(:transport) { described_class.new(context, connection_info) }
 
   let(:context) { instance_double('Puppet::ResourceApi::BaseContext', 'context') }
+  let(:password) { 'aih6cu6ohvohpahN' }
   let(:connection_info) do
     {
       host: 'api.example.com',
       user: 'admin',
-      password: 'aih6cu6ohvohpahN',
+      password: Puppet::Pops::Types::PSensitiveType::Sensitive.new(password),
     }
   end
 
@@ -30,7 +31,7 @@ RSpec.describe Puppet::Transport::<%= transport_class %> do
     end
 
     context 'with invalid credentials' do
-      let(:connection_info) { super().merge(password: 'invalid') }
+      let(:password) { 'invalid' }
 
       it 'raises an error' do
         expect { transport.verify(context) }.to raise_error RuntimeError, %r{authentication error}

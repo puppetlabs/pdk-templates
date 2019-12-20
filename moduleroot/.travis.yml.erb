@@ -1,4 +1,25 @@
+<%
+  if @configs['deploy_to_forge']['enabled']
+    # If Deploy To Forge is enabled..
+    # - Inject the deployment stage using the tag regex
+    @configs['stages'] << {
+      'name' => 'deploy',
+      'if'   => "tag =~ #{@configs['deploy_to_forge']['tag_regex']}"
+    }
+    # - Inject the deployment task into the includes
+    @configs['includes'] << {
+      'env'   => 'DEPLOY_TO_FORGE=yes',
+      'stage' => 'deploy'
+    }
+  end
+-%>
 ---
+<% if @configs['os'] -%>
+os:
+<%   @configs['os'].each do |os| -%>
+  - <%= os %>
+<%   end -%>
+<% end -%>
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
 <% else -%>
@@ -21,11 +42,23 @@ addons:
 <%   end -%>
 <% end -%>
 before_install:
+<% if @configs['before_install_pre'] -%>
+<%   @configs['before_install_pre'].each do |bip| -%>
+  - <%= bip %>
+<%   end -%>
+<% end -%>
   - bundle -v
   - rm -f Gemfile.lock
-  - gem update --system $RUBYGEMS_VERSION
+  - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
+  - "# See https://github.com/puppetlabs/pdk-templates/commit/705154d5c437796b821691b707156e1b056d244f for an example of how this was used"
+  - '[ -z "$RUBYGEMS_VERSION" ] || yes | gem update --system $RUBYGEMS_VERSION'
   - gem --version
   - bundle -v
+<% if @configs['before_install_post'] -%>
+<%   @configs['before_install_post'].each do |bip| -%>
+  - <%= bip %>
+<%   end -%>
+<% end -%>
 script:
 <% if @configs['simplecov'] -%>
   - 'SIMPLECOV=yes bundle exec rake $CHECK'

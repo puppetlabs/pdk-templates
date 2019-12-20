@@ -41,6 +41,7 @@ cache:
 <%   end -%>
 <% end -%>
 
+<% if !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
 before_script:
 <% if configs['custom_before_steps'] -%>
 <%   configs['custom_before_steps'].each do |step| -%>
@@ -54,10 +55,13 @@ before_script:
   - bundle config mirror.http://rubygems.org/ <%= configs['rubygems_mirror'] %>
   - bundle config mirror.https://rubygems.org/ <%= configs['rubygems_mirror'] %>
 <% end -%>
-  - gem update --system $RUBYGEMS_VERSION
+  - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
+  - "# Set `rubygems_version` in the .sync.yml to set a value"
+  - '[ -z "$RUBYGEMS_VERSION" ] || yes | gem update --system $RUBYGEMS_VERSION'
   - gem --version
   - bundle -v
   - bundle install <%= configs['bundler_args'] %>
+<% end -%>
 
 <% if configs['ruby_versions'] -%>
 <%   configs['ruby_versions'].each do |ruby_version, options| -%>
@@ -116,29 +120,5 @@ beaker:
 <%   end -%>
 <% end -%>
 <% if configs['custom_jobs'] -%>
-<%   configs['custom_jobs'].each do |job, params| -%>
-<%= job %>:
-<%     params.each do |param, config| -%>
-<%       if config.is_a?(Array) -%>
-  <%= param %>:
-<%         config.each do |element| -%>
-    - <%= element %>
-<%         end -%>
-<%       elsif config.is_a?(Hash) -%>
-  <%= param %>:
-<%         config.each do |element, value| -%>
-<%           if value.is_a?(Array) -%>
-    <%= element %>:
-<%             value.each do |content| -%>
-      - <%= content %>
-<%             end -%>
-<%           else -%>
-    <%= element %>: '<%= value %>'
-<%           end -%>
-<%         end -%>
-<%       else -%>
-  <%= param %>: '<%= config %>'
-<%       end -%>
-<%     end %>
-<%   end -%>
+<%=  YAML.dump(configs['custom_jobs']).sub(%r{\A---\r?\n}m, '') %>
 <% end -%>

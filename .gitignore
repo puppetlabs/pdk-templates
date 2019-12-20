@@ -1,4 +1,5 @@
 .*.sw[op]
+*~
 .metadata
 .yardoc
 .yardwarns
@@ -20,4 +21,6 @@
 /tmp/
 /vendor/
 /convert_report.txt
-
+# Rubocop profile builder temporary files
+/rubocop/.rubocop.yml
+/rubocop/.rubocop_todo.yml
