@@ -105,11 +105,12 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |deploy_to_forge\\**enabled**|Allows you to enable or disable automatic forge deployments. Default is true|
 |deploy_to_forge\\**tag_regex**|Allows you to use a regular expression to define which tags will trigger a deployment.  The default is `^v\d`|
 |before_deploy|An array which can allow a user to specify the commands to run before kicking off a deployment. See [https://docs.travis-ci.com/user/deployment/releases/#setting-the-tag-at-deployment-time].|
-|use_litmus| By default it is disabled. Set to `true` to configure travis to use Litmus testing tool for acceptance testing jobs with default values. Its sub keys are `provision_list`, `puppet_collection`, `rvm`, `install_wget` which are detailed below.|.|
-|use_litmus\\**puppet_collection**|Allows you to specify the puppet version under test as an array. Default test are ran on _puppet 5_ and _puppet 6_|
-|use_litmus\\**provision_list**|Allows you to specify the platforms list under test as an array. Default test are ran on platformes defined in provision.yaml file under _travis_deb_ and _travis_el_|
-|use_litmus\\**rvm**|Allows you to specify the ruby version under test. Default is set to _2.5.3_|
-|use_litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms|
+|use_litmus| By default it is disabled. Set to `true` to configure travis to use Litmus testing tool for acceptance testing jobs with default values.|
+|litmus|Allows you to update default config values. Its sub keys are `provision_list`, `puppet_collection`, `rvm`, `install_wget` which are detailed below.|
+|litmus\\**puppet_collection**|Allows you to specify the puppet version under test. Default test are ran on _puppet 5_ and _puppet 6_.|
+|litmus\\**provision_list**|Allows you to specify the platforms list under test. Default test are ran on platformes defined in provision.yaml file under _travis_deb_ and _travis_el_|
+|litmus\\**rvm**|Allows you to specify the ruby version under test. Default it is set to _2.5.3_|
+|litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms. Default it is disabled. |
 |user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
 |secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
 

@@ -85,6 +85,11 @@
     - master
     - /^v\d/
   use_litmus: false
+  litmus:
+    provision_list: [travis_deb, travis_el]
+    puppet_collection: [puppet5, puppet6]
+    rvm: '2.5.3'
+    install_wget: no
   notifications:
     email: false
   deploy_to_forge:
