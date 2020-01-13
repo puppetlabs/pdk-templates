@@ -113,11 +113,13 @@ matrix:
   @configs['litmus']['puppet_collection'].each do |puppet_version|
   @configs['litmus']['provision_list'].each do |platform|-%>
     -
+      before_script:
+      - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
 <%  if @configs['litmus']['install_wget']-%>
-      before_script: ["bundle exec rake 'litmus:provision_list[<%=platform%>]'", "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'", "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'", "bundle exec rake litmus:install_module"]
-<%  else-%>
-      before_script: ["bundle exec rake 'litmus:provision_list[<%=platform%>]'", "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'", "bundle exec rake litmus:install_module"]
+      - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
 <%  end-%>
+      - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
+      - "bundle exec rake litmus:install_module"
       bundler_args: 
       dist: trusty
       env: PLATFORMS=<%=platform%>_<%=puppet_version%>
