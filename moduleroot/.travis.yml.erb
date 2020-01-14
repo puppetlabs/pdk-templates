@@ -109,11 +109,33 @@ matrix:
       <%= key %>: <%= job[key].gsub(/@@SET@@/, set['set']).gsub(/@@COLLECTION@@/, set.fetch('collection', 'puppet6')).gsub(/@@TESTMODE@@/, set.fetch('testmode', 'apply')) %>
 <%   end -%>
 <% end -%>
+<% if @configs['use_litmus']
+  @configs['litmus']['puppet_collection'].each do |puppet_version|
+  @configs['litmus']['provision_list'].each do |platform|-%>
+    -
+      before_script:
+      - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
+<%  if @configs['litmus']['install_wget']-%>
+      - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+<%  end-%>
+      - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
+      - "bundle exec rake litmus:install_module"
+      bundler_args: 
+      dist: trusty
+      env: PLATFORMS=<%=platform%>_<%=puppet_version%>
+      rvm: <%=@configs['litmus']['rvm']%>
+      script: ["bundle exec rake litmus:acceptance:parallel"]
+      services: docker
+      stage: acceptance
+      sudo: required
+<%   end -%>
+<%  end -%>
+<% end -%>
 <% (@configs['includes'] - (@configs['remove_includes'] || []) + (@configs['extras'] || [])).each do |job| -%>
     -
 <%   job.keys.sort.each do |key| -%>
       <%= key %>: <%= job[key] %>
-<%   end -%>
+<%  end -%>
 <% end -%>
 <% if @configs['allow_failures'] -%>
   allow_failures:
