@@ -1,4 +1,5 @@
 #!/usr/bin/env ruby
+# frozen_string_literal: true
 
 this_dir = __dir__
 raise "This script must be run from the #{this_dir} directory" if this_dir != Dir.pwd
