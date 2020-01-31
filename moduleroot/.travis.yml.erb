@@ -101,7 +101,7 @@ stages:
 <%     end -%>
 <%   end -%>
 <% end -%>
-matrix:
+jobs:
   fast_finish: true
   include:
 <% (@configs['docker_sets'] || []).each do |set| -%>
