@@ -82,7 +82,7 @@ env:
 <%     end -%>
 <%   end -%>
 <%   if @configs.has_key?('env') -%>
-  matrix:
+  jobs:
 <%     @configs['env'].each do |env| -%>
     - <%= env %>
 <%     end -%>
