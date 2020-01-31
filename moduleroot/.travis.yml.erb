@@ -181,7 +181,7 @@ before_deploy:
 <% end -%>
 deploy:
   provider: puppetforge
-  user: <%= @configs['user'] %>
+  username: <%= @configs['user'] %>
   password:
     secure: "<%= @configs['secure'] %>"
   on:
