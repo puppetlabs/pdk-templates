@@ -40,7 +40,8 @@ The following is a description and explaination of each of the keys within confi
 
 | Key               | Description   |
 | :-----------------|:--------------|
-| paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
+| required          | The default list of files or paths for git to ignore or untrack that are commonly specified in a module project.
+| paths             | Defines any additional files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation).
 
 ### .gitlab-ci.yml
 
@@ -69,7 +70,8 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 
 | Key               | Description   |
 | :-----------------|:--------------|
-| paths             | Defines which files or paths for PDK to ignore when building a module package. The default configuration helps to set up commonly ignored files in a module project when building a package.
+| required          | The default list of files or paths for PDK to ignore when building a module package.
+| paths             | Defines additional files or paths for PDK to ignore when building a module package.
 
 ### .travis.yml
 
