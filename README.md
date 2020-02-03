@@ -70,7 +70,8 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 
 | Key               | Description   |
 | :-----------------|:--------------|
-| paths             | Defines which files or paths for PDK to ignore when building a module package. The default configuration helps to set up commonly ignored files in a module project when building a package.
+| required          | The default list of files or paths for PDK to ignore when building a module package.
+| paths             | Defines additional files or paths for PDK to ignore when building a module package.
 
 ### .travis.yml
 
