@@ -19,6 +19,8 @@ os:
 <%   @configs['os'].each do |os| -%>
   - <%= os %>
 <%   end -%>
+<% else -%>
+os: linux
 <% end -%>
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
@@ -80,7 +82,7 @@ env:
 <%     end -%>
 <%   end -%>
 <%   if @configs.has_key?('env') -%>
-  matrix:
+  jobs:
 <%     @configs['env'].each do |env| -%>
     - <%= env %>
 <%     end -%>
@@ -99,7 +101,7 @@ stages:
 <%     end -%>
 <%   end -%>
 <% end -%>
-matrix:
+jobs:
   fast_finish: true
   include:
 <% (@configs['docker_sets'] || []).each do |set| -%>
@@ -127,7 +129,6 @@ matrix:
       script: ["bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
-      sudo: required
 <%   end -%>
 <%  end -%>
 <% end -%>
@@ -181,7 +182,7 @@ before_deploy:
 <% end -%>
 deploy:
   provider: puppetforge
-  user: <%= @configs['user'] %>
+  username: <%= @configs['user'] %>
   password:
     secure: "<%= @configs['secure'] %>"
   on:
