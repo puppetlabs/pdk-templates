@@ -59,12 +59,12 @@
     - spec
     - acceptance
   ruby_versions:
-    - 2.5.3
+    - 2.5.7
   bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
-    rvm: 2.5.3
+    rvm: 2.5.7
     sudo: required
     dist: trusty
     services: docker
@@ -79,7 +79,7 @@
       rvm: 2.4.5
       stage: spec
     - env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
-      rvm: 2.5.3
+      rvm: 2.5.7
       stage: spec
   branches:
     - master
@@ -88,7 +88,7 @@
   litmus:
     provision_list: [travis_deb, travis_el]
     puppet_collection: [puppet5, puppet6]
-    rvm: '2.5.3'
+    rvm: '2.5.7'
     install_wget: no
   notifications:
     email: false
@@ -603,7 +603,7 @@ Gemfile:
         - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
     ruby_versions:
-      '2.5.3':
+      '2.5.7':
         checks:
           - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
           - parallel_spec
