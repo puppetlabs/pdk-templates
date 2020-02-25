@@ -93,14 +93,32 @@ before_script:
 <%       end -%>
 <%       unless options['except'].nil? || options['except'][check].nil? -%>
   except:
-<%         options['except'][check].each do |ref| -%>
+<%         if ['variables', 'refs', 'changes', 'kubernetes'].any? { |i| options['except'][check].include?(i) } -%>
+<%           options['except'][check].each do |key, ref| -%>
+      <%= key %>:
+<%             ref.each do |r| -%>
+      - <%= r %>
+<%             end -%>
+<%           end -%>
+<%         else -%>
+<%           options['except'][check].each do |ref| -%>
     - <%= ref %>
+<%           end -%>
 <%         end -%>
 <%       end -%>
 <%       unless options['only'].nil? || options['only'][check].nil? -%>
   only:
-<%         options['only'][check].each do |ref| -%>
+<%         if ['variables', 'refs', 'changes', 'kubernetes'].any? { |i| options['only'][check].include?(i) } -%>
+<%           options['only'][check].each do |key, ref| -%>
+      <%= key %>:
+<%             ref.each do |r| -%>
+      - <%= r %>
+<%             end -%>
+<%           end -%>
+<%         else -%>
+<%           options['only'][check].each do |ref| -%>
     - <%= ref %>
+<%           end -%>
 <%         end -%>
 <%       end -%>
 <%       if options['tags'] -%>
