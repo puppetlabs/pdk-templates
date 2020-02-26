@@ -122,11 +122,10 @@ jobs:
 <%  end-%>
       - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
       - "bundle exec rake litmus:install_module"
-      bundler_args: 
-      dist: trusty
+      bundler_args:
       env: PLATFORMS=<%=platform%>_<%=puppet_version%>
       rvm: <%=@configs['litmus']['rvm']%>
-      script: ["bundle exec rake litmus:acceptance:parallel"]
+      script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
 <%   end -%>
