@@ -52,7 +52,8 @@ The following is a description and explaination of each of the keys within confi
 
 | Key               | Description   |
 | :-----------------|:--------------|
-| paths             | Defines which files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation). The default configuration helps to set up commonly ignored or untracked files in a module project.
+| required          | The default list of files or paths for git to ignore or untrack that are commonly specified in a module project.
+| paths             | Defines any additional files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation).
 
 ### .gitlab-ci.yml
 
@@ -68,7 +69,8 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | global_variables |Allows you to set any global environment variables for the gitlab-ci pipeline. Currently includes setting the Puppet gem version.|
 | cache          | If this setting exists, it expects a single sub-key called `paths`. `paths` is an array of paths that will be cached for each subsequent job. Defaults to `['vendor/bundle']`|
 | bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests --path vendor/bundle --jobs $(nproc)` which avoids installing unnessesary gems while installing them to the `vendor/bundler.|
-| ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags.
+| ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags. |
+| ruby_versions\\{job}\\**except/only**|Basic `except`/`only` is an hash of `checks` with array of references of conditions for the `checks`:<br><br><pre>ruby_versions:<br>&nbsp;&nbsp;2.4.9:<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- tags<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- master</pre><br><br>Advanced `except`/`only` is an hash of `checks` with hash using 4 keywords `'variables', 'refs', 'changes', 'kubernetes'` each with it's own array of references or conditions for the `checks`:<br><br><pre>ruby_versions:<br>&nbsp;&nbsp;2.4.9:<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refs:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- tags<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- master<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variables:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- $CI_COMMIT_MESSAGE =~ /\[skip[ _-]tests?\]/i</pre> https://docs.gitlab.com/ce/ci/yaml/README.html#onlyexcept-advanced |
 | custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
 | rubygems_mirror | Use a custom rubygems mirror url |
 | image          |Define the Docker image to use, when using the Docker runner. Please see the [Using Docker images](https://docs.gitlab.com/ee/ci/docker/using_docker_images.html) docs for specifics.|
@@ -81,7 +83,8 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 
 | Key               | Description   |
 | :-----------------|:--------------|
-| paths             | Defines which files or paths for PDK to ignore when building a module package. The default configuration helps to set up commonly ignored files in a module project when building a package.
+| required          | The default list of files or paths for PDK to ignore when building a module package.
+| paths             | Defines additional files or paths for PDK to ignore when building a module package.
 
 ### .travis.yml
 
@@ -117,6 +120,12 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |deploy_to_forge\\**enabled**|Allows you to enable or disable automatic forge deployments. Default is true|
 |deploy_to_forge\\**tag_regex**|Allows you to use a regular expression to define which tags will trigger a deployment.  The default is `^v\d`|
 |before_deploy|An array which can allow a user to specify the commands to run before kicking off a deployment. See [https://docs.travis-ci.com/user/deployment/releases/#setting-the-tag-at-deployment-time].|
+|use_litmus| By default it is disabled. Set to `true` to configure travis to use Litmus testing tool for acceptance testing jobs with default values.|
+|litmus|Allows you to update default config values. Its sub keys are `provision_list`, `puppet_collection`, `rvm`, `install_wget` which are detailed below.|
+|litmus\\**puppet_collection**|Allows you to specify the puppet version under test. Default test are ran on _puppet 5_ and _puppet 6_.|
+|litmus\\**provision_list**|Allows you to specify the platforms list under test. Default test are ran on platformes defined in provision.yaml file under _travis_deb_ and _travis_el_|
+|litmus\\**rvm**|Allows you to specify the ruby version under test. Default it is set to _2.5.7_|
+|litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms. Default it is disabled. |
 |user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
 |secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
 
@@ -155,6 +164,9 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file|
 |changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the changlog rake task.|
 |changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
+|github_site|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_site = https://git.domain.tld`) |
+|github_endpoint|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_endpoint = https://git.domain.tld/api/v4`) |
+|gitlab|Allows to work with GitLab (Pending ![GitLab support](https://github.com/github-changelog-generator/github-changelog-generator/pull/657)). (Example: `gitlab = true` # Boolean default is false)|
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
 |extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
@@ -181,7 +193,6 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 | :------------- |:--------------|
 |required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module and the :system_tests gem group for gems relevant only to acceptance testing.|
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
-|use_litmus|Configures development gems to include Litmus for acceptance testing.|
 
 >Within each Gem group defined using the options above one or more gem item definitions may be listed in an array. Each item in that array must be a gem item hash.
 
@@ -215,6 +226,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 
 | Key            | Description   |
 | :------------- |:--------------|
+|default_facter_version|Sets the [`default_facter_version`](https://github.com/mcanevet/rspec-puppet-facts#specifying-a-default-facter-version) rspec-puppet-facts parameter.|
 |hiera_config|Sets the [`hiera_config`](http://rspec-puppet.com/documentation/configuration/#hiera_config) rspec-puppet parameter.|
 |hiera_config_ruby|Sets the [`hiera_config`](http://rspec-puppet.com/documentation/configuration/#hiera_config) rspec-puppet parameter. A ruby expression returning the path to your hiera.yaml file. `hiera_config` takes precedence if both values `hiera_config` and `hiera_config_ruby` are specified. |
 |mock_with|Defaults to `':mocha'`. Recommended to be set to `':rspec'`, which uses RSpec's built-in mocking library, instead of a third-party one.|
