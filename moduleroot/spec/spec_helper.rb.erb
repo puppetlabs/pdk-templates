@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 <%- if @configs['mock_with'] -%>
 RSpec.configure do |c|
   c.mock_with <%= @configs['mock_with'] %>
@@ -38,6 +40,9 @@ end
 
 RSpec.configure do |c|
   c.default_facts = default_facts
+  <%- if @configs['default_facter_version'] -%>
+  c.default_facter_version = '<%= @configs['default_facter_version'] %>'
+  <%- end -%>
   <%- if @configs['hiera_config'] -%>
   c.hiera_config = '<%= @configs['hiera_config'] %>'
   <%- elsif @configs['hiera_config_ruby'] -%>

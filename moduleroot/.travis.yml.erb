@@ -19,6 +19,8 @@ os:
 <%   @configs['os'].each do |os| -%>
   - <%= os %>
 <%   end -%>
+<% else -%>
+os: linux
 <% end -%>
 <% if @configs['dist'] -%>
 dist: <%= @configs['dist'] %>
@@ -51,7 +53,8 @@ before_install:
   - rm -f Gemfile.lock
   - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
   - "# See https://github.com/puppetlabs/pdk-templates/commit/705154d5c437796b821691b707156e1b056d244f for an example of how this was used"
-  - '[ -z "$RUBYGEMS_VERSION" ] || yes | gem update --system $RUBYGEMS_VERSION'
+  - "# Ignore exit code of SIGPIPE'd yes to not fail with shell's pipefail set"
+  - '[ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION'
   - gem --version
   - bundle -v
 <% if @configs['before_install_post'] -%>
@@ -79,7 +82,7 @@ env:
 <%     end -%>
 <%   end -%>
 <%   if @configs.has_key?('env') -%>
-  matrix:
+  jobs:
 <%     @configs['env'].each do |env| -%>
     - <%= env %>
 <%     end -%>
@@ -98,7 +101,7 @@ stages:
 <%     end -%>
 <%   end -%>
 <% end -%>
-matrix:
+jobs:
   fast_finish: true
   include:
 <% (@configs['docker_sets'] || []).each do |set| -%>
@@ -108,11 +111,31 @@ matrix:
       <%= key %>: <%= job[key].gsub(/@@SET@@/, set['set']).gsub(/@@COLLECTION@@/, set.fetch('collection', 'puppet6')).gsub(/@@TESTMODE@@/, set.fetch('testmode', 'apply')) %>
 <%   end -%>
 <% end -%>
+<% if @configs['use_litmus']
+  @configs['litmus']['puppet_collection'].each do |puppet_version|
+  @configs['litmus']['provision_list'].each do |platform|-%>
+    -
+      before_script:
+      - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
+<%  if @configs['litmus']['install_wget']-%>
+      - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+<%  end-%>
+      - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
+      - "bundle exec rake litmus:install_module"
+      bundler_args:
+      env: PLATFORMS=<%=platform%>_<%=puppet_version%>
+      rvm: <%=@configs['litmus']['rvm']%>
+      script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
+      services: docker
+      stage: acceptance
+<%   end -%>
+<%  end -%>
+<% end -%>
 <% (@configs['includes'] - (@configs['remove_includes'] || []) + (@configs['extras'] || [])).each do |job| -%>
     -
 <%   job.keys.sort.each do |key| -%>
       <%= key %>: <%= job[key] %>
-<%   end -%>
+<%  end -%>
 <% end -%>
 <% if @configs['allow_failures'] -%>
   allow_failures:
@@ -158,7 +181,7 @@ before_deploy:
 <% end -%>
 deploy:
   provider: puppetforge
-  user: <%= @configs['user'] %>
+  username: <%= @configs['user'] %>
   password:
     secure: "<%= @configs['secure'] %>"
   on:

@@ -39,26 +39,6 @@ def gem_spec(gem, max_len)
 
   output
 end
-
-# Munge the default settings, if the `use_litmus` setting is asserted
-if @configs['use_litmus']
-  # Find the development metagems and change the version restriction to be at
-  # least 0.4. This is the minimum version where Litmus was introduced.
-  # We know that it should be in the `required` and the `development` group
-  dev_gems = []
-  if @configs['required'] && @configs['required'][':development']
-    @configs['required'][':development'].each do |gem|
-      next unless [
-          'puppet-module-posix-dev-r#{minor_version}',
-          'puppet-module-win-dev-r#{minor_version}'
-        ].include?(gem['gem'])
-      # Change the version of the development gems to ones that include the
-      # litmus gem. Note that this is mostly a noop on older rubies (<= 2.3)
-      # which won't have litmus in there.
-      gem['version'] = '~> 0.4' if gem['version'] = '~> 0.3'
-    end
-  end
-end
 -%>
 source ENV['GEM_SOURCE'] || 'https://rubygems.org'
 
