@@ -1,4 +1,6 @@
 ---
+common:
+  disable_legacy_facts: false
 .gitattributes:
   include:
     '*.rb': 'eol=lf'
