@@ -130,7 +130,7 @@ Rakefile:
 .rubocop.yml:
   selected_profile: strict
   default_configs: &default_configs
-    Metrics/LineLength:
+    Layout/LineLength:
       Description: People have wide screens, use them.
       Max: 200
 
