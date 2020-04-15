@@ -48,13 +48,16 @@ RSpec.configure do |c|
   <%- elsif @configs['hiera_config_ruby'] -%>
   c.hiera_config = <%= @configs['hiera_config_ruby'] %>
   <%- end -%>
-  <%- if @configs['strict_level'] -%>
   c.before :each do
+    <%- if @configs['strict_level'] -%>
     # set to strictest setting for testing
     # by default Puppet runs at warning level
     Puppet.settings[:strict] = <%= @configs['strict_level'] %>
+    <%- end -%>
+    <%- if @configs['strict_variables'] -%>
+    Puppet.settings[:strict_variables] = <%= @configs['strict_variables'] %>
+    <%- end -%>
   end
-  <%- end -%>
   c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
   c.after(:suite) do
     <%- if @configs['coverage_report'] -%>
