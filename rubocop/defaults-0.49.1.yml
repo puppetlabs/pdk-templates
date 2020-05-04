@@ -223,7 +223,6 @@
 - Style/BeginBlock
 - Style/BlockComments
 - Style/BlockDelimiters
-- Style/BracesAroundHashParameters
 - Style/CaseEquality
 - Style/CharacterLiteral
 - Style/ClassAndModuleCamelCase
