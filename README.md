@@ -38,6 +38,15 @@ For more on basic usage and more detailed description of the PDK in action pleas
 
 The following is a description and explaination of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
+### common
+
+> A namespace for settings that affect multiple templates
+
+| Key                    | Description |
+|:-----------------------|:------------|
+| disable\_legacy\_facts | Set to `true` to configure PDK to prevent the use of [legacy Facter facts][legacy_facts_doc]. Currently this will install and enable the [legacy\_facts][legacy_facts_pl_plugin] plugin for puppet-lint for use during `pdk validate`. |
+
+
 ### .gitattributes
 
 >A .gitattributes file in your repo allows you to ensure consistent git settings.
@@ -232,6 +241,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |mock_with|Defaults to `':mocha'`. Recommended to be set to `':rspec'`, which uses RSpec's built-in mocking library, instead of a third-party one.|
 |spec_overrides|An array of extra lines to add into your `spec_helper.rb`. Can be used as an alternative to `spec_helper_local`|
 |strict_level| Defines the [Puppet Strict configuration parameter](https://puppet.com/docs/puppet/5.4/configuration.html#strict). Defaults to `:warning`. Other values are: `:error` and `:off`. `:error` provides strictest level checking and is encouraged.|
+|strict_variables| Defines the [Puppet Strict Variables configuration parameter](https://puppet.com/docs/puppet/5.4/configuration.html#strict_variables). Defaults to `true` however due to `puppetlabs_spec_helper` forced override (https://github.com/puppetlabs/puppetlabs_spec_helper/blob/070ecb79a63cb8fa10f46532c413c055e2697682/lib/puppetlabs_spec_helper/module_spec_helper.rb#L71). Set to `false` to align with true default or with `STRICT_VARIABLES=no` environment setting.|
 |coverage_report|Enable [rspec-puppet coverage reports](https://rspec-puppet.com/documentation/coverage/). Defaults to `false`|
 |minimum_code_coverage_percentage|The desired code coverage percentage required for tests to pass. Defaults to `0`|
 
@@ -313,3 +323,6 @@ appveyor.yml:
 ## Further Notes <a name="notes"></a>
 
 Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.
+
+[legacy_facts_doc]: https://puppet.com/docs/facter/latest/core_facts.html#legacy-facts
+[legacy_facts_pl_plugin]: https://github.com/mmckinst/puppet-lint-legacy_facts-check

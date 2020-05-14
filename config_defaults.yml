@@ -1,4 +1,6 @@
 ---
+common:
+  disable_legacy_facts: false
 .gitattributes:
   include:
     '*.rb': 'eol=lf'
@@ -156,6 +158,10 @@ Rakefile:
     Style/BlockDelimiters:
       Description: Prefer braces for chaining. Mostly an aesthetical choice. Better to be consistent then.
       EnforcedStyle: braces_for_chaining
+
+    Style/BracesAroundHashParameters:
+      Description: Braces are required by Ruby 2.7. Cop removed from RuboCop v0.80.0. See https://github.com/rubocop-hq/rubocop/pull/7643
+      Enabled: false
 
     Style/ClassAndModuleChildren:
       Description: Compact style reduces the required amount of indentation.
@@ -623,3 +629,4 @@ spec/spec_helper.rb:
   coverage_report: false
   minimum_code_coverage_percentage: 0
   strict_level: ":warning"
+  strict_variables: true
