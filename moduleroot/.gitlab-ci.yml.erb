@@ -14,6 +14,9 @@ stages:
   - syntax
   - unit
 <% end -%>
+<% if configs['use_litmus'] -%>
+  - acceptance
+<% end -%>
 <% if configs['beaker'] -%>
   - beaker
 <% end -%>
@@ -129,6 +132,31 @@ before_script:
 <%       end %>
 <%     end -%>
 <%   end -%>
+<% end -%>
+<% if @configs['use_litmus'] -%>
+  configs = if @configs['litmus']['complex']
+              (@configs['litmus']['complex'] + [{'collection' =>@configs['litmus'] }])
+            else
+              [{'collection' =>@configs['litmus'] }]
+            end
+  configs.each do |config|
+  config['collection']['puppet_collection'].each do |puppet_version|
+  config['collection']['provision_list'].each do |platform|-%>
+litmus-<%= platform -%>-<%= puppet_version -%>:
+  stage: acceptance
+  variables:
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:dind
+  before_script:
+    - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
+<%  if @configs['litmus']['install_wget']-%>
+    - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+<%  end-%>
+    - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
+    - "bundle exec rake litmus:install_module"
+  script:
+    - "bundle exec rake litmus:acceptance:parallel"
 <% end -%>
 <% if configs['beaker'] -%>
 beaker:
