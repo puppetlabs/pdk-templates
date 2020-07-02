@@ -124,7 +124,7 @@ jobs:
       before_script:
       - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
 <%  if @configs['litmus']['install_wget']-%>
-      - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+      - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --targets='localhost*'"
 <%  end-%>
       - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
       - "bundle exec rake litmus:install_module"
