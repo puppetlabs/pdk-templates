@@ -8,6 +8,8 @@ common:
     '*.pp': 'eol=lf'
     '*.sh': 'eol=lf'
     '*.epp': 'eol=lf'
+.github/workflows/publish.yaml:
+  enabled: false # requires a FORGE_API_KEY GitHub secret
 .gitignore:
   required: &ignorepaths
       - '.git/'
