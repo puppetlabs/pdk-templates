@@ -11,7 +11,7 @@ script:
   - ".travis/test_script.sh"
 branches:
   only:
-    - master
+    - main
 notifications:
   email: false
   slack:

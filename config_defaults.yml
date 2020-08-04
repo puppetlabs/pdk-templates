@@ -84,7 +84,7 @@ common:
       rvm: 2.5.7
       stage: spec
   branches:
-    - master
+    - main
     - /^v\d/
   use_litmus: false
   use_litmus_complex: false
@@ -121,7 +121,7 @@ appveyor.yml:
   test_script:
     - bundle exec rake %CHECK%
   branches:
-    - master
+    - main
     - release
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
