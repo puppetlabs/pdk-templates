@@ -112,13 +112,19 @@ jobs:
 <%   end -%>
 <% end -%>
 <% if @configs['use_litmus']
-  @configs['litmus']['puppet_collection'].each do |puppet_version|
-  @configs['litmus']['provision_list'].each do |platform|-%>
+  configs = if @configs['litmus']['complex']
+              (@configs['litmus']['complex'] + [{'collection' =>@configs['litmus'] }])
+            else
+              [{'collection' =>@configs['litmus'] }]
+            end
+  configs.each do |config|
+  config['collection']['puppet_collection'].each do |puppet_version|
+  config['collection']['provision_list'].each do |platform|-%>
     -
       before_script:
       - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
 <%  if @configs['litmus']['install_wget']-%>
-      - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+      - "bundle exec bolt command run 'apt-get install wget -y || yum install wget -y' --inventoryfile inventory.yaml --targets='localhost*'"
 <%  end-%>
       - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
       - "bundle exec rake litmus:install_module"
@@ -128,6 +134,7 @@ jobs:
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker
       stage: acceptance
+<%    end -%>
 <%   end -%>
 <%  end -%>
 <% end -%>

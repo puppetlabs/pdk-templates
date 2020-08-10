@@ -135,6 +135,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |litmus\\**provision_list**|Allows you to specify the platforms list under test. Default test are ran on platformes defined in provision.yaml file under _travis_deb_ and _travis_el_|
 |litmus\\**rvm**|Allows you to specify the ruby version under test. Default it is set to _2.5.7_|
 |litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms. Default it is disabled. |
+|litmus\\**complex\\collection**|Allows you to specify multiple collections of `puppet_collection` and `provision_list`, allowing you to set certain OS to only run on certain Puppet versions. |
 |user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
 |secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
 

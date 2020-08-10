@@ -87,6 +87,7 @@ common:
     - master
     - /^v\d/
   use_litmus: false
+  use_litmus_complex: false
   litmus:
     provision_list: [travis_deb, travis_el]
     puppet_collection: [puppet5, puppet6]
