@@ -150,6 +150,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |simplecov|Set to `true` to enable collecting ruby code coverage.|
 |test\_script|This defines the test script that will be executed. For our purposes the default is set to `bundle exec rake %CHECK%`. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as `bundle exec rake spec`, which would run the spec tests of the module.|
 |use_litmus|Configures Appveyor to be able to use Litmus for acceptance testing jobs|
+|remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
 
 ### Rakefile
 
