@@ -578,6 +578,10 @@ Gemfile:
       - gem: json
         version: '= 2.1.0'
         condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      # simplecov 0.19.0 and higher only work ony ruby > 2.5
+      - gem: simplecov
+        version: '<= 0.18.5'
+        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.5.0')"
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
