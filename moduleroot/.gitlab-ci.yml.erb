@@ -89,6 +89,11 @@ default:
 <%       if options['rubygems_version'] -%>
     RUBYGEMS_VERSION: '<%= options['rubygems_version'] -%>'
 <%       end -%>
+<% if configs.has_key?('global_variables') -%>
+<%   configs['global_variables'].each do |key, value| -%>
+    <%= key %>: '<%= value %>'
+<%   end -%>
+<% end -%>
 <%       if options['allow_failure'] -%>
 <%         if options['allow_failure'].include?(check) -%>
   allow_failure: true
