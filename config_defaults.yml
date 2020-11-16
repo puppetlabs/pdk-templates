@@ -625,6 +625,10 @@ Gemfile:
         puppet_version: '~> 5'
     # beaker: true
     default_before_script: true
+.gitpod.Dockerfile:
+  unmanaged: true
+.gitpod.yml:
+  unmanaged: true    
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
   ipaddress6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
