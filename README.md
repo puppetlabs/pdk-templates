@@ -85,6 +85,10 @@ If you are using Gitpod you will need to opt-in and enable gitpod support for pd
 
 ```
 
+### Github Workflows
+
+These workflows are depending on puppet-internal resources and are currently not suited for public consumption. Feel free to take them as inspiration how to run some tests on Github Actions. Please let us know at <ia_content@puppet.com> what you come up with!
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
