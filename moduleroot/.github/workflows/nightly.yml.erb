@@ -36,9 +36,9 @@ jobs:
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       with:
         path: vendor/gems
-        key: ${{ runner.os }}-nightly-${{ hashFiles('**/Gemfile') }}
+        key: ${{ runner.os }}-${{ github.event_name }}-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
-          ${{ runner.os }}-nightly-
+          ${{ runner.os }}-${{ github.event_name }}-
           ${{ runner.os }}-
 
     - name: Install gems
@@ -86,9 +86,9 @@ jobs:
       uses: actions/cache@v2
       with:
         path: vendor/gems
-        key: ${{ runner.os }}-nightly-${{ hashFiles('**/Gemfile') }}
+        key: ${{ runner.os }}-${{ github.event_name }}-${{ hashFiles('**/Gemfile') }}
         restore-keys: |
-          ${{ runner.os }}-nightly-
+          ${{ runner.os }}-${{ github.event_name }}-
           ${{ runner.os }}-
 
     - name: Install gems
