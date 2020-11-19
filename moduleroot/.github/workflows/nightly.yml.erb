@@ -21,6 +21,16 @@ jobs:
     outputs:
       matrix: ${{ steps.get-matrix.outputs.matrix }}
     steps:
+    - uses: DavidS/gha-buildevents@matrix-key
+      with:
+        apikey: ${{ env.HONEYCOMB_WRITEKEY }}
+        dataset: ${{ env.HONEYCOMB_DATASET }}
+        job-status: ${{ job.status }}
+
+    - run: |
+        echo STEP_ID=0 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+
     - name: Checkout Source
       uses: actions/checkout@v2
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
@@ -44,25 +54,26 @@ jobs:
     - name: Install gems
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       run: |
-        bundle config path vendor/gems
-        bundle config jobs 8
-        bundle config retry 3
-        bundle install
-        bundle clean
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config path vendor/gems' -- bundle config path vendor/gems
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config jobs 8' -- bundle config jobs 8
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config retry 3' -- bundle config retry 3
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle install' -- bundle install
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle clean' -- bundle clean
 
     - name: Setup Acceptance Test Matrix
       id: get-matrix
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
-      run: "bundle exec matrix_from_metadata"
-
-    - name: Setup Acceptance Test Matrix
-      id: get-matrix
       run: |
         if [ '${{ github.repository_owner }}' == '<%= common['owner'] %>' ]; then
-          bundle exec matrix_from_metadata
+          buildevents cmd $TRACE_ID $STEP_ID matrix_from_metadata -- bundle exec matrix_from_metadata
         else
           echo  "::set-output name=matrix::{}"
         fi
+
+    - name: Record setup time
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Test Matrix'
 
   Acceptance:
     needs:
@@ -73,7 +84,25 @@ jobs:
       fail-fast: false
       matrix: ${{fromJson(needs.setup_matrix.outputs.matrix)}}
 
+    env:
+      BUILDEVENT_FILE: '../buildevents.txt'
+
     steps:
+    - run: |
+        echo 'platform=${{ matrix.platform }}' >> $BUILDEVENT_FILE
+        echo 'collection=${{ matrix.collection }}' >> $BUILDEVENT_FILE
+
+    - uses: DavidS/gha-buildevents@matrix-key
+      with:
+        apikey: ${{ env.HONEYCOMB_WRITEKEY }}
+        dataset: ${{ env.HONEYCOMB_DATASET }}
+        job-status: ${{ job.status }}
+        matrix-key: ${{ matrix.platform }}-${{ matrix.collection }}
+
+    - run: |
+        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-1 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+
     - name: Checkout Source
       uses: actions/checkout@v2
 
@@ -91,21 +120,34 @@ jobs:
           ${{ runner.os }}-${{ github.event_name }}-
           ${{ runner.os }}-
 
-    - name: Install gems
+    - name: Record cache setup time
+      if: ${{ always() }}
       run: |
-        bundle config path vendor/gems
-        bundle config jobs 8
-        bundle config retry 3
-        bundle install
-        bundle clean
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Cache retrieval'
+        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-2 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
-    - name: bundler environment
+    - name: Bundler Setup
       run: |
-        bundle env
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config path vendor/gems' -- bundle config path vendor/gems
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config jobs 8' -- bundle config jobs 8
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config retry 3' -- bundle config retry 3
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle install' -- bundle install
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle clean' -- bundle clean
+        echo ::group::bundler environment
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
+        echo ::endgroup::
+
+    - name: Record Bundler Setup time
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Bundler Setup'
+        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-3 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
     - name: Provision test environment
       run: |
-        bundle exec rake 'litmus:provision[provision::provision_service,${{ matrix.platform }}]'
+        buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:provision ${{ matrix.platform }}' -- bundle exec rake 'litmus:provision[provision::provision_service,${{ matrix.platform }}]'
         echo ::group::=== REQUEST ===
         cat request.json || true
         echo
@@ -123,7 +165,7 @@ jobs:
         timeout_minutes: 30
         max_attempts: 5
         retry_wait_seconds: 60
-        command: bundle exec rake 'litmus:install_agent[${{ matrix.collection }}]'
+        command: buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_agent ${{ matrix.collection }}' -- bundle exec rake 'litmus:install_agent[${{ matrix.collection }}]'
 
     # The agent installer on windows does not finish in time for this to work. To
     # work around this for now, retry after a minute if installing the module failed.
@@ -133,19 +175,41 @@ jobs:
         timeout_minutes: 30
         max_attempts: 2
         retry_wait_seconds: 60
-        command: bundle exec rake 'litmus:install_module'
+        command: buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_module' -- bundle exec rake 'litmus:install_module'
+
+    - name: Record deployment times
+      if: ${{ always() }}
+      run: |
+        echo ::group::honeycomb step
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Deploy test system'
+        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-4 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+        echo ::endgroup::
 
     - name: Run acceptance tests
-      run: bundle exec rake 'litmus:acceptance:parallel'
+      run: |
+        buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:acceptance:parallel' -- bundle exec rake 'litmus:acceptance:parallel'
+
+    - name: Record acceptance testing times
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Run acceptance tests'
+        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-5 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
     - name: Remove test environment
       if: ${{ always() }}
       run: |
-        bundle exec rake 'litmus:tear_down'
+        buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:tear_down' -- bundle exec rake 'litmus:tear_down'
         echo ::group::=== REQUEST ===
         cat request.json || true
         echo
         echo ::endgroup::
+
+    - name: Record removal times
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Remove test environment'
 
 <% if @configs['slack-notifications'] -%>
   slack-workflow-status:
