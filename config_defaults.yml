@@ -1,6 +1,11 @@
 ---
 common:
   disable_legacy_facts: false
+  owner: puppetlabs
+  honeycomb:
+    writekey: 7f3c63a70eecc61d635917de46bea4e6
+    dataset: litmus tests
+
 .gitattributes:
   include:
     '*.rb': 'eol=lf'
@@ -628,7 +633,7 @@ Gemfile:
 .gitpod.Dockerfile:
   unmanaged: true
 .gitpod.yml:
-  unmanaged: true    
+  unmanaged: true
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
   ipaddress6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
@@ -639,3 +644,11 @@ spec/spec_helper.rb:
   minimum_code_coverage_percentage: 0
   strict_level: ":warning"
   strict_variables: true
+
+.github/workflows/nightly.yml:
+  unmanaged: true
+  slack-notifications:
+    channel: '#team-ia-bots'
+    name: 'GABot'
+.github/workflows/pr_test.yml:
+  unmanaged: true
