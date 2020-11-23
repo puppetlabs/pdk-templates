@@ -20,14 +20,17 @@ jobs:
     runs-on: ubuntu-20.04
     outputs:
       matrix: ${{ steps.get-matrix.outputs.matrix }}
+
     steps:
-    - uses: DavidS/gha-buildevents@matrix-key
+    - name: "Honeycomb: Start recording"
+      uses: kvrhdn/gha-buildevents@v1.0.2
       with:
         apikey: ${{ env.HONEYCOMB_WRITEKEY }}
         dataset: ${{ env.HONEYCOMB_DATASET }}
         job-status: ${{ job.status }}
 
-    - run: |
+    - name: "Honeycomb: Start first step"
+      run: |
         echo STEP_ID=0 >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
@@ -70,7 +73,7 @@ jobs:
           echo  "::set-output name=matrix::{}"
         fi
 
-    - name: Record setup time
+    - name: "Honeycomb: Record setup time"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Test Matrix'
@@ -92,14 +95,16 @@ jobs:
         echo 'platform=${{ matrix.platform }}' >> $BUILDEVENT_FILE
         echo 'collection=${{ matrix.collection }}' >> $BUILDEVENT_FILE
 
-    - uses: DavidS/gha-buildevents@matrix-key
+    - name: "Honeycomb: Start recording"
+      uses: kvrhdn/gha-buildevents@v1.0.2
       with:
         apikey: ${{ env.HONEYCOMB_WRITEKEY }}
         dataset: ${{ env.HONEYCOMB_DATASET }}
         job-status: ${{ job.status }}
         matrix-key: ${{ matrix.platform }}-${{ matrix.collection }}
 
-    - run: |
+    - name: "Honeycomb: start first step"
+      run: |
         echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-1 >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
@@ -120,7 +125,7 @@ jobs:
           ${{ runner.os }}-${{ github.event_name }}-
           ${{ runner.os }}-
 
-    - name: Record cache setup time
+    - name: "Honeycomb: Record cache setup time"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Cache retrieval'
@@ -138,7 +143,7 @@ jobs:
         buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
         echo ::endgroup::
 
-    - name: Record Bundler Setup time
+    - name: "Honeycomb: Record Bundler Setup time"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Bundler Setup'
@@ -177,7 +182,7 @@ jobs:
         retry_wait_seconds: 60
         command: buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_module' -- bundle exec rake 'litmus:install_module'
 
-    - name: Record deployment times
+    - name: "Honeycomb: Record deployment times"
       if: ${{ always() }}
       run: |
         echo ::group::honeycomb step
@@ -190,7 +195,7 @@ jobs:
       run: |
         buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:acceptance:parallel' -- bundle exec rake 'litmus:acceptance:parallel'
 
-    - name: Record acceptance testing times
+    - name: "Honeycomb: Record acceptance testing times"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Run acceptance tests'
@@ -206,7 +211,7 @@ jobs:
         echo
         echo ::endgroup::
 
-    - name: Record removal times
+    - name: "Honeycomb: Record removal times"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Remove test environment'
