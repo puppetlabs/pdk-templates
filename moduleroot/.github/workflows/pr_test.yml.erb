@@ -198,11 +198,13 @@ jobs:
     - name: Remove test environment
       if: ${{ always() }}
       run: |
-        buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:tear_down' -- bundle exec rake 'litmus:tear_down'
-        echo ::group::=== REQUEST ===
-        cat request.json || true
-        echo
-        echo ::endgroup::
+        if [ -f inventory.yaml ]; then
+          buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:tear_down' -- bundle exec rake 'litmus:tear_down'
+          echo ::group::=== REQUEST ===
+          cat request.json || true
+          echo
+          echo ::endgroup::
+        fi
 
     - name: Record removal times
       if: ${{ always() }}
