@@ -129,6 +129,9 @@ jobs:
       - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
       - "bundle exec rake litmus:install_module"
       bundler_args:
+<%  if config['collection']['dist']-%>
+      dist: <%=config['collection']['dist']%>
+<%  end -%>
       env: PLATFORMS=<%=platform%>_<%=puppet_version%>
       rvm: <%=@configs['litmus']['rvm']%>
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
