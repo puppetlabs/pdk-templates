@@ -159,26 +159,13 @@ jobs:
         sed -e 's/password: .*/password: "[redacted]"/' < inventory.yaml || true
         echo ::endgroup::
 
-    # The provision service hands out machines as soon as they're provisioned.
-    # The GCP VMs might still take a while to spool up and configure themselves fully.
-    # This retry loop spins until all agents have been installed successfully.
     - name: Install agent
-      uses: nick-invision/retry@v1
-      with:
-        timeout_minutes: 30
-        max_attempts: 5
-        retry_wait_seconds: 60
-        command: buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_agent ${{ matrix.collection }}' -- bundle exec rake 'litmus:install_agent[${{ matrix.collection }}]'
+      run: |
+        buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_agent ${{ matrix.collection }}' -- bundle exec rake 'litmus:install_agent[${{ matrix.collection }}]'
 
-    # The agent installer on windows does not finish in time for this to work. To
-    # work around this for now, retry after a minute if installing the module failed.
     - name: Install module
-      uses: nick-invision/retry@v1
-      with:
-        timeout_minutes: 30
-        max_attempts: 2
-        retry_wait_seconds: 60
-        command: buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_module' -- bundle exec rake 'litmus:install_module'
+      run: |
+        buildevents cmd $TRACE_ID $STEP_ID 'rake litmus:install_module' -- bundle exec rake 'litmus:install_module'
 
     - name: "Honeycomb: Record deployment times"
       if: ${{ always() }}
