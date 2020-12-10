@@ -562,20 +562,7 @@ Rakefile:
 Gemfile:
   required:
     ':development':
-      - gem: fast_gettext
-        version: '1.1.0'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.1.0')"
-      - gem: fast_gettext
-        condition: "Gem::Version.new(RUBY_VERSION.dup) >= Gem::Version.new('2.1.0')"
-      # json_pure 2.0.2 added a requirement on ruby >= 2. We pin to
-      # json_pure <= 2.0.1 if using ruby 1.x
-      - gem: json_pure
-        version: '<= 2.0.1'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) < Gem::Version.new('2.0.0')"
       # hardcode JSON version to what's shipped in pdk for now
-      - gem: json
-        version: '= 1.8.1'
-        condition: "Gem::Version.new(RUBY_VERSION.dup) == Gem::Version.new('2.1.9')"
       - gem: json
         version: '= 2.0.4'
         condition: "Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
