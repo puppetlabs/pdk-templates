@@ -592,19 +592,19 @@ Gemfile:
           - mingw
           - x64_mingw
       - gem: 'puppet-module-posix-default-r#{minor_version}'
-        version: '~> 0.4'
+        version: '~> 1.0'
         platforms: ruby
       - gem: 'puppet-module-posix-dev-r#{minor_version}'
-        version: '~> 0.4'
+        version: '~> 1.0'
         platforms: ruby
       - gem: 'puppet-module-win-default-r#{minor_version}'
-        version: '~> 0.4'
+        version: '~> 1.0'
         platforms:
           - mswin
           - mingw
           - x64_mingw
       - gem: 'puppet-module-win-dev-r#{minor_version}'
-        version: '~> 0.4'
+        version: '~> 1.0'
         platforms:
           - mswin
           - mingw
