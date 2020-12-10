@@ -138,19 +138,9 @@ Rakefile:
 .rubocop.yml:
   selected_profile: strict
   default_configs: &default_configs
-    Metrics/LineLength:
+    Layout/LineLength:
       Description: People have wide screens, use them.
       Max: 200
-
-    # Disabled i18n cops by default
-    GetText:
-      Enabled: false
-
-    # Configure i18n cops for when they are enabled
-    GetText/DecorateString:
-      Description: We don't want to decorate test output.
-      Exclude:
-        - 'spec/**/*'
 
     # RSpec cops
     RSpec/BeforeAfterAll:
@@ -166,10 +156,6 @@ Rakefile:
     Style/BlockDelimiters:
       Description: Prefer braces for chaining. Mostly an aesthetical choice. Better to be consistent then.
       EnforcedStyle: braces_for_chaining
-
-    Style/BracesAroundHashParameters:
-      Description: Braces are required by Ruby 2.7. Cop removed from RuboCop v0.80.0. See https://github.com/rubocop-hq/rubocop/pull/7643
-      Enabled: false
 
     Style/ClassAndModuleChildren:
       Description: Compact style reduces the required amount of indentation.
@@ -203,7 +189,7 @@ Rakefile:
       Description: Prefer always trailing comma on multiline argument lists. This makes diffs, and re-ordering nicer.
       EnforcedStyleForMultiline: comma
 
-    Style/TrailingCommaInLiteral:
+    Style/TrailingCommaInArrayLiteral:
       Description: Prefer always trailing comma on multiline literals. This makes diffs, and re-ordering nicer.
       EnforcedStyleForMultiline: comma
 
@@ -214,9 +200,9 @@ Rakefile:
   cleanup_cops: &cleanup_cops
     Bundler/OrderedGems:
     Layout/AccessModifierIndentation:
-    Layout/AlignArray:
-    Layout/AlignHash:
-    Layout/AlignParameters:
+    Layout/ArrayAlignment:
+    Layout/HashAlignment:
+    Layout/ParameterAlignment:
     Layout/BlockEndNewline:
     Layout/CaseIndentation:
     Layout/ClosingParenthesisIndentation:
@@ -234,9 +220,9 @@ Rakefile:
     Layout/EmptyLinesAroundModuleBody:
     Layout/ExtraSpacing:
     Layout/FirstParameterIndentation:
-    Layout/IndentArray:
-    Layout/IndentAssignment:
-    Layout/IndentHash:
+    Layout/FirstArrayElementIndentation:
+    Layout/AssignmentIndentation:
+    Layout/FirstHashElementIndentation:
     Layout/IndentationConsistency:
     Layout/IndentationWidth:
     Layout/InitialIndentation:
@@ -266,28 +252,27 @@ Rakefile:
     Layout/SpaceInLambdaLiteral:
     Layout/SpaceInsideArrayPercentLiteral:
     Layout/SpaceInsideBlockBraces:
-    Layout/SpaceInsideBrackets:
     Layout/SpaceInsideHashLiteralBraces:
     Layout/SpaceInsideParens:
     Layout/SpaceInsidePercentLiteralDelimiters:
     Layout/SpaceInsideRangeLiteral:
     Layout/SpaceInsideStringInterpolation:
-    Layout/Tab:
-    Layout/TrailingBlankLines:
+    Layout/IndentationStyle:
+    Layout/TrailingEmptyLines:
     Layout/TrailingWhitespace:
-    Lint/BlockAlignment:
-    Lint/DefEndAlignment:
+    Layout/BlockAlignment:
+    Layout/DefEndAlignment:
     Lint/DeprecatedClassMethods:
     Lint/EmptyInterpolation:
     Lint/LiteralInInterpolation:
-    Lint/MultipleCompare:
+    Lint/MultipleComparison:
     Lint/PercentStringArray:
     Lint/PercentSymbolArray:
     Lint/RescueType:
     Lint/SafeNavigationChain:
-    Lint/StringConversionInInterpolation:
+    Lint/RedundantStringCoercion:
     Lint/UnifiedInteger:
-    Lint/UnneededSplatExpansion:
+    Lint/RedundantSplatExpansion:
     Lint/UnusedBlockArgument:
     Lint/UnusedMethodArgument:
     Performance/CaseWhenSplat:
@@ -297,15 +282,14 @@ Rakefile:
     Performance/Detect:
     Performance/DoubleStartEndWith:
     Performance/FlatMap:
-    Performance/LstripRstrip:
     Performance/RangeInclude:
     Performance/RedundantBlockCall:
     Performance/RedundantMatch:
     Performance/RedundantMerge:
-    Performance/RedundantSortBy:
+    Style/RedundantSortBy:
     Performance/RegexpMatch:
     Performance/ReverseEach:
-    Performance/Sample:
+    Style/Sample:
     Performance/Size:
     Performance/StartWith:
     Performance/StringReplacement:
@@ -402,13 +386,13 @@ Rakefile:
     Style/SymbolLiteral:
     Style/TernaryParentheses:
     Style/TrailingCommaInArguments:
-    Style/TrailingCommaInLiteral:
+    Style/TrailingCommaInArrayLiteral:
     Style/TrailingUnderscoreVariable:
     Style/TrivialAccessors:
     Style/UnlessElse:
-    Style/UnneededCapitalW:
-    Style/UnneededInterpolation:
-    Style/UnneededPercentQ:
+    Style/RedundantCapitalW:
+    Style/RedundantInterpolation:
+    Style/RedundantPercentQ:
     Style/VariableInterpolation:
     Style/WhenThen:
     Style/WhileUntilDo:
@@ -442,27 +426,26 @@ Rakefile:
         Lint/AmbiguousRegexpLiteral:
         Lint/AssignmentInCondition:
         Lint/CircularArgumentReference:
-        Lint/ConditionPosition:
+        Layout/ConditionPosition:
         Lint/Debugger:
         Lint/DuplicateCaseCondition:
         Lint/DuplicateMethods:
-        Lint/DuplicatedKey:
+        Lint/DuplicateHashKey:
         Lint/EachWithObjectArgument:
         Lint/ElseLayout:
         Lint/EmptyEnsure:
         Lint/EmptyExpression:
         Lint/EmptyWhen:
-        Lint/EndAlignment:
-        Lint/EndInMethod:
+        Layout/EndAlignment:
+        Style/EndBlock:
         Lint/EnsureReturn:
         Lint/FloatOutOfRange:
         Lint/FormatParameterMismatch:
-        Lint/HandleExceptions:
+        Lint/SuppressedException:
         Lint/ImplicitStringConcatenation:
         Lint/IneffectiveAccessModifier:
         Lint/InheritException:
-        Lint/InvalidCharacterLiteral:
-        Lint/LiteralInCondition:
+        Lint/LiteralAsCondition:
         Lint/Loop:
         Lint/NestedMethodDefinition:
         Lint/NextWithoutAccumulator:
@@ -475,20 +458,20 @@ Rakefile:
         Lint/ShadowedException:
         Lint/ShadowingOuterLocalVariable:
         Lint/UnderscorePrefixedVariableName:
-        Lint/UnneededDisable:
+        Lint/RedundantCopDisableDirective:
         Lint/UnreachableCode:
         Lint/UselessAccessModifier:
         Lint/UselessAssignment:
-        Lint/UselessComparison:
+        Lint/BinaryOperatorWithIdenticalOperands:
         Lint/UselessElseWithoutRescue:
         Lint/UselessSetterCall:
         Lint/Void:
         Metrics/BlockNesting:
-        Metrics/LineLength:
+        Layout/LineLength:
         Performance/Caller:
         Performance/EndWith:
         Performance/FixedSize:
-        Performance/HashEachMethods:
+        Style/HashEachMethods:
         RSpec/AnyInstance:
         RSpec/AroundBlock:
         RSpec/BeforeAfterAll:
@@ -516,22 +499,22 @@ Rakefile:
         RSpec/VerifiedDoubles:
         Security/Eval:
         Security/MarshalLoad:
-        Style/AccessorMethodName:
-        Style/AsciiIdentifiers:
+        Naming/AccessorMethodName:
+        Naming/AsciiIdentifiers:
         Style/BeginBlock:
         Style/CaseEquality:
-        Style/ClassAndModuleCamelCase:
+        Naming/ClassAndModuleCamelCase:
         Style/ClassAndModuleChildren:
         Style/ClassVars:
-        Style/ConstantName:
+        Naming/ConstantName:
         Style/Documentation:
           Exclude:
           - 'lib/puppet/parser/functions/**/*'
           - 'spec/**/*'
         Style/DoubleNegation:
         Style/EndBlock:
-        Style/FileName:
-        Style/FlipFlop:
+        Naming/FileName:
+        Lint/FlipFlop:
         Style/For:
         Style/FormatStringToken:
         Style/GlobalVars:
@@ -541,22 +524,36 @@ Rakefile:
         Style/IfUnlessModifierOfIfUnless:
         Style/IfWithSemicolon:
         Style/MethodCalledOnDoEndBlock:
-        Style/MethodMissing:
-        Style/MethodName:
+        Lint/MissingSuper:
+        Style/MissingRespondToMissing:
+        Naming/MethodName:
         Style/ModuleFunction:
         Style/MultilineBlockChain:
         Style/MultilineIfModifier:
         Style/MultilineTernaryOperator:
         Style/MultipleComparison:
         Style/NestedTernaryOperator:
-        Style/NumericPredicate:
-        Style/OpMethod:
+        Naming/BinaryOperatorParameterName:
         Style/OptionalArguments:
-        Style/PredicateName:
+        Naming/PredicateName:
         Style/SelfAssignment:
         Style/StructInheritance:
-        Style/VariableName:
-        Style/VariableNumber:
+        Naming/VariableName:
+        RSpec/VariableName:
+        Naming/VariableNumber:
+        Performance/AncestorsInclude:
+        Performance/BigDecimalWithNumericArgument:
+        Performance/BlockGivenWithExplicitBlock:
+        Performance/CollectionLiteralInLoop:
+        Performance/ConstantRegexp:
+        Performance/MethodObjectAsBlock:
+        Performance/RedundantSortBlock:
+        Performance/RedundantStringChars:
+        Performance/ReverseFirst:
+        Performance/SortReverse:
+        Performance/Squeeze:
+        Performance/StringInclude:
+        Performance/Sum:
 
     # Uses rubocop default cops
     hardcore:
