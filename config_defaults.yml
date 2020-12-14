@@ -572,12 +572,6 @@ Gemfile:
       - gem: json
         version: '= 2.3.0'
         condition: "Gem::Requirement.create(['>= 2.7.0', '< 2.8.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
-      - gem: 'rb-readline'
-        version: '= 0.5.5'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
       - gem: 'puppet-module-posix-default-r#{minor_version}'
         version: '~> 1.0'
         platforms: ruby
