@@ -120,7 +120,7 @@ jobs:
   configs.each do |config|
   config['collection']['puppet_collection'].each do |puppet_version|
   config['collection']['provision_list'].each do |platform|-%>
-    -
+    - bundler_args: --with system_tests
       before_script:
       - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
 <%  if @configs['litmus']['install_wget']-%>
@@ -128,7 +128,6 @@ jobs:
 <%  end-%>
       - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
       - "bundle exec rake litmus:install_module"
-      bundler_args:
 <%  if config['collection']['dist']-%>
       dist: <%=config['collection']['dist']%>
 <%  end -%>
