@@ -2,8 +2,8 @@
 # note that these hashes need to use rockets, not colons, because rubocop config requires strings as keys
 defaults = {
   'require' => [
+    'rubocop-performance',
     'rubocop-rspec',
-    'rubocop-i18n',
   ],
   'AllCops' => {
     'DisplayCopNames' => true,
@@ -35,7 +35,7 @@ profile = @configs['profiles'][@configs['selected_profile']]
 configs = defaults.dup
 DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
 
-default_version = '0.49.1'
+default_version = '1.6.1'
 
 # rubocop's dependencies have native extensions and are not available on windows currently
 # to preserve the dynamic behaviour, and still work in its current state, this workaround

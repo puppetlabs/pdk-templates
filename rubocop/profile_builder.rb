@@ -4,13 +4,14 @@
 this_dir = __dir__
 raise "This script must be run from the #{this_dir} directory" if this_dir != Dir.pwd
 
+require 'fileutils'
 require 'yaml'
 require 'rubocop/version'
 
 File.delete('.rubocop.yml') if File.exist?('.rubocop.yml')
 
-default_configs = YAML.load(`rubocop --show-cops --require rubocop-rspec --require rubocop-i18n`)
-all_cops = default_configs.keys - [ 'AllCops', 'require' ]
+default_configs = YAML.load(`rubocop --show-cops --require rubocop-rspec`)
+all_cops = default_configs.keys - [ 'AllCops', 'require', 'Lint/Syntax' ]
 default_enabled_cops = all_cops.find_all { |c| default_configs[c]['Enabled'] }
 default_disabled_cops = all_cops - default_enabled_cops
 
@@ -53,7 +54,7 @@ force_disabled_cops = config_disabled_cops - default_disabled_cops
 #   end
 # end
 File.open("defaults-#{RuboCop::Version.version}.yml", 'wb') do |f|
-  f.puts YAML.dump(default_enabled_cops: default_enabled_cops)
+  f.puts YAML.dump(default_enabled_cops: default_enabled_cops.sort)
 end
 
 puts YAML.dump(config_enabled_cops - cleanup_enabled_cops)
