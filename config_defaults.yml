@@ -201,7 +201,6 @@ Rakefile:
     Bundler/OrderedGems:
     Layout/AccessModifierIndentation:
     Layout/ArrayAlignment:
-    Layout/HashAlignment:
     Layout/ParameterAlignment:
     Layout/BlockEndNewline:
     Layout/CaseIndentation:
