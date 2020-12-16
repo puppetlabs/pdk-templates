@@ -35,11 +35,11 @@ popd
 
 rm -f ~/.pdk/cache/answers.json
 
-# Create new module from master branch of official templates repo
-pdk new module convert_from_master --template-url="https://github.com/puppetlabs/pdk-templates.git" --template-ref=master --skip-interview
-pushd convert_from_master
+# Create new module from main branch of official templates repo
+pdk new module convert_from_main --template-url="https://github.com/puppetlabs/pdk-templates.git" --template-ref=main --skip-interview
+pushd convert_from_main
 grep template < metadata.json
-# Attempt to convert to PR commit from official/master
+# Attempt to convert to PR commit from official/main
 pdk convert --template-url="file://$TEMPLATE_PR_DIR" --template-ref=travis_commit --skip-interview --force
 cat convert_report.txt
 popd
