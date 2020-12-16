@@ -20,7 +20,7 @@ Templates like this one can be used in conjunction with the PDK. As default the 
 > pdk convert --template-url https://github.com/puppetlabs/pdk-templates
 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
-For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/master/README.md).
+For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/main/README.md).
 
 ## Values of config\_defaults <a name="values"></a>
 
@@ -54,7 +54,7 @@ The following is a description and explanation of each of the keys within config
 
 ### .gitlab-ci.yml
 
->[Gitlab CI](https://about.gitlab.com/features/gitlab-ci-cd/) is a continuous integration platform that is free for all open source projects hosted on Github and Gitlab.com, it also has a self-hosted option that is free as well. We can trigger automated pipelines with ever change to our code base in the master branch, other branches, tags, or additional triggers.
+>[Gitlab CI](https://about.gitlab.com/features/gitlab-ci-cd/) is a continuous integration platform that is free for all open source projects hosted on Github and Gitlab.com, it also has a self-hosted option that is free as well. We can trigger automated pipelines with ever change to our code base in the main branch, other branches, tags, or additional triggers.
 Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab CI what jobs to run when in the pipeline.
 
  Key            | Description   |
@@ -67,7 +67,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | cache          | If this setting exists, it expects a single sub-key called `paths`. `paths` is an array of paths that will be cached for each subsequent job. Defaults to `['vendor/bundle']`|
 | bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests --path vendor/bundle --jobs $(nproc)` which avoids installing unnecessary gems while installing them to the `vendor/bundler.|
 | ruby_versions  |Define a list of ruby_versions to test against. Each version can have a series of sub-keys that are options. `checks` is the rake command(s) to run during the job. `puppet_version` sets the PUPPET_GEM_VERSION environment variable. `allow_failure` is an array of `checks` where you want to allow failures. `tags` is an array of Gitlab CI Runner tags. |
-| ruby_versions\\{job}\\**except/only**|Basic `except`/`only` is an hash of `checks` with array of references of conditions for the `checks`:<br><br><pre>ruby_versions:<br>&nbsp;&nbsp;2.4.9:<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- tags<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- master</pre><br><br>Advanced `except`/`only` is an hash of `checks` with hash using 4 keywords `'variables', 'refs', 'changes', 'kubernetes'` each with it's own array of references or conditions for the `checks`:<br><br><pre>ruby_versions:<br>&nbsp;&nbsp;2.4.9:<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refs:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- tags<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- master<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variables:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- $CI_COMMIT_MESSAGE =~ /\[skip[ _-]tests?\]/i</pre> https://docs.gitlab.com/ce/ci/yaml/README.html#onlyexcept-advanced |
+| ruby_versions\\{job}\\**except/only**|Basic `except`/`only` is an hash of `checks` with array of references of conditions for the `checks`:<br><br><pre>ruby_versions:<br>&nbsp;&nbsp;2.4.9:<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- tags<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- main</pre><br><br>Advanced `except`/`only` is an hash of `checks` with hash using 4 keywords `'variables', 'refs', 'changes', 'kubernetes'` each with it's own array of references or conditions for the `checks`:<br><br><pre>ruby_versions:<br>&nbsp;&nbsp;2.4.9:<br>&nbsp;&nbsp;&nbsp;&nbsp;except:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;unit:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;refs:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- tags<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- main<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;variables:<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- $CI_COMMIT_MESSAGE =~ /\[skip[ _-]tests?\]/i</pre> https://docs.gitlab.com/ce/ci/yaml/README.html#onlyexcept-advanced |
 | custom_jobs    |Define custom Gitlab CI jobs that will be executed. It is recommended that you use this option if you need customized Gitlab CI jobs. Please see the [.gitlab-ci.yml](https://docs.gitlab.com/ce/ci/yaml/README.html) docs for specifics.|
 | rubygems_mirror | Use a custom rubygems mirror url |
 | image          |Define the Docker image to use, when using the Docker runner. Please see the [Using Docker images](https://docs.gitlab.com/ee/ci/docker/using_docker_images.html) docs for specifics.|
@@ -101,7 +101,7 @@ These workflows are depending on puppet-internal resources and are currently not
 ### .travis.yml
 
 >[Travis CI](https://travis-ci.org/) is a hosted continuous integration platform that is free for all open source projects hosted on Github.
-We can trigger automated builds with every change to our code base in the master branch, other branches or even a pull request.
+We can trigger automated builds with every change to our code base in the main branch, other branches or even a pull request.
 Travis uses a .travis.yml file in the root of your repository to learn about your project and how you want your builds to be executed.
 
 | Key            | Description   |
@@ -123,7 +123,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |before_install_post |Add install steps to the end of `before_install`. |
 |includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
 |remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
-|branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `master` and `/^v\d/`. |
+|branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `main` and `/^v\d/`. |
 |branches_except |Allows you to specify branches that travis will not build on.|
 |remove_branches |Allows you to remove default branches set in config_defaults.yml.|
 |notifications   |Allows you to specify the notifications configuration in the .travis.yml file.|
@@ -216,7 +216,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |version|Required option to specify version or range of versions required using [RubyGem version syntax](https://guides.rubygems.org/patterns/#pessimistic-version-constraint).|
 |platforms|Defines an array of platforms for which the Gem should be included. See the [Gemfile platform guide](https://bundler.io/man/gemfile.5.html#PLATFORMS) for a list of valid platforms.|
 |git|If required, specify a specific Git repository in which this Gem is located. See the [Bundler docs](https://bundler.io/man/gemfile.5.html#GIT) for details.|
-|branch|Optionally specify a branch to use if using the `git` option. Defaults to `master`.|
+|branch|Optionally specify a branch to use if using the `git` option. Defaults to `main`.|
 |ref|Optionally specify an arbitrary valid Git reference to use for the module version.|
 |source|Specify an alternate Rubygems repository to load the gem from.|
 |from_env|Specifies an environment variable containing either a Rubygem version specification indicating the version to use OR a URL indicating the location from which to load the gem.|
