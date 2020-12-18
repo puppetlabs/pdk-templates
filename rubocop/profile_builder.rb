@@ -8,53 +8,59 @@ require 'fileutils'
 require 'yaml'
 require 'rubocop/version'
 
+def report_cops(cops, msg)
+  $stderr.puts "Found these cops in #{msg}:"
+  total = 0
+  cops.each do |enabled, c|
+    $stderr.puts "#{enabled.inspect}: #{c.length}"
+    total += c.length
+  end
+  $stderr.puts "total: #{total}"
+end
+
+def load_config
+  YAML.load(`rubocop --show-cops --require rubocop-rspec --require rubocop-performance`)
+end
+
 File.delete('.rubocop.yml') if File.exist?('.rubocop.yml')
 
-default_configs = YAML.load(`rubocop --show-cops --require rubocop-rspec`)
+default_configs = load_config
 all_cops = default_configs.keys - [ 'AllCops', 'require', 'Lint/Syntax' ]
-default_enabled_cops = all_cops.find_all { |c| default_configs[c]['Enabled'] }
-default_disabled_cops = all_cops - default_enabled_cops
 
-$stderr.puts "Found #{default_enabled_cops.length} enabled, and #{default_disabled_cops.length} disabled cops in the default config."
+default_cops = all_cops.group_by { |c| default_configs[c]['Enabled'] }
+report_cops(default_cops, "the rubocop config")
 
-# fetch config from current PDK.  Assume it's in the same directory as this repo.
-FileUtils.cp(File.join('..', '..', 'pdk', '.rubocop.yml'), '.')
-# stub out the included config to avoid rubocop complaints
-File.open('.rubocop_todo.yml', 'w') do |f|
-  # nothing
-end
-config = YAML.load(File.read('.rubocop.yml'))
-
-configured_cops = YAML.load(`rubocop --show-cops`)
-config_enabled_cops = all_cops.find_all { |c| configured_cops[c] && configured_cops[c]['Enabled'] }
-config_disabled_cops = all_cops - config_enabled_cops
-
-$stderr.puts "Found #{config_enabled_cops.length} enabled, and #{config_disabled_cops.length} disabled cops in the recommended config."
-
-# The cleanups_only profile only has the uncontroversial cops enabled, and configred, everything else is disabled
-
-cleanup_cops = YAML.load(File.read('cleanup_cops.yml'))
-
-cleanup_enabled_cops = cleanup_cops - config_disabled_cops
-cleanup_disabled_cops = all_cops - cleanup_enabled_cops
-
-$stderr.puts "Found #{cleanup_enabled_cops.length} enabled, and #{cleanup_disabled_cops.length} disabled cops in the cleanup config."
-
-force_disabled_cops = config_disabled_cops - default_disabled_cops
-
-# all_cops.each do |c|
-#   if default_enabled
-#     if disabled
-#       # render
-#     end
-#   else
-#     if enabled
-#       # render
-#     end
-#   end
-# end
 File.open("defaults-#{RuboCop::Version.version}.yml", 'wb') do |f|
-  f.puts YAML.dump(default_enabled_cops: default_enabled_cops.sort)
+  f.puts YAML.dump(
+    default_enabled_cops: default_cops[true].sort,
+    default_pending_cops: default_cops['pending'].sort,
+  )
 end
 
-puts YAML.dump(config_enabled_cops - cleanup_enabled_cops)
+# # fetch config from current PDK.  Assume it's in the same directory as this repo.
+# FileUtils.cp(File.join('..', '..', 'pdk', '.rubocop.yml'), '.')
+# # stub out the included config to avoid rubocop complaints
+# File.open('.rubocop_todo.yml', 'w') do |f|
+#   # nothing
+# end
+# # config = YAML.load(File.read('.rubocop.yml'))
+
+# all_cops_configured = load_config
+
+# configured_cops = all_cops.group_by { |c| all_cops_configured[c]['Enabled'] }
+# report_cops(configured_cops, "the pdk config")
+
+# # The cleanups_only profile only has the uncontroversial cops enabled, and configured, everything else is disabled
+
+# configured_cleanup_cops = YAML.load(File.read('cleanup_cops.yml'))
+
+# cleanup_cops = {
+#   true: all_cops - configured_cops[false] - configured_cops['pending'],
+#   false: all_cops - configured_cops[true],
+# }
+
+# report_cops(cleanup_cops, "the cleanup section")
+
+# # force_disabled_cops = config_disabled_cops - default_disabled_cops
+
+# # puts YAML.dump(config_enabled_cops - cleanup_enabled_cops)
