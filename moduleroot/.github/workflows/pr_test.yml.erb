@@ -63,7 +63,6 @@ jobs:
 
     - name: Setup Acceptance Test Matrix
       id: get-matrix
-      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       run: |
         if [ '${{ github.repository_owner }}' == '<%= common['owner'] %>' ]; then
           buildevents cmd $TRACE_ID $STEP_ID matrix_from_metadata -- bundle exec matrix_from_metadata
@@ -79,6 +78,7 @@ jobs:
   Acceptance:
     needs:
       - setup_matrix
+    if: ${{ needs.setup_matrix.outputs.matrix != '{}' }}
 
     runs-on: ubuntu-20.04
     strategy:
