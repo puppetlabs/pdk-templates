@@ -312,8 +312,10 @@ Gemfile:
   required:
     ':system_tests':
       - gem: 'puppet-module-posix-system-r#{minor_version}'
+        version: '~> 0.4'
         platforms: ruby
       - gem: 'puppet-module-win-system-r#{minor_version}'
+        version: '~> 0.4'
         platforms:
           - mswin
           - mingw
