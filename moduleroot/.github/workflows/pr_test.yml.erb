@@ -37,29 +37,11 @@ jobs:
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
 
     - name: Activate Ruby 2.7
-      uses: actions/setup-ruby@v1
+      uses: ruby/setup-ruby@v1
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       with:
         ruby-version: "2.7"
-
-    - name: Cache gems
-      uses: actions/cache@v2
-      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
-      with:
-        path: vendor/gems
-        key: ${{ runner.os }}-${{ github.event_name }}-${{ hashFiles('**/Gemfile') }}
-        restore-keys: |
-          ${{ runner.os }}-${{ github.event_name }}-
-          ${{ runner.os }}-
-
-    - name: Install gems
-      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
-      run: |
-        buildevents cmd $TRACE_ID $STEP_ID 'bundle config path vendor/gems' -- bundle config path vendor/gems
-        buildevents cmd $TRACE_ID $STEP_ID 'bundle config jobs 8' -- bundle config jobs 8
-        buildevents cmd $TRACE_ID $STEP_ID 'bundle config retry 3' -- bundle config retry 3
-        buildevents cmd $TRACE_ID $STEP_ID 'bundle install' -- bundle install
-        buildevents cmd $TRACE_ID $STEP_ID 'bundle clean' -- bundle clean
+        bundler-cache: true
 
     - name: Setup Acceptance Test Matrix
       id: get-matrix
