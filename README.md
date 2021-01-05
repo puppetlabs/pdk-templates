@@ -353,10 +353,11 @@ Since this still has some overhead, we exclude some "big-name" action maintainer
 ### Updating actions guitelines
 
 To keep efforts low when updating actions, we list all forked actions here.
-To keep confusion to a minimum, the version we use is always on a `pdk-templates` branch.
-This way we can update (`git fetch`/`git push`) forked repositories with no prejudice, test out the changes, and only then update the `pdk-templates` branch.
+To keep confusion to a minimum, the version we use is always on a `pdk-templates-v1` branch.
+This way we can update (`git fetch`/`git push`) forked repositories with no prejudice, test out the changes, and only then update the `pdk-templates-v1` branch.
+If we later need to support multiple versions of an action as we roll out changes, we can increment the `-v1` part in the branch name to manage multiple versions.
 
-* [kvrhdn/gha-buildevents](https://github.com/kvrhdn/gha-buildevents) ➡️ [puppetlabs/kvrhdn-gha-buildevents](https://github.com/puppetlabs/kvrhdn-gha-buildevents/tree/pdk-templates)
-* [Gamesight/slack-workflow-status](https://github.com/Gamesight/slack-workflow-status) ➡️ [puppetlabs/Gamesight-slack-workflow-status](https://github.com/puppetlabs/Gamesight-slack-workflow-status/tree/pdk-templates)
+* [kvrhdn/gha-buildevents](https://github.com/kvrhdn/gha-buildevents) ➡️ [puppetlabs/kvrhdn-gha-buildevents](https://github.com/puppetlabs/kvrhdn-gha-buildevents/tree/pdk-templates-v1)
+* [Gamesight/slack-workflow-status](https://github.com/Gamesight/slack-workflow-status) ➡️ [puppetlabs/Gamesight-slack-workflow-status](https://github.com/puppetlabs/Gamesight-slack-workflow-status/tree/pdk-templates-v1)
 
 The repos have restricted access only to [@modules](https://github.com/orgs/puppetlabs/teams/modules) team members.

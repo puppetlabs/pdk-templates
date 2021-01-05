@@ -23,7 +23,7 @@ jobs:
 
     steps:
     - name: "Honeycomb: Start recording"
-      uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates
+      uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates-v1
       with:
         apikey: ${{ env.HONEYCOMB_WRITEKEY }}
         dataset: ${{ env.HONEYCOMB_DATASET }}
@@ -96,7 +96,7 @@ jobs:
         echo 'collection=${{ matrix.collection }}' >> $BUILDEVENT_FILE
 
     - name: "Honeycomb: Start recording"
-      uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates
+      uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates-v1
       with:
         apikey: ${{ env.HONEYCOMB_WRITEKEY }}
         dataset: ${{ env.HONEYCOMB_DATASET }}
@@ -214,7 +214,7 @@ jobs:
     runs-on: ubuntu-20.04
     steps:
       - name: Slack Workflow Notification
-        uses: puppetlabs/Gamesight-slack-workflow-status@pdk-templates
+        uses: puppetlabs/Gamesight-slack-workflow-status@pdk-templates-v1
         with:
           # Required Input
           repo_token: ${{ secrets.GITHUB_TOKEN }}
