@@ -302,29 +302,6 @@ Gemfile:
         source: 'https://myrubygems.example.com/'
 ```
 
-## Enabling Beaker system tests
-
-To enable the ability to run Beaker system tests on your module, add the
-following entry to your `.sync.yml` and run `pdk update`.
-
-```yaml
-Gemfile:
-  required:
-    ':system_tests':
-      - gem: 'puppet-module-posix-system-r#{minor_version}'
-        platforms: ruby
-      - gem: 'puppet-module-win-system-r#{minor_version}'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
-.gitlab-ci.yml:
-  bundler_args: --with system_tests --path vendor/bundle --jobs $(nproc)
-  beaker: true
-appveyor.yml:
-  appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --with system_tests"
-```
-
 ## Further Notes <a name="notes"></a>
 
 Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.
