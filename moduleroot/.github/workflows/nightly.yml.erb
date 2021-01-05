@@ -31,7 +31,7 @@ jobs:
 
     - name: "Honeycomb: Start first step"
       run: |
-        echo STEP_ID=0 >> $GITHUB_ENV
+        echo STEP_ID=setup-environment >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
     - name: Checkout Source
@@ -45,6 +45,20 @@ jobs:
         ruby-version: "2.7"
         bundler-cache: true
 
+    - name: Print bundle environment
+      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
+      run: |
+        echo ::group::bundler environment
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
+        echo ::endgroup::
+
+    - name: "Honeycomb: Record Setup Environment time"
+      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Environment'
+        echo STEP_ID=Setup-Acceptance-Test-Matrix >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+
     - name: Setup Acceptance Test Matrix
       id: get-matrix
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
@@ -55,7 +69,7 @@ jobs:
           echo  "::set-output name=matrix::{}"
         fi
 
-    - name: "Honeycomb: Record setup time"
+    - name: "Honeycomb: Record Setup Test Matrix time"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Test Matrix'
@@ -99,18 +113,18 @@ jobs:
         ruby-version: "2.7"
         bundler-cache: true
 
-    - name: "Honeycomb: Record Ruby Setup time"
-      if: ${{ always() }}
-      run: |
-        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Ruby Setup'
-        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-2 >> $GITHUB_ENV
-        echo STEP_START=$(date +%s) >> $GITHUB_ENV
-
     - name: Print bundle environment
       run: |
         echo ::group::bundler environment
         buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
         echo ::endgroup::
+
+    - name: "Honeycomb: Record Setup Environment time"
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Environment'
+        echo STEP_ID=${{ matrix.platform }}-${{ matrix.collection }}-2 >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
     - name: Provision test environment
       run: |
