@@ -56,7 +56,9 @@ default_path = File.absolute_path(File.join(base_path, "defaults-#{default_versi
 path = File.exist?(dynamic_path) ? dynamic_path : default_path
 
 require 'yaml'
-default_enabled_cops = YAML.load(File.read(path))[:default_enabled_cops]
+config_defaults = YAML.load(File.read(path))
+default_enabled_cops = config_defaults[:default_enabled_cops] || []
+default_pending_cops = config_defaults[:default_pending_cops] || []
 
 cop_configs = (profile['enabled_cops'] || {})
 
@@ -66,5 +68,9 @@ enabled_cops = default_enabled_cops if enabled_cops == 'all'
 (enabled_cops & default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] if cop_configs[c] }
 (enabled_cops - default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = true }
 (default_enabled_cops - enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = false }
+
+# force set pending cops to something to avoid the messages
+(default_pending_cops & enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] if cop_configs[c]; configs[c]['Enabled'] = true }
+(default_pending_cops - enabled_cops).sort.each { |c| configs[c] = { 'Enabled' => false } }
 -%>
 <%= YAML.dump(configs) -%>

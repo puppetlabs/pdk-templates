@@ -465,7 +465,6 @@ Rakefile:
         Lint/UselessElseWithoutRescue:
         Lint/UselessSetterCall:
         Lint/Void:
-        Metrics/BlockNesting:
         Layout/LineLength:
         Performance/Caller:
         Performance/EndWith:
@@ -498,7 +497,6 @@ Rakefile:
         RSpec/VerifiedDoubles:
         Security/Eval:
         Security/MarshalLoad:
-        Naming/AccessorMethodName:
         Naming/AsciiIdentifiers:
         Style/BeginBlock:
         Style/CaseEquality:
@@ -539,11 +537,9 @@ Rakefile:
         Style/StructInheritance:
         Naming/VariableName:
         RSpec/VariableName:
-        Naming/VariableNumber:
         Performance/AncestorsInclude:
         Performance/BigDecimalWithNumericArgument:
         Performance/BlockGivenWithExplicitBlock:
-        Performance/CollectionLiteralInLoop:
         Performance/ConstantRegexp:
         Performance/MethodObjectAsBlock:
         Performance/RedundantSortBlock:
