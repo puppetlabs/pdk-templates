@@ -355,6 +355,7 @@ Since this still has some overhead, we exclude some "big-name" action maintainer
 To keep efforts low when updating actions, we list all forked actions here.
 To keep confusion to a minimum, the version we use is always on a `pdk-templates-v1` branch.
 This way we can update (`git fetch`/`git push`) forked repositories with no prejudice, test out the changes, and only then update the `pdk-templates-v1` branch.
+That said, the branches used in pdk-templates should only contain upstream code and changes already in an upstream PR to minimize the diff we're carrying.
 If we later need to support multiple versions of an action as we roll out changes, we can increment the `-v1` part in the branch name to manage multiple versions.
 
 * [kvrhdn/gha-buildevents](https://github.com/kvrhdn/gha-buildevents) ➡️ [puppetlabs/kvrhdn-gha-buildevents](https://github.com/puppetlabs/kvrhdn-gha-buildevents/tree/pdk-templates-v1)
