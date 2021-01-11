@@ -81,7 +81,7 @@ If you are using Gitpod you will need to opt-in and enable gitpod support for pd
 .gitpod.Dockerfile:
   unmanaged: false
 .gitpod.yml:
-  unmanaged: false  
+  unmanaged: false
 
 ```
 
@@ -308,3 +308,34 @@ Please note that the early version of this template contained only a 'moduleroot
 
 [legacy_facts_doc]: https://puppet.com/docs/facter/latest/core_facts.html#legacy-facts
 [legacy_facts_pl_plugin]: https://github.com/mmckinst/puppet-lint-legacy_facts-check
+
+## Security Considerations on Github Actions
+
+As explained in [Use GitHub actions at your own risk](https://julienrenaux.fr/2019/12/20/github-actions-security-risk/),
+when running github actions from outside the organisation,
+there is a risk that symbolic references get taken over by malicious actors.
+Similar things happened before in other ecosystems and other packaging registries.
+The blog post goes on to suggest pinning to specific SHAs and provides some tooling to do so.
+The downsides for us are that the tooling doesn't work well with our ERB templating,
+and the additional cost of updating the SHAs across all modules.
+Instead we fork at-risk actions into the puppetlabs namespace and use them from there.
+This allows us to consume updates at our pace and deploy changes across all modules without delay,
+while avoiding actions that surreptitiously change while we're not looking.
+
+Since this still has some overhead, we exclude some "big-name" action maintainers:
+* Anything maintained by Github, e.g. [https://github.com/actions](https://github.com/actions)
+* Anything maintained as part of a bigger OSS project we're using, like [https://github.com/ruby/setup-ruby](https://github.com/ruby/setup-ruby)
+* Anything maintained by a Puppet employee
+
+### Updating actions guitelines
+
+To keep efforts low when updating actions, we list all forked actions here.
+To keep confusion to a minimum, the version we use is always on a `pdk-templates-v1` branch.
+This way we can update (`git fetch`/`git push`) forked repositories with no prejudice, test out the changes, and only then update the `pdk-templates-v1` branch.
+That said, the branches used in pdk-templates should only contain upstream code and changes already in an upstream PR to minimize the diff we're carrying.
+If we later need to support multiple versions of an action as we roll out changes, we can increment the `-v1` part in the branch name to manage multiple versions.
+
+* [kvrhdn/gha-buildevents](https://github.com/kvrhdn/gha-buildevents) ➡️ [puppetlabs/kvrhdn-gha-buildevents](https://github.com/puppetlabs/kvrhdn-gha-buildevents/tree/pdk-templates-v1)
+* [Gamesight/slack-workflow-status](https://github.com/Gamesight/slack-workflow-status) ➡️ [puppetlabs/Gamesight-slack-workflow-status](https://github.com/puppetlabs/Gamesight-slack-workflow-status/tree/pdk-templates-v1)
+
+The repos have restricted access only to [@modules](https://github.com/orgs/puppetlabs/teams/modules) team members.
