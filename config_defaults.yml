@@ -69,7 +69,6 @@ common:
     - acceptance
   ruby_versions:
     - 2.5.7
-  bundler_args: --without system_tests
   docker_sets:
   docker_defaults:
     # values will replace @@SET@@ with the docker_sets' value
@@ -77,8 +76,8 @@ common:
     sudo: required
     dist: trusty
     services: docker
-    bundler_args: --with system_tests
-    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=@@COLLECTION@@ BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@
+    # BUNDLE_WITH=system_tests requires pre-1.0.0 puppet-module-gems OR manual setup of the beaker gems
+    env: PUPPET_INSTALL_TYPE=agent BEAKER_debug=true BEAKER_PUPPET_COLLECTION=@@COLLECTION@@ BEAKER_set=@@SET@@ BEAKER_TESTMODE=@@TESTMODE@@ BUNDLE_WITH=system_tests
     script: bundle exec rake beaker
     stage: acceptance
   includes:
@@ -108,7 +107,7 @@ common:
 .yardopts:
   markup: markdown
 appveyor.yml:
-  appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
+  appveyor_bundle_install: "bundle install --jobs 4 --retry 2"
   use_litmus: false
   matrix:
     - RUBY_VERSION: 25-x64
@@ -585,7 +584,7 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
-    ':system_tests':
+    ':system_tests, optional: true':
       - gem: 'puppet-module-posix-system-r#{minor_version}'
         version: '~> 1.0'
         condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup)) || puppet_version.nil?"

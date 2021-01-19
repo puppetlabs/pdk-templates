@@ -48,6 +48,7 @@ for:
       - ACCEPTANCE: yes
   install:
     - set PATH=C:\Ruby%RUBY_VERSION%\bin;%PATH%
+    - set BUNDLE_WITH=system_tests
     - bundle install --jobs 4 --retry 2
     - type Gemfile.lock
   test_script:
