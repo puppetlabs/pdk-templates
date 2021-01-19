@@ -589,9 +589,20 @@ Gemfile:
         version: '~> 1.0'
         condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup))"
         platforms: ruby
+      - gem: 'puppet-module-posix-system-r#{minor_version}'
+        version: '~> 0.4'
+        condition: "Gem::Requirement.create('< 6.11.0').satisfied_by?(Gem::Version.new(puppet_version.dup))"
+        platforms: ruby
       - gem: 'puppet-module-win-system-r#{minor_version}'
         version: '~> 1.0'
         condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup))"
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
+      - gem: 'puppet-module-win-system-r#{minor_version}'
+        version: '~> 0.4'
+        condition: "Gem::Requirement.create('< 6.11.0').satisfied_by?(Gem::Version.new(puppet_version.dup))"
         platforms:
           - mswin
           - mingw
