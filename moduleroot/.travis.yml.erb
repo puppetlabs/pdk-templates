@@ -68,7 +68,9 @@ script:
 <% else -%>
   - 'bundle exec rake $CHECK'
 <% end -%>
+<% if @configs['bundler_args'] -%>
 bundler_args: <%= @configs['bundler_args'] %>
+<% end -%>
 rvm:
 <% @configs['ruby_versions'].each do |ruby_version| -%>
   - <%= ruby_version %>
