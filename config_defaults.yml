@@ -588,11 +588,11 @@ Gemfile:
     ':system_tests':
       - gem: 'puppet-module-posix-system-r#{minor_version}'
         version: '~> 1.0'
-        condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup)) || puppet_version.nil?"
+        condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup))"
         platforms: ruby
       - gem: 'puppet-module-win-system-r#{minor_version}'
         version: '~> 1.0'
-        condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup)) || puppet_version.nil?"
+        condition: "Gem::Requirement.create(['>= 6.11.0', '< 8.0.0']).satisfied_by?(Gem::Version.new(puppet_version.dup))"
         platforms:
           - mswin
           - mingw
