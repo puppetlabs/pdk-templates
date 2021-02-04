@@ -1,0 +1,117 @@
+<% common = config_for('common') -%>
+name: "Auto release"
+
+on:
+  schedule:
+    - cron: '0 3 * * 6'
+  workflow_dispatch:
+
+env:
+<% if common['honeycomb'] -%>
+  HONEYCOMB_WRITEKEY: <%= common['honeycomb']['writekey'] %> 
+  HONEYCOMB_DATASET: <%= common['honeycomb']['dataset'] %>
+<% end -%>
+<% if common['service_url'] -%>
+  SERVICE_URL: <%= common['service_url'] %>
+<% end -%>
+  CHANGELOG_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+jobs:
+  auto_release:
+    name: "Automatic release prep"
+    runs-on: ubuntu-20.04
+
+    steps:
+    - name: "Honeycomb: Start recording"
+      uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates-v1
+      with:
+        apikey: ${{ env.HONEYCOMB_WRITEKEY }}
+        dataset: ${{ env.HONEYCOMB_DATASET }}
+        job-status: ${{ job.status }}
+
+    - name: "Honeycomb: start first step"
+      run: |
+        echo STEP_ID="auto-release" >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+
+    - name: "Checkout Source"
+      uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
+        persist-credentials: false
+
+    - name: Activate Ruby 2.6
+      uses: actions/setup-ruby@v1
+      with:
+        ruby-version: "2.6"
+
+    - name: Cache gems
+      uses: actions/cache@v2
+      with:
+        path: vendor/gems
+        key: ${{ runner.os }}-${{ github.event_name }}-${{ hashFiles('**/Gemfile') }}
+        restore-keys: |
+          ${{ runner.os }}-${{ github.event_name }}-
+          ${{ runner.os }}-
+
+    - name: "Honeycomb: Record cache setup time"
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Cache retrieval'
+        echo STEP_ID="auto_release"  >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+
+    - name: Append PDK to Gemfile
+      run: |
+        echo "gem 'pdk'" >> Gemfile
+
+    - name: Bundler Setup
+      run: |
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config path vendor/gems' -- bundle config path vendor/gems
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config bin vendor/bins' -- bundle config bin vendor/bins
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config jobs 8' -- bundle config jobs 8
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle config retry 3' -- bundle config retry 3
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle install' -- bundle install
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle clean' -- bundle clean
+        echo ::group::bundler environment
+        buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
+        echo ::endgroup::
+
+    - name: "Honeycomb: Record Bundler Setup time"
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Bundler Setup'
+        echo STEP_ID="auto_release" >> $GITHUB_ENV
+        echo STEP_START=$(date +%s) >> $GITHUB_ENV
+
+    - name: "PDK Release prep"
+      run: |
+        buildevents cmd $TRACE_ID $STEP_ID 'pdk release prep' -- ./vendor/bins/pdk release prep --force 
+
+    - name: "Commit changes"
+      run: |
+        git config --local user.email "action@github.com"
+        git config --local user.name "GitHub Action"
+        git add .
+        git commit -m "Auto-Release prep"
+
+    - name: "Get Version"
+      id: gv
+      run: |
+        echo "::set-output name=ver::$(cat metadata.json | jq .version)"
+
+    - name: Create Pull Request
+      id: cpr
+      uses: puppetlabs/peter-evans-create-pull-request@v3
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        commit-message: "Auto-release prep"
+        branch: "release-prep"
+        delete-branch: true
+        title: "Auto-release prep ${{ steps.gv.outputs.ver }}"
+        labels: "maintenance"
+
+    - name: PR outputs
+      run: |
+        echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
+        echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
