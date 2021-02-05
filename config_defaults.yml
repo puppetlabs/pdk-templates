@@ -621,7 +621,6 @@ Gemfile:
         puppet_version: '~> 5'
     # beaker: true
     use_litmus: false
-    use_litmus_complex: false
     litmus:
       provision_list: [centos7]
       puppet_collection: [puppet5, puppet6]
