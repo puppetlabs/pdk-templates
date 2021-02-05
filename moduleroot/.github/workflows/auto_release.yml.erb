@@ -72,19 +72,19 @@ jobs:
       run: |
         buildevents cmd $TRACE_ID $STEP_ID 'pdk release prep' -- bundle exec pdk release prep --force 
 
+    - name: "Get Version"
+      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
+      id: gv
+      run: |
+        echo "::set-output name=ver::$(cat metadata.json | jq .version | tr -d \")"
+
     - name: "Commit changes"
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       run: |
         git config --local user.email "action@github.com"
         git config --local user.name "GitHub Action"
         git add .
-        git commit -m "Auto-Release prep"
-
-    - name: "Get Version"
-      if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
-      id: gv
-      run: |
-        echo "::set-output name=ver::$(cat metadata.json | jq .version)"
+        git commit -m "Release prep v${{ steps.gv.outputs.ver }}"
 
     - name: Create Pull Request
       id: cpr
@@ -96,6 +96,7 @@ jobs:
         branch: "release-prep"
         delete-branch: true
         title: "Release prep v${{ steps.gv.outputs.ver }}"
+        body: "Automated release-prep through [pdk-templates](https://github.com/puppetlabs/pdk-templates/blob/main/moduleroot/.github/workflows/auto_release.yml.erb)"
         labels: "maintenance"
 
     - name: PR outputs
@@ -103,3 +104,8 @@ jobs:
       run: |
         echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
         echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
+
+    - name: "Honeycomb: Record finish step"
+      if: ${{ always() }}
+      run: |
+        buildevents step $TRACE_ID $STEP_ID $STEP_START 'Finished auto release workflow'
