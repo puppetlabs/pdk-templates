@@ -72,6 +72,7 @@ jobs:
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Test Matrix'
 
   Acceptance:
+    name: "${{matrix.platforms.image}}-${{matrix.collection}}"
     needs:
       - setup_matrix
     if: ${{ needs.setup_matrix.outputs.matrix != '{}' }}
