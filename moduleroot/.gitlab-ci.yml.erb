@@ -48,7 +48,7 @@ default:
 <% end -%>
 
 <% if !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
-  before_script:
+  before_script: &before_script
 <% if configs['custom_before_steps'] -%>
 <%   configs['custom_before_steps'].each do |step| -%>
     - <%= step %>
@@ -160,6 +160,7 @@ litmus-<%= platform -%>-<%= puppet_version -%>:
   services:
     - docker:dind
   before_script:
+    - *before_script
     - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
 <%  if configs['litmus']['install_wget']-%>
     - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
