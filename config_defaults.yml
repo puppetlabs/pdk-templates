@@ -336,7 +336,6 @@ Rakefile:
     Style/EmptyMethod:
     Style/EvenOdd:
     Style/FormatString:
-    Style/FrozenStringLiteralComment:
     Style/HashSyntax:
     Style/InfiniteLoop:
     Style/InverseMethods:
