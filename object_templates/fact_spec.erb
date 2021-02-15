@@ -1,20 +1,18 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 require 'facter'
 require 'facter/<%= name %>'
 
-describe :'<%= name %>', type: :fact do
-  subject(:fact) { Facter.fact(:'<%= name %>') }
-
-  before :all do
-    # perform any action that should be run for the entire test suite
-  end
+describe <%= name.to_sym.inspect %>, type: :fact do
+  subject(:fact) { Facter.fact(<%= name.to_sym.inspect %>) }
 
   before :each do
     # perform any action that should be run before every test
     Facter.clear
   end
 
-  it 'should return a value' do
-    expect(fact.value).to eq('hello facter')  
+  it 'returns a value' do
+    expect(fact.value).to eq('hello facter')
   end
 end

@@ -152,6 +152,10 @@ Rakefile:
       Description: Prefer explicit :each argument, matching existing module's style
       EnforcedStyle: each
 
+    RSpec/DescribeSymbol:
+      Exclude:
+        - 'spec/unit/facter/**/*.rb'
+
     # Style Cops
     Style/BlockDelimiters:
       Description: Prefer braces for chaining. Mostly an aesthetical choice. Better to be consistent then.

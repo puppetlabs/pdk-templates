@@ -16,8 +16,12 @@ cp "$TEMPLATE_PR_DIR/.travis/fixtures/new_provider_sync.yml" ./.sync.yml
 pdk update --force
 pdk new class new_module
 pdk new defined_type testtype
+pdk new fact testfact || true # not available in pdk 1.18 yet
+pdk new function --type native testfunc_nat || true # not available in pdk 1.18 yet
+pdk new function --type v4 testfunc_v4 || true # not available in pdk 1.18 yet
 pdk new provider testprovider
 pdk new task testtask
+pdk new transport testtransport
 pdk validate
 pdk test unit
 popd
