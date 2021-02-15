@@ -154,8 +154,10 @@ litmus-<%= platform -%>-<%= puppet_version -%>:
   stage: acceptance
   variables:
     DOCKER_DRIVER: overlay2
-<%   configs['litmus']['variables'].each do |key, value| -%>
+<%   if configs['litmus']['variables'] -%>
+<%     configs['litmus']['variables'].each do |key, value| -%>
     <%= key %>: <%= value %>
+<%     end -%>
 <%   end -%>
   services:
     - docker:dind
