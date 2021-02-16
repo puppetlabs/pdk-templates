@@ -625,6 +625,7 @@ spec/default_facts.yml:
 spec/spec_helper.rb:
   coverage_report: false
   minimum_code_coverage_percentage: 0
+  mock_with: ":rspec"
   strict_level: ":warning"
   strict_variables: true
 
