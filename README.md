@@ -75,7 +75,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 | default_before_script  |If false, removes the default `before_script` section. Useful if you need a customised Bundler install, or to remove Bundler entirely. If the key is unset the default behaviour is to add `before_script`.|
 |use_litmus| By default it is disabled. Set to `true` to configure travis to use Litmus testing tool for acceptance testing jobs with default values.|
 |litmus|Allows you to update default config values. Its sub keys are `provision_list`, `puppet_collection`, `ruby_version`, `install_wget` which are detailed below.|
-|litmus\\**puppet_collection**|Allows you to specify the puppet version under test. Default test are ran on _puppet 5_ and _puppet 6_.|
+|litmus\\**puppet_collection**|Allows you to specify the puppet version under test. Default test are ran on _puppet6_.|
 |litmus\\**provision_list**|Allows you to specify the platforms list under test. Default test are ran on platformes defined in provision.yaml file under _travis_deb_ and _travis_el_|
 |litmus\\**ruby_version**|Allows you to specify the ruby version under test. Default it is set to _2.5.7_|
 |litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms. Default it is disabled. |
