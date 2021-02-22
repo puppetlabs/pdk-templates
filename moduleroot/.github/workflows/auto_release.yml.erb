@@ -52,12 +52,12 @@ jobs:
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       id: gv
       run: |
-        echo "::set-output name=ver::$(cat metadata.json | jq .version | tr -d \")"
+        echo "::set-output name=ver::$(jq --raw-output .version metadata.json)"
 
     - name: "Commit changes"
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       run: |
-        git config --local user.email "action@github.com"
+        git config --local user.email "${{ github.repository_owner }}@users.noreply.github.com"
         git config --local user.name "GitHub Action"
         git add .
         git commit -m "Release prep v${{ steps.gv.outputs.ver }}"
