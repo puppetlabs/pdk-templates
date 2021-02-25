@@ -72,7 +72,7 @@ jobs:
         branch: "release-prep"
         delete-branch: true
         title: "Release prep v${{ steps.gv.outputs.ver }}"
-        body: "Automated release-prep through [pdk-templates](https://github.com/puppetlabs/pdk-templates/blob/main/moduleroot/.github/workflows/auto_release.yml.erb)"
+        body: "Automated release-prep through [pdk-templates](https://github.com/puppetlabs/pdk-templates/blob/main/moduleroot/.github/workflows/auto_release.yml.erb) from commit ${{ github.sha }}"
         labels: "maintenance"
 
     - name: PR outputs
