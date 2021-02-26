@@ -601,6 +601,11 @@ Gemfile:
           - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
           - parallel_spec
         puppet_version: '~> 6'
+      '2.7.2':
+        checks:
+          - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
+          - parallel_spec
+        puppet_version: '~> 7'
     # beaker: true
     use_litmus: false
     litmus:
