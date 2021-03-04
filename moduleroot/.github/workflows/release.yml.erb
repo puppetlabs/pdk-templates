@@ -48,7 +48,7 @@ jobs:
         uses: docker://puppet/pdk:nightly
         with:
           args: 'build'
-      - name: "Set token"
+      - name: "mask token"
         run: |
           echo "::add-mask::${{ env.FORGE_TOKEN }}"
       - name: "Push to Forge"
