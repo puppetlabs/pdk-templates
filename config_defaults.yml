@@ -62,6 +62,7 @@ common:
     - '/spec/'
     - '/.vscode/'
     - '/.sync.yml'
+    - '/.devcontainer/'
 .travis.yml:
   stages:
     - static
