@@ -640,3 +640,6 @@ spec/spec_helper.rb:
   unmanaged: true
 .github/workflows/auto_release.yml:
   unmanaged: true
+.github/workflows/spec.yml:
+  unmanaged: true
+  checks: 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
