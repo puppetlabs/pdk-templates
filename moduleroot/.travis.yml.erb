@@ -120,16 +120,19 @@ jobs:
   configs.each do |config|
   config['collection']['puppet_collection'].each do |puppet_version|
   config['collection']['provision_list'].each do |platform|-%>
-    -
-      before_script:
+    - before_script:
       - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
 <%  if @configs['litmus']['install_wget']-%>
       - "bundle exec bolt command run 'apt-get install wget -y || yum install wget -y' --inventoryfile inventory.yaml --targets='localhost*'"
 <%  end-%>
       - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
       - "bundle exec rake litmus:install_module"
-      bundler_args:
-      env: PLATFORMS=<%=platform%>_<%=puppet_version%>
+<%  if config['collection']['dist']-%>
+      dist: <%=config['collection']['dist']%>
+<%  end -%>
+      env:
+        PLATFORMS: <%=platform%>_<%=puppet_version%>
+        BUNDLE_WITH: system_tests
       rvm: <%=@configs['litmus']['rvm']%>
       script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
       services: docker

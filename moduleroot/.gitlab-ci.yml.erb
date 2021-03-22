@@ -14,6 +14,9 @@ stages:
   - syntax
   - unit
 <% end -%>
+<% if configs['use_litmus'] -%>
+  - acceptance
+<% end -%>
 <% if configs['beaker'] -%>
   - beaker
 <% end -%>
@@ -29,39 +32,42 @@ variables:
 <%   end -%>
 <% end -%>
 
+<% if configs['image'] || configs['cache'] || !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
+default:
+<% end -%>
 <% if configs['image'] -%>
-image: <%= configs['image'] %>
+  image: <%= configs['image'] %>
 
 <% end -%>
 <% if configs['cache'] -%>
-cache:
-  paths:
+  cache:
+    paths:
 <%   configs['cache']['paths'].each do |path| -%>
-    - <%= path %>
+      - <%= path %>
 <%   end -%>
 <% end -%>
 
 <% if !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
-before_script:
+  before_script: &before_script
 <% if configs['custom_before_steps'] -%>
 <%   configs['custom_before_steps'].each do |step| -%>
-  - <%= step %>
+    - <%= step %>
 <%   end -%>
 <% end -%>
-  - bundle -v
-  - rm Gemfile.lock || true
+    - bundle -v
+    - rm Gemfile.lock || true
 <% if configs['rubygems_mirror'] -%>
-  - gem sources -a <%= configs['rubygems_mirror'] %> --remove https://rubygems.org/
-  - bundle config mirror.http://rubygems.org/ <%= configs['rubygems_mirror'] %>
-  - bundle config mirror.https://rubygems.org/ <%= configs['rubygems_mirror'] %>
+    - gem sources -a <%= configs['rubygems_mirror'] %> --remove https://rubygems.org/
+    - bundle config mirror.http://rubygems.org/ <%= configs['rubygems_mirror'] %>
+    - bundle config mirror.https://rubygems.org/ <%= configs['rubygems_mirror'] %>
 <% end -%>
-  - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
-  - "# Set `rubygems_version` in the .sync.yml to set a value"
-  - "# Ignore exit code of SIGPIPE'd yes to not fail with shell's pipefail set"
-  - '[ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION'
-  - gem --version
-  - bundle -v
-  - bundle install <%= configs['bundler_args'] %>
+    - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
+    - "# Set `rubygems_version` in the .sync.yml to set a value"
+    - "# Ignore exit code of SIGPIPE'd yes to not fail with shell's pipefail set"
+    - '[ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION'
+    - gem --version
+    - bundle -v
+    - bundle install <%= configs['bundler_args'] %>
 <% end -%>
 
 <% if configs['ruby_versions'] -%>
@@ -86,6 +92,11 @@ before_script:
 <%       if options['rubygems_version'] -%>
     RUBYGEMS_VERSION: '<%= options['rubygems_version'] -%>'
 <%       end -%>
+<% if configs.has_key?('global_variables') -%>
+<%   configs['global_variables'].each do |key, value| -%>
+    <%= key %>: '<%= value %>'
+<%   end -%>
+<% end -%>
 <%       if options['allow_failure'] -%>
 <%         if options['allow_failure'].include?(check) -%>
   allow_failure: true
@@ -129,6 +140,46 @@ before_script:
 <%       end %>
 <%     end -%>
 <%   end -%>
+<% end -%>
+<% if configs['use_litmus']
+  cfgs = if configs['litmus']['complex']
+              (configs['litmus']['complex'] + [{'collection' =>configs['litmus'] }])
+            else
+              [{'collection' =>configs['litmus'] }]
+            end
+  cfgs.each do |cfg|
+  cfg['collection']['puppet_collection'].each do |puppet_version|
+  cfg['collection']['provision_list'].each do |platform|-%>
+litmus-<%= platform -%>-<%= puppet_version -%>:
+  stage: acceptance
+  variables:
+    DOCKER_DRIVER: overlay2
+<%   if configs['litmus']['variables'] -%>
+<%     configs['litmus']['variables'].each do |key, value| -%>
+    <%= key %>: <%= value %>
+<%     end -%>
+<%   end -%>
+  services:
+    - docker:dind
+  before_script:
+    - *before_script
+    - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
+<%  if configs['litmus']['install_wget']-%>
+    - "bundle exec bolt command run 'apt-get install wget -y' --inventoryfile inventory.yaml --nodes='localhost*'"
+<%  end-%>
+    - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
+    - "bundle exec rake litmus:install_module"
+  script:
+    - "bundle exec rake litmus:acceptance:parallel"
+<%   if configs['litmus']['tags'] -%>
+  tags:
+<%     configs['litmus']['tags'].each do |tag| -%>
+    - <%= tag %>
+<%     end -%>
+<%   end -%>
+<%    end -%>
+<%   end -%>
+<%  end -%>
 <% end -%>
 <% if configs['beaker'] -%>
 beaker:

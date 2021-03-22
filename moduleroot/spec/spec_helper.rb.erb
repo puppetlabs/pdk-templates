@@ -54,9 +54,7 @@ RSpec.configure do |c|
     # by default Puppet runs at warning level
     Puppet.settings[:strict] = <%= @configs['strict_level'] %>
     <%- end -%>
-    <%- if @configs['strict_variables'] -%>
     Puppet.settings[:strict_variables] = <%= @configs['strict_variables'] %>
-    <%- end -%>
   end
   c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
   c.after(:suite) do

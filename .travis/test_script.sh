@@ -15,9 +15,13 @@ grep template < metadata.json
 cp "$TEMPLATE_PR_DIR/.travis/fixtures/new_provider_sync.yml" ./.sync.yml
 pdk update --force
 pdk new class new_module
-pdk new defined_type testtype
-pdk new provider testprovider
-pdk new task testtask
+pdk new defined_type test_type
+pdk new fact test_fact || true # not available in pdk 1.18 yet
+pdk new function --type native testfunc_nat || true # not available in pdk 1.18 yet
+pdk new function --type v4 testfunc_v4 || true # not available in pdk 1.18 yet
+pdk new provider test_provider
+pdk new task test_task
+pdk new transport test_transport
 pdk validate
 pdk test unit
 popd
@@ -35,11 +39,11 @@ popd
 
 rm -f ~/.pdk/cache/answers.json
 
-# Create new module from master branch of official templates repo
-pdk new module convert_from_master --template-url="https://github.com/puppetlabs/pdk-templates.git" --template-ref=master --skip-interview
-pushd convert_from_master
+# Create new module from main branch of official templates repo
+pdk new module convert_from_main --template-url="https://github.com/puppetlabs/pdk-templates.git" --template-ref=main --skip-interview
+pushd convert_from_main
 grep template < metadata.json
-# Attempt to convert to PR commit from official/master
+# Attempt to convert to PR commit from official/main
 pdk convert --template-url="file://$TEMPLATE_PR_DIR" --template-ref=travis_commit --skip-interview --force
 cat convert_report.txt
 popd
