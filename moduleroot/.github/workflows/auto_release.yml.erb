@@ -72,7 +72,12 @@ jobs:
         branch: "release-prep"
         delete-branch: true
         title: "Release prep v${{ steps.gv.outputs.ver }}"
-        body: "Automated release-prep through [pdk-templates](https://github.com/puppetlabs/pdk-templates/blob/main/moduleroot/.github/workflows/auto_release.yml.erb) from commit ${{ github.sha }}"
+        body: |
+          Automated release-prep through [pdk-templates](https://github.com/puppetlabs/pdk-templates/blob/main/moduleroot/.github/workflows/auto_release.yml.erb) from commit ${{ github.sha }}. 
+          Please verify before merging:
+          - [ ] last nightly run is green
+          - [ ] Changelog is readable and has no unlabeled pull requests
+          - [ ] Ensure the changelog version and metadata version match
         labels: "maintenance"
 
     - name: PR outputs
