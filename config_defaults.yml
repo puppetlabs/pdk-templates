@@ -42,6 +42,7 @@ common:
       - '.project'
       - '.envrc'
       - '/inventory.yaml'
+      - '/spec/fixtures/litmus_inventory.yaml'
 .pdkignore:
   required: *ignorepaths
   paths:
