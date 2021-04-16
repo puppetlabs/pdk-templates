@@ -34,6 +34,18 @@ The following is a description and explanation of each of the keys within config
 |:-----------------------|:------------|
 | disable\_legacy\_facts | Set to `true` to configure PDK to prevent the use of [legacy Facter facts][legacy_facts_doc]. Currently this will install and enable the [legacy\_facts][legacy_facts_pl_plugin] plugin for puppet-lint for use during `pdk validate`. |
 
+### .editorconfig
+
+> EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs.
+
+Please see the [EditorConfig site](https://editorconfig.org) for details on how to install it as a plugin (or if your text editor or IDE includes support natively) and how to configure it.
+
+To enable adding a `.editorconfig`:
+
+```yaml
+.editorconfig:
+  unmanaged: false
+```
 
 ### .gitattributes
 
