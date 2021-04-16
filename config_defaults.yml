@@ -15,34 +15,34 @@ common:
     '*.epp': 'eol=lf'
 .gitignore:
   required: &ignorepaths
-      - '.git/'
-      - '.*.sw[op]'
-      - '.metadata'
-      - '.yardoc'
-      - '.yardwarns'
-      - '*.iml'
-      - '/.bundle/'
-      - '/.idea/'
-      - '/.vagrant/'
-      - '/coverage/'
-      - '/bin/'
-      - '/doc/'
-      - '/Gemfile.local'
-      - '/Gemfile.lock'
-      - '/junit/'
-      - '/log/'
-      - '/pkg/'
-      - '/spec/fixtures/manifests/'
-      - '/spec/fixtures/modules/'
-      - '/tmp/'
-      - '/vendor/'
-      - '/convert_report.txt'
-      - '/update_report.txt'
-      - '.DS_Store'
-      - '.project'
-      - '.envrc'
-      - '/inventory.yaml'
-      - '/spec/fixtures/litmus_inventory.yaml'
+    - '.git/'
+    - '.*.sw[op]'
+    - '.metadata'
+    - '.yardoc'
+    - '.yardwarns'
+    - '*.iml'
+    - '/.bundle/'
+    - '/.idea/'
+    - '/.vagrant/'
+    - '/coverage/'
+    - '/bin/'
+    - '/doc/'
+    - '/Gemfile.local'
+    - '/Gemfile.lock'
+    - '/junit/'
+    - '/log/'
+    - '/pkg/'
+    - '/spec/fixtures/manifests/'
+    - '/spec/fixtures/modules/'
+    - '/tmp/'
+    - '/vendor/'
+    - '/convert_report.txt'
+    - '/update_report.txt'
+    - '.DS_Store'
+    - '.project'
+    - '.envrc'
+    - '/inventory.yaml'
+    - '/spec/fixtures/litmus_inventory.yaml'
 .pdkignore:
   required: *ignorepaths
   paths:
@@ -98,7 +98,7 @@ common:
     provision_list: [travis_deb, travis_el]
     puppet_collection: [puppet6]
     rvm: '2.5.7'
-    install_wget: no
+    install_wget: "no"
   notifications:
     email: false
   deploy_to_forge:
@@ -399,7 +399,7 @@ Rakefile:
 
   profiles:
     # no rubocops enabled, caveat emptor!
-    off:
+    "off":
       enabled_cops: {}
 
     # a sanitized list of cops that'll cleanup a code base without much effort
@@ -502,10 +502,9 @@ Rakefile:
         Naming/ConstantName:
         Style/Documentation:
           Exclude:
-          - 'lib/puppet/parser/functions/**/*'
-          - 'spec/**/*'
+            - 'lib/puppet/parser/functions/**/*'
+            - 'spec/**/*'
         Style/DoubleNegation:
-        Style/EndBlock:
         Naming/FileName:
         Lint/FlipFlop:
         Style/For:
@@ -614,7 +613,7 @@ Gemfile:
       provision_list: [centos7]
       puppet_collection: [puppet6]
       ruby_version: '2.5.7'
-      install_wget: no
+      install_wget: "no"
     default_before_script: true
 .gitpod.Dockerfile:
   unmanaged: true
