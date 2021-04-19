@@ -1,4 +1,6 @@
-#!/bin/sh -xe
+#!/bin/bash
+set -x # echo commands with vars expanded
+set -e # exit immediately on error
 
 DIST_NAME=$(lsb_release -cs)
 RELEASE_DEB="https://apt.puppetlabs.com/puppet-tools-release-${DIST_NAME}.deb"

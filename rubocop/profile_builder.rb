@@ -9,31 +9,31 @@ require 'yaml'
 require 'rubocop/version'
 
 def report_cops(cops, msg)
-  $stderr.puts "Found these cops in #{msg}:"
+  warn "Found these cops in #{msg}:"
   total = 0
   cops.each do |enabled, c|
-    $stderr.puts "#{enabled.inspect}: #{c.length}"
+    warn "#{enabled.inspect}: #{c.length}"
     total += c.length
   end
-  $stderr.puts "total: #{total}"
+  warn "total: #{total}"
 end
 
 def load_config
-  YAML.load(`rubocop --show-cops --require rubocop-rspec --require rubocop-performance`)
+  YAML.safe_load(`rubocop --show-cops --require rubocop-rspec --require rubocop-performance`)
 end
 
 File.delete('.rubocop.yml') if File.exist?('.rubocop.yml')
 
 default_configs = load_config
-all_cops = default_configs.keys - [ 'AllCops', 'require', 'Lint/Syntax' ]
+all_cops = default_configs.keys - ['AllCops', 'require', 'Lint/Syntax']
 
 default_cops = all_cops.group_by { |c| default_configs[c]['Enabled'] }
-report_cops(default_cops, "the rubocop config")
+report_cops(default_cops, 'the rubocop config')
 
 File.open("defaults-#{RuboCop::Version.version}.yml", 'wb') do |f|
   f.puts YAML.dump(
     default_enabled_cops: default_cops[true].sort,
-    default_pending_cops: default_cops['pending'].sort,
+    default_pending_cops: default_cops['pending'].sort
   )
 end
 
