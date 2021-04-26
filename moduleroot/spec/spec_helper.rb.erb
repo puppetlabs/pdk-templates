@@ -62,6 +62,18 @@ RSpec.configure do |c|
     RSpec::Puppet::Coverage.report!(<%= @configs['minimum_code_coverage_percentage'] %>)
     <%- end -%>
   end
+
+  # Filter backtrace noise
+  backtrace_exclusion_patterns = [
+    /spec_helper/,
+    /gems/
+  ]
+
+  if c.respond_to?(:backtrace_exclusion_patterns)
+    c.backtrace_exclusion_patterns = backtrace_exclusion_patterns
+  elsif c.respond_to?(:backtrace_clean_patterns)
+    c.backtrace_clean_patterns = backtrace_exclusion_patterns
+  end
 end
 
 # Ensures that a module is defined
