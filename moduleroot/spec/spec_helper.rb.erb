@@ -65,8 +65,8 @@ RSpec.configure do |c|
 
   # Filter backtrace noise
   backtrace_exclusion_patterns = [
-    /spec_helper/,
-    /gems/
+    %r{spec_helper},
+    %r{gems},
   ]
 
   if c.respond_to?(:backtrace_exclusion_patterns)
