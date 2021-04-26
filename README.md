@@ -17,7 +17,9 @@ PDK builds the configuration of the module by reading a set of default configura
 
 Templates like this one can be used in conjunction with the PDK. As default the PDK itself uses the templates within this repository to render files for use within a module. Templates can be passed to the PDK as a flag for several of the commands.
 
-> pdk convert --template-url https://github.com/puppetlabs/pdk-templates
+```bash
+pdk convert --template-url https://github.com/puppetlabs/pdk-templates
+```
 
 Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
 For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/main/README.md).
@@ -96,12 +98,11 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 ### Gitpod configuration
 If you are using Gitpod you will need to opt-in and enable gitpod support for pdk-templates.  To do this simple set the following configurations.
 
-```
+```yaml
 .gitpod.Dockerfile:
   unmanaged: false
 .gitpod.yml:
   unmanaged: false
-
 ```
 
 ### Github Workflows
