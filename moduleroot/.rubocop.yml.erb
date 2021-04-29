@@ -62,8 +62,13 @@ default_pending_cops = config_defaults[:default_pending_cops] || []
 
 cop_configs = (profile['enabled_cops'] || {})
 
-enabled_cops = cop_configs.keys
-enabled_cops = default_enabled_cops if enabled_cops == 'all'
+if enabled_cops == 'all'
+  enabled_cops = default_enabled_cops
+elsif cop_configs.respond_to?(:keys)
+  enabled_cops = cop_configs.keys
+else
+  enabled_cops = {}
+end
 
 (enabled_cops & default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] if cop_configs[c] }
 (enabled_cops - default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = true }
