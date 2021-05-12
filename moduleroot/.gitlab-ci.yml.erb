@@ -46,6 +46,12 @@ default:
       - <%= path %>
 <%   end -%>
 <% end -%>
+<% if configs['tags'] -%>
+  tags:
+<%   configs['tags'].each do |tag| -%>
+    - <%= tag %>
+<%   end -%>
+<% end -%>
 
 <% if !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
   before_script: &before_script
