@@ -50,8 +50,13 @@ default:
 <% if !configs.has_key?('default_before_script') || configs['default_before_script'] -%>
   before_script: &before_script
 <% if configs['custom_before_steps'] -%>
-<%   configs['custom_before_steps'].each do |step| -%>
+<%   if configs['custom_before_steps'].is_a? Array -%>
+<%     configs['custom_before_steps'] = { 'before' => configs['custom_before_steps'] } -%>
+<%   end -%>
+<%   if configs['custom_before_steps']['before'] -%>
+<%     configs['custom_before_steps']['before'].each do |step| -%>
     - <%= step %>
+<%     end -%>
 <%   end -%>
 <% end -%>
     - bundle -v
@@ -68,6 +73,11 @@ default:
     - gem --version
     - bundle -v
     - bundle install <%= configs['bundler_args'] %>
+<% if configs['custom_before_steps'] and configs['custom_before_steps']['after'] -%>
+<%     configs['custom_before_steps']['after'].each do |step| -%>
+    - <%= step %>
+<%     end -%>
+<%   end -%>
 <% end -%>
 
 <% if configs['ruby_versions'] -%>
