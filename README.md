@@ -197,6 +197,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.|
 |changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file|
 |changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the `changelog` rake task.|
+|changelog\_max\_issues|Sets the github max_issues for the change\_log\_generator rake task. Optional to limit max issues. | 
 |changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
 |github_site|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_site = https://git.domain.tld`) |
 |github_endpoint|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_endpoint = https://git.domain.tld/api/v4`) |
