@@ -2,8 +2,10 @@
 name: "Auto release"
 
 on:
+<% if common['release_schedule'] -%>
   schedule:
-    - cron: '0 3 * * 6'
+    - cron: <%= common['release_schedule']['cron'] %>
+<% end -%>
   workflow_dispatch:
 
 env:

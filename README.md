@@ -110,6 +110,16 @@ If you are using Gitpod you will need to opt-in and enable gitpod support for pd
 
 These workflows are depending on puppet-internal resources and are currently not suited for public consumption. Feel free to take them as inspiration how to run some tests on Github Actions. Please let us know at <ia_content@puppet.com> what you come up with!
 
+### .github/workflows/auto_release.yml
+
+The auto release workflows uses the PDK experimental command `pdk release prep` to prepare a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically. 
+To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
+```yaml
+release_schedule:
+   cron: '0 3 * * 6'
+```
+In this example the automated release prep workflow is triggered every Saturday at 3 am.
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
