@@ -87,7 +87,7 @@ common:
     script: bundle exec rake beaker
     stage: acceptance
   includes:
-    - env: CHECK="check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop syntax lint metadata_lint"
+    - env: CHECK="validate lint check rubocop"
       stage: static
     - env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
       rvm: 2.5.7
@@ -114,7 +114,7 @@ appveyor.yml:
   use_litmus: false
   matrix:
     - RUBY_VERSION: 25-x64
-      CHECK: "syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop"
+      CHECK: "validate lint check rubocop"
     - PUPPET_GEM_VERSION: ~> 6.0
       RUBY_VERSION: 25
       CHECK: parallel_spec
@@ -602,12 +602,12 @@ Gemfile:
     ruby_versions:
       '2.5.7':
         checks:
-          - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
+          - 'validate lint check rubocop'
           - parallel_spec
         puppet_version: '~> 6'
       '2.7.2':
         checks:
-          - 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
+          - 'validate lint check rubocop'
           - parallel_spec
         puppet_version: '~> 7'
     # beaker: true
@@ -645,6 +645,6 @@ spec/spec_helper.rb:
   unmanaged: true
 .github/workflows/spec.yml:
   unmanaged: true
-  checks: 'syntax lint metadata_lint check:symlinks check:git_ignore check:dot_underscore check:test_file rubocop'
+  checks: 'validate lint check rubocop'
 .github/workflows/release.yml:
   unmanaged: true
