@@ -1,5 +1,6 @@
 ---
 version: 1.1.x.{build}
+skip_branch_with_pr: true
 branches:
 <% if ((@configs['branches'] || []) - (@configs['remove_branches'] || [])).any? -%>
   only:
