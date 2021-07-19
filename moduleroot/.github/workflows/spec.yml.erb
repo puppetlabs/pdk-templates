@@ -61,6 +61,11 @@ jobs:
           echo STEP_ID=Setup-Acceptance-Test-Matrix >> $GITHUB_ENV
           echo STEP_START=$(date +%s) >> $GITHUB_ENV
 
+      - name: Run Static & Syntax Tests
+        if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
+        run: |
+          buildevents cmd $TRACE_ID $STEP_ID 'static_syntax_checks' -- bundle exec rake <%= @configs['checks'] %>
+
       - name: Setup Spec Test Matrix
         id: get-matrix
         run: |
@@ -126,10 +131,6 @@ jobs:
           buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
           echo ::endgroup::
 
-      - name: Run Static & Syntax Tests
-        run: |
-          buildevents cmd $TRACE_ID $STEP_ID 'static_syntax_checks Puppet ${{ matrix.puppet_version }}, Ruby ${{ matrix.ruby_version }}' -- bundle exec rake <%= @configs['checks'] %>
-      
       - name: Run parallel_spec tests
         run: |
           buildevents cmd $TRACE_ID $STEP_ID 'rake parallel_spec Puppet ${{ matrix.puppet_version }}, Ruby ${{ matrix.ruby_version }}' -- bundle exec rake parallel_spec
