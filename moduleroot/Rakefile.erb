@@ -74,6 +74,10 @@ PuppetLint.configuration.fail_on_warnings = true
 <% linter_options.each do |option| -%>
 PuppetLint.configuration.send('<%= option %>')
 <% end -%>
+<% if @configs['linter_exclusions'] -%>
+PuppetLint.configuration.ignore_paths = <%= @configs['linter_exclusions']%>
+<% end -%>
+
 
 if Bundler.rubygems.find_name('github_changelog_generator').any?
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
