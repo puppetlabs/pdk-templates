@@ -112,7 +112,7 @@ These workflows are depending on puppet-internal resources and are currently not
 
 ### .github/workflows/auto_release.yml
 
-The auto release workflows uses the PDK experimental command `pdk release prep` to prepare a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically. 
+The auto release workflows uses the PDK experimental command `pdk release prep` to prepare a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically.
 To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
 ```yaml
 release_schedule:
@@ -208,7 +208,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |changelog\_user|Sets the github user for the change_log_generator rake task. Optional, if not set it will read the `author` from the `metadata.json` file.|
 |changelog\_project|Sets the github project name for the change\_log\_generator rake task. Optional, if not set it will parse the `source` from the `metadata.json` file|
 |changelog\_since\_tag|Sets the github since_tag for the change\_log\_generator rake task. Required for the `changelog` rake task.|
-|changelog\_max\_issues|Sets the github max_issues for the change\_log\_generator rake task. Optional to limit max issues. | 
+|changelog\_max\_issues|Sets the github max_issues for the change\_log\_generator rake task. Optional to limit max issues. |
 |changelog\_version\_tag\_pattern|Template how the version tag is to be generated. Defaults to `'v%s'` which eventually align with tag\_pattern property of puppet-blacksmith, thus changelog is referring to the correct version tags and compare URLs. |
 |github_site|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_site = https://git.domain.tld`) |
 |github_endpoint|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_endpoint = https://git.domain.tld/api/v4`) |
@@ -218,6 +218,7 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile.|
 |linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
 |linter\_fail\_on\_warnings| A boolean indicating if the linter should exit non-zero on warnings as well as failures. _Does affect **.puppet-lint.rc**._ |
+| linter_exclusions | An array of paths that the linter should exclude from running against. |
 
 ### .rubocop.yml
 

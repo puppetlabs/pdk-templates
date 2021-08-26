@@ -7,10 +7,12 @@
     ].flatten.uniq
     options = rakefile_config['linter_options'].to_a
     fail_on_warnings = rakefile_config['linter_fail_on_warnings']
+    exclusions = rakefile_config['linter_exclusions']
   else
     disabled_checks = []
     options = []
     fail_on_warnings = false
+    exclusions = false
   end
 -%>
 <% if fail_on_warnings -%>
@@ -25,4 +27,7 @@
 <% end -%>
 <% options.each do |option| -%>
 --<%= option %>
+<% end -%>
+<% if exclusions -%>
+--ignore-paths=<%= exclusions.join(',') %>
 <% end -%>
