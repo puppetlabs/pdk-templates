@@ -3,6 +3,7 @@ name: "PR Testing"
 
 on: [pull_request]
 
+<% if common['honeycomb'] or common['service_url'] %>
 env:
 <% if common['honeycomb'] -%>
   HONEYCOMB_WRITEKEY: <%= common['honeycomb']['writekey'] %>
@@ -10,6 +11,7 @@ env:
 <% end -%>
 <% if common['service_url'] -%>
   SERVICE_URL: <%= common['service_url'] %>
+<% end -%>
 <% end -%>
 
 jobs:
