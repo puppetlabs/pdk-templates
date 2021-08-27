@@ -75,7 +75,7 @@ PuppetLint.configuration.fail_on_warnings = true
 PuppetLint.configuration.send('<%= option %>')
 <% end -%>
 <% if @configs['linter_exclusions'] -%>
-PuppetLint.configuration.ignore_paths = <%= @configs['linter_exclusions']%>
+PuppetLint.configuration.ignore_paths += <%= @configs['linter_exclusions']%>
 <% end -%>
 
 

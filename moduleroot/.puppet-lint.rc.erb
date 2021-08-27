@@ -29,5 +29,5 @@
 --<%= option %>
 <% end -%>
 <% if exclusions -%>
---ignore-paths=<%= exclusions.join(',') %>
+--ignore-paths=vendor/**/*.pp,bundle/**/*.pp,pkg/**/*.pp,spec/**/*.pp,tests/**/*.pp,types/**/*.pp,<%= exclusions.join(',') %>
 <% end -%>
