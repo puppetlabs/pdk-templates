@@ -402,7 +402,7 @@ Rakefile:
 
   profiles:
     # no rubocops enabled, caveat emptor!
-    "off":
+    off:
       enabled_cops: {}
 
     # a sanitized list of cops that'll cleanup a code base without much effort
