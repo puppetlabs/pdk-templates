@@ -66,7 +66,7 @@ jobs:
       id: get-matrix
       run: |
         if [ '${{ github.repository_owner }}' == '<%= common['owner'] %>' ]; then
-          buildevents cmd $TRACE_ID $STEP_ID matrix_from_metadata -- bundle exec matrix_from_metadata_v2
+          buildevents cmd $TRACE_ID $STEP_ID matrix_from_metadata -- bundle exec matrix_from_metadata_v2 <%= "--exclude-platforms '#{@configs['exclude_platforms']}'" unless @configs['exclude_platforms'].nil? %>
         else
           echo  "::set-output name=matrix::{}"
         fi
