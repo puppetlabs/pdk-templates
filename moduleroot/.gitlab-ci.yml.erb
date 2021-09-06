@@ -100,7 +100,11 @@ default:
 <%       else -%>
   stage: syntax
 <%       end -%>
+<%       if %r{:}.match?(image) -%>
+  image: <%= image %>
+<%       else -%>
   image: <%= image %>:<%= ruby_version %>
+<%       end -%>
   script:
     - bundle exec rake <%= check %>
   variables:
