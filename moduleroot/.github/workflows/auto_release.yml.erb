@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-<% if common['honeycomb'] -%>
+<% if common['honeycomb']['enabled'] -%>
   HONEYCOMB_WRITEKEY: <%= common['honeycomb']['writekey'] %> 
   HONEYCOMB_DATASET: <%= common['honeycomb']['dataset'] %>
 <% end -%>
@@ -24,6 +24,7 @@ jobs:
     runs-on: ubuntu-20.04
 
     steps:
+<% if common['honeycomb']['enabled'] -%>    
     - name: "Honeycomb: Start recording"
       uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates-v1
       with:
@@ -35,7 +36,7 @@ jobs:
       run: |
         echo STEP_ID="auto-release" >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
-
+<% end -%>
     - name: "Checkout Source"
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       uses: actions/checkout@v2
@@ -93,8 +94,9 @@ jobs:
       run: |
         echo "Pull Request Number - ${{ steps.cpr.outputs.pull-request-number }}"
         echo "Pull Request URL - ${{ steps.cpr.outputs.pull-request-url }}"
-
+<% if common['honeycomb']['enabled'] -%> 
     - name: "Honeycomb: Record finish step"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Finished auto release workflow'
+<% end -%>
