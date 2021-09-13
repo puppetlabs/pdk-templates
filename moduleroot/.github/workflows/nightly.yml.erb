@@ -5,9 +5,9 @@ on:
   schedule:
     - cron: '0 0 * * *'
 
-<% if common['honeycomb'] or common['service_url'] %>
+<% if common['honeycomb']['enabled'] or common['service_url'] %>
 env:
-<% if common['honeycomb'] -%>
+<% if common['honeycomb']['enabled'] -%>
   HONEYCOMB_WRITEKEY: <%= common['honeycomb']['writekey'] %>
   HONEYCOMB_DATASET: <%= common['honeycomb']['dataset'] %>
 <% end -%>
@@ -24,6 +24,7 @@ jobs:
       matrix: ${{ steps.get-matrix.outputs.matrix }}
 
     steps:
+<% if common['honeycomb']['enabled'] -%>     
     - name: "Honeycomb: Start recording"
       uses: puppetlabs/kvrhdn-gha-buildevents@pdk-templates-v1
       with:
@@ -35,7 +36,7 @@ jobs:
       run: |
         echo STEP_ID=setup-environment >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
-
+<% end -%>
     - name: Checkout Source
       uses: actions/checkout@v2
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
@@ -53,14 +54,14 @@ jobs:
         echo ::group::bundler environment
         buildevents cmd $TRACE_ID $STEP_ID 'bundle env' -- bundle env
         echo ::endgroup::
-
+<% if common['honeycomb']['enabled'] -%>   
     - name: "Honeycomb: Record Setup Environment time"
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Environment'
         echo STEP_ID=Setup-Acceptance-Test-Matrix >> $GITHUB_ENV
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
-
+<% end -%>
     - name: Setup Acceptance Test Matrix
       id: get-matrix
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
@@ -70,12 +71,12 @@ jobs:
         else
           echo  "::set-output name=matrix::{}"
         fi
-
+<% if common['honeycomb']['enabled'] -%>  
     - name: "Honeycomb: Record Setup Test Matrix time"
       if: ${{ always() }}
       run: |
         buildevents step $TRACE_ID $STEP_ID $STEP_START 'Setup Test Matrix'
-
+<% end -%>
   Acceptance:
     name: "${{matrix.platforms.label}}, ${{matrix.collection}}"
     needs:

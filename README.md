@@ -35,6 +35,7 @@ The following is a description and explanation of each of the keys within config
 | Key                    | Description |
 |:-----------------------|:------------|
 | disable\_legacy\_facts | Set to `true` to configure PDK to prevent the use of [legacy Facter facts][legacy_facts_doc]. Currently this will install and enable the [legacy\_facts][legacy_facts_pl_plugin] plugin for puppet-lint for use during `pdk validate`. |
+| honeycomb | While enabled by default, honeycombs use can be turned off: s`enabled: false` |
 
 ### .editorconfig
 
