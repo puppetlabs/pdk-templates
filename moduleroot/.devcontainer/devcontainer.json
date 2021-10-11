@@ -3,7 +3,11 @@
 	"dockerFile": "Dockerfile",
 
 	"settings": {
-		"terminal.integrated.shell.linux": "/bin/bash"
+		"terminal.integrated.profiles.linux": {
+			"bash": {
+				"path": "bash",
+			}
+		}
 	},
 
 	"extensions": [
