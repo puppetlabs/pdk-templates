@@ -18,6 +18,7 @@ env:
 
 jobs:
   setup_matrix:
+    if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
     name: "Setup Test Matrix"
     runs-on: ubuntu-20.04
     outputs:
@@ -197,7 +198,7 @@ jobs:
 
 <% if @configs['slack-notifications'] -%>
   slack-workflow-status:
-    if: always()
+    if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
     name: Post Workflow Status To Slack
     needs:
       - Acceptance
