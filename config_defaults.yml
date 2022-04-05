@@ -585,7 +585,6 @@ Gemfile:
           - mingw
           - x64_mingw
       - gem: 'voxpupuli-puppet-lint-plugins'
-        platforms: ruby
         version: '>= 3.0'
     ':system_tests':
       - gem: 'puppet-module-posix-system-r#{minor_version}'
