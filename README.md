@@ -136,6 +136,13 @@ In this example the automated release prep workflow is triggered every Saturday 
 We can trigger automated builds with every change to our code base in the main branch, other branches or even a pull request.
 Travis uses a .travis.yml file in the root of your repository to learn about your project and how you want your builds to be executed.
 
+To enable adding the .travis.yml file, add this key to your `.sync.yml`:
+
+``` yaml
+.travis.yml:
+  unmanaged: false
+```
+
 | Key            | Description   |
 | :------------- |:--------------|
 | os | Set to an array of operating systems to test. See the [TravisCI documentation](https://docs.travis-ci.com/user/multi-os/) for more details. |

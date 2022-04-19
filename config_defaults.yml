@@ -69,6 +69,7 @@ common:
     - '/.sync.yml'
     - '/.devcontainer/'
 .travis.yml:
+  unmanaged: true
   stages:
     - static
     - spec
