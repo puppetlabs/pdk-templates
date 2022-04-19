@@ -641,7 +641,7 @@ spec/spec_helper.rb:
 .github/workflows/nightly.yml:
   unmanaged: true
   slack-notifications:
-    channel: '#team-ia-bots'
+    channel: '#team-cat-bots'
     name: 'GABot'
 .github/workflows/pr_test.yml:
   unmanaged: true
