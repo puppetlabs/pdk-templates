@@ -43,6 +43,9 @@ RSpec.configure do |c|
   <%- if @configs['default_facter_version'] -%>
   c.default_facter_version = '<%= @configs['default_facter_version'] %>'
   <%- end -%>
+  <%- if @configs['facter_implementation'] -%>
+  c.facter_implementation = <%= @configs['facter_implementation'] %>
+  <%- end -%>
   <%- if @configs['hiera_config'] -%>
   c.hiera_config = '<%= @configs['hiera_config'] %>'
   <%- elsif @configs['hiera_config_ruby'] -%>
