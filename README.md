@@ -96,6 +96,7 @@ Gitlab CI uses a .gitlab-ci.yml file in the root of your repository tell Gitlab 
 |litmus\\**ruby_version**|Allows you to specify the ruby version under test. Default it is set to _2.5.7_|
 |litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms. Default it is disabled. |
 |litmus\\**complex\\collection**|Allows you to specify multiple collections of `puppet_collection` and `provision_list`, allowing you to set certain OS to only run on certain Puppet versions. |
+| coverage          |Define the coverage regexp use for Gitlabci (only for spec unit). Default value is `/Resource\scoverage:\s\*\d+.\d+%/`, and match with default coverage report in [spec/spec_helper.rb](#specspec_helperrb). IIf you want disable this feature, set the value at `false`. Please see the [Gitlab documentation](https://docs.gitlab.com/ee/ci/pipelines/settings.html#add-test-coverage-results-using-coverage-keyword) for specifics.|
 
 ### Gitpod configuration
 If you are using Gitpod you will need to opt-in and enable gitpod support for pdk-templates.  To do this simple set the following configurations.

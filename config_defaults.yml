@@ -6,7 +6,7 @@ common:
     enabled: true
     writekey: 7f3c63a70eecc61d635917de46bea4e6
     dataset: litmus tests
-    
+
 .editorconfig:
   unmanaged: true
 .gitattributes:
@@ -602,6 +602,7 @@ Gemfile:
       paths:
         - 'vendor/bundle'
     bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
+    coverage: '/Resource\scoverage:\s*\d+.\d+%/'
     ruby_versions:
       '2.5.7':
         checks:

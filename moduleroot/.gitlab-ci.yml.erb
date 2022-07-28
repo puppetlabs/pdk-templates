@@ -97,6 +97,9 @@ default:
 <%= check %>-Ruby <%= ruby_version %>-Puppet <%= options['puppet_version'] %>:
 <%       if check =~ /spec/ -%>
   stage: unit
+<%        if configs['coverage'] -%>
+  coverage: '<%= configs['coverage'] %>'
+<%        end -%>
 <%       else -%>
   stage: syntax
 <%       end -%>
