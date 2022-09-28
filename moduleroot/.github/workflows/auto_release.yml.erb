@@ -44,6 +44,10 @@ jobs:
         fetch-depth: 0
         persist-credentials: false
 
+    - name: "Migrate history if needed"
+      run: |
+        if test -f HISTORY.md && ! test -f CHANGELOG.md; then touch CHANGELOG.md; git add CHANGELOG.md; git commit CHANGELOG.md -m 'Creating changelog'; fi
+
     - name: "PDK Release prep"
       uses: docker://puppet/iac_release:ci
       with:
