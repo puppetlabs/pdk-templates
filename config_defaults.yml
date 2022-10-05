@@ -557,32 +557,39 @@ Gemfile:
   required:
     ':development':
       - gem: 'json'
+        version: '~> 2.0'
       - gem: 'voxpupuli-puppet-lint-plugins'
-        version: '>= 3.0.0'
+        version: '~> 3.0'
       - gem: 'facterdb'
-        version: '< 2.0.0'
+        version: '~> 1.18'
       - gem: 'metadata-json-lint'
-        version: '< 4.0.0'
-      - gem: 'puppet-lint'
-        version: '< 3.0.0'
+        version:
+        - '>= 2.0.2'
+        - '< 4.0.0'
       - gem: 'puppetlabs_spec_helper'
-        version: '< 4.0.0'
-      - gem: 'rspec-puppet'
-        version: '< 3.0.0'
+        version:
+        - '>= 3.0.0'
+        - '< 5.0.0'
       - gem: 'rspec-puppet-facts'
-        version: '< 3.0.0'
+        version: '~> 2.0'
       - gem: 'codecov'
+        version: '~> 0.2'
       - gem: 'dependency_checker'
+        version: '~> 0.2'
       - gem: 'parallel_tests'
+        version: '~> 3.4'
       - gem: 'pry'
-      - gem: 'serverspec'
+        version: '~> 0.10'
       - gem: 'simplecov-console'
-      - gem: 'specinfra'
+        version: '~> 0.5'
       - gem: 'puppet-debugger'
-      - gem: 'ed25519'
-        platforms: ruby
-      - gem: 'bcrypt_pbkdf'
-        platforms: ruby
+        version: '~> 1.0'
+      - gem: 'rubocop'
+        version: '= 1.6.1'
+      - gem: 'rubocop-performance'
+        version: '= 1.9.1'
+      - gem: 'rubocop-rspec'
+        version: '= 2.0.1'
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
@@ -593,6 +600,8 @@ Gemfile:
       - gem: 'puppet_litmus'
         version: '< 1.0.0'
         platforms: ruby
+      - gem: 'serverspec'
+        version: '~> 2.41'
 .gitlab-ci.yml:
   defaults:
     cache:
