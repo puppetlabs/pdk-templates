@@ -1,11 +1,20 @@
 <%
 def gem_length(gem)
-  if gem['from_env']
-    version_len = " *location_for(ENV['#{gem['from_env']}'])".length + ((" || '#{gem['version']}'".length if gem['version']) || 0)
-  else
-    version_len = (", '#{gem['version']}'".length if gem['version']) || 0
-  end
+  if gem['version']
+    gem_output = ''
+    Array(gem['version']).each do |version|
+      gem_output += " '#{version}',"
+    end
+    gem_output = gem_output.chomp(',')
 
+    if gem['from_env']
+      version_len = " *location_for(ENV['#{gem['from_env']}'])".length + " ||#{gem_output}".length
+    else
+      version_len = ",#{gem_output}".length
+    end
+  else
+    version_len = 0
+  end
   gem['gem'].length + version_len
 end
 
@@ -13,10 +22,17 @@ def gem_spec(gem, max_len)
   output = "\"#{gem['gem']}\""
 
   if gem['version']
+    gem_output = ''
+    # For each version requirement given add to the string and place a `,`
+    Array(gem['version']).each do |version|
+      gem_output += " '#{version}',"
+    end
+    gem_output = gem_output.chomp(',')
+
     if gem['from_env']
-      output += ", *location_for(ENV['#{gem['from_env']}'] || '#{gem['version']}')"
+      output += ", *location_for(ENV['#{gem['from_env']}'] ||#{gem_output})"
     else
-      output += ", '#{gem['version']}'"
+      output += ",#{gem_output}"
     end
   end
 
@@ -54,9 +70,6 @@ def location_for(place_or_version, fake_version = nil)
     [place_or_version, { require: false }]
   end
 end
-
-ruby_version_segments = Gem::Version.new(RUBY_VERSION.dup).segments
-minor_version = ruby_version_segments[0..1].join('.')
 
 <%
   groups = {}
