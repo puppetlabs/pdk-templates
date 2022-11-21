@@ -557,7 +557,9 @@ Gemfile:
   required:
     ':development':
       - gem: 'json'
-        version: '~> 2.0'
+        version:
+        - '~> 2.0'
+        - '!= 2.6.2'
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 3.0'
       - gem: 'facterdb'
