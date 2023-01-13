@@ -6,7 +6,7 @@ common:
     enabled: true
     writekey: 7f3c63a70eecc61d635917de46bea4e6
     dataset: litmus tests
-    
+
 .editorconfig:
   unmanaged: true
 .gitattributes:
@@ -556,9 +556,15 @@ Rakefile:
 Gemfile:
   required:
     ':development':
+      - gem: 'json'
+        platforms: ruby
+        version: '~> 2.0'
       - gem: 'json_pure'
-        version:
-        - '~> 2.0'
+        version: '~> 2.0'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 3.1'
       - gem: 'facterdb'
