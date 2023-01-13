@@ -556,10 +556,9 @@ Rakefile:
 Gemfile:
   required:
     ':development':
-      - gem: 'json'
+      - gem: 'json_pure'
         version:
         - '~> 2.0'
-        - '!= 2.6.2'
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 3.1'
       - gem: 'facterdb'
