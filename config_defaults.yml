@@ -556,9 +556,23 @@ Rakefile:
 Gemfile:
   required:
     ':development':
-      - gem: 'json_pure'
-        version:
-        - '~> 2.0'
+      # Json gems should be pinned to their default versions so that users aren't forced to recompile the native extensions.
+      # See the following for a version matrix: https://stdgems.org/json/#gem-version
+      - gem: json
+        version: '= 2.1.0'
+        condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: json
+        version: '= 2.3.0'
+        condition: "Gem::Requirement.create(['>= 2.7.0', '< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: json
+        version: '= 2.5.1'
+        condition: "Gem::Requirement.create(['>= 3.0.0', '< 3.0.5']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: json
+        version: '= 2.6.1'
+        condition: "Gem::Requirement.create(['>= 3.1.0', '< 3.1.3']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: json
+        version: '= 2.6.3'
+        condition: "Gem::Requirement.create(['>= 3.2.0', '< 4.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 3.1'
       - gem: 'facterdb'
