@@ -556,46 +556,53 @@ Rakefile:
 Gemfile:
   required:
     ':development':
-      # hardcode JSON version to what's shipped in pdk for now
-      - gem: json
-        version: '= 2.0.4'
-        condition: "Gem::Requirement.create('~> 2.4.2').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
-      - gem: json
-        version: '= 2.1.0'
-        condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
-      - gem: json
-        version: '= 2.3.0'
-        condition: "Gem::Requirement.create(['>= 2.7.0', '< 2.8.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
-      - gem: 'puppet-module-posix-default-r#{minor_version}'
-        version: '~> 1.0'
-        platforms: ruby
-      - gem: 'puppet-module-posix-dev-r#{minor_version}'
-        version: '~> 1.0'
-        platforms: ruby
-      - gem: 'puppet-module-win-default-r#{minor_version}'
-        version: '~> 1.0'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
-      - gem: 'puppet-module-win-dev-r#{minor_version}'
-        version: '~> 1.0'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
+      - gem: 'json_pure'
+        version:
+        - '~> 2.0'
       - gem: 'voxpupuli-puppet-lint-plugins'
-        version: '>= 3.0'
-    ':system_tests':
-      - gem: 'puppet-module-posix-system-r#{minor_version}'
+        version: '~> 3.1'
+      - gem: 'facterdb'
+        version: '~> 1.18'
+      - gem: 'metadata-json-lint'
+        version:
+        - '>= 2.0.2'
+        - '< 4.0.0'
+      - gem: 'puppetlabs_spec_helper'
+        version:
+        - '>= 3.0.0'
+        - '< 5.0.0'
+      - gem: 'rspec-puppet-facts'
+        version: '~> 2.0'
+      - gem: 'codecov'
+        version: '~> 0.2'
+      - gem: 'dependency_checker'
+        version: '~> 0.2'
+      - gem: 'parallel_tests'
+        version: '~> 3.4'
+      - gem: 'pry'
+        version: '~> 0.10'
+      - gem: 'simplecov-console'
+        version: '~> 0.5'
+      - gem: 'puppet-debugger'
         version: '~> 1.0'
-        platforms: ruby
-      - gem: 'puppet-module-win-system-r#{minor_version}'
-        version: '~> 1.0'
+      - gem: 'rubocop'
+        version: '= 1.6.1'
+      - gem: 'rubocop-performance'
+        version: '= 1.9.1'
+      - gem: 'rubocop-rspec'
+        version: '= 2.0.1'
+      - gem: 'rb-readline'
+        version: '= 0.5.5'
         platforms:
           - mswin
           - mingw
           - x64_mingw
+    ':system_tests':
+      - gem: 'puppet_litmus'
+        version: '< 1.0.0'
+        platforms: ruby
+      - gem: 'serverspec'
+        version: '~> 2.41'
 .gitlab-ci.yml:
   defaults:
     cache:

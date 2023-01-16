@@ -1,6 +1,6 @@
 ---
 os: linux
-dist: xenial
+dist: focal
 language: generic
 env:
   - PDK=release PDK_FRONTEND=noninteractive
