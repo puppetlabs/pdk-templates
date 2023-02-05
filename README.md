@@ -256,6 +256,17 @@ Travis uses a .travis.yml file in the root of your repository to learn about you
 |from_env|Specifies an environment variable containing either a Rubygem version specification indicating the version to use OR a URL indicating the location from which to load the gem.|
 |condition|An optional string containing a Ruby-code conditional controlling if this gem will be processed in the Gemfile.|
 
+#### Example
+```yaml
+Gemfile:
+  optional:
+    ":system_tests":
+      - gem: ed25519
+        version:
+          - '>= 1.2'
+          - '< 2.0'
+```
+
 ### spec/default_facts.yml
 
 > The spec/default_facts.yml file contains a list of facts to be used by default when running rspec tests
