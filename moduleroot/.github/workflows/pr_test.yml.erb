@@ -36,7 +36,7 @@ jobs:
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
 <% end -%>
     - name: Checkout Source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
       if: ${{ github.repository_owner == '<%= common['owner'] %>' }}
 
     - name: Activate Ruby 2.7
@@ -113,7 +113,7 @@ jobs:
         echo STEP_START=$(date +%s) >> $GITHUB_ENV
 <% end -%>
     - name: Checkout Source
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Activate Ruby 2.7
       uses: ruby/setup-ruby@v1
