@@ -1,8 +1,8 @@
 FROM gitpod/workspace-full
-RUN sudo wget https://apt.puppet.com/puppet-tools-release-bionic.deb && \
-    wget https://apt.puppetlabs.com/puppet6-release-bionic.deb && \
-    sudo dpkg -i puppet6-release-bionic.deb && \
-    sudo dpkg -i puppet-tools-release-bionic.deb && \
+RUN sudo wget https://apt.puppet.com/puppet-tools-release-focal.deb && \
+    wget https://apt.puppetlabs.com/puppet6-release-focal.deb && \
+    sudo dpkg -i puppet6-release-focal.deb && \
+    sudo dpkg -i puppet-tools-release-focal.deb && \
     sudo apt-get update && \
     sudo apt-get install -y pdk zsh puppet-agent && \
     sudo apt-get clean && \
@@ -14,5 +14,5 @@ RUN sudo usermod -s $(which zsh) gitpod && \
     sudo /opt/puppetlabs/puppet/bin/gem install puppet-debugger hub -N && \
     mkdir -p /home/gitpod/.config/puppet && \
     /opt/puppetlabs/puppet/bin/ruby -r yaml -e "puts ({'disabled' => true}).to_yaml" > /home/gitpod/.config/puppet/analytics.yml
-RUN rm -f puppet6-release-bionic.deb  puppet-tools-release-bionic.deb
+RUN rm -f puppet6-release-focal.deb  puppet-tools-release-focal.deb
 ENTRYPOINT /usr/bin/zsh
