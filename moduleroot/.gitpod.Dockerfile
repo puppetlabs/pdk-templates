@@ -1,9 +1,9 @@
 FROM gitpod/workspace-full
 RUN sudo wget https://apt.puppet.com/puppet-tools-release-focal.deb && \
-    wget https://apt.puppetlabs.com/puppet6-release-focal.deb && \
-    sudo dpkg -i puppet6-release-focal.deb && \
+    wget https://apt.puppetlabs.com/puppet7-release-focal.deb && \
+    sudo dpkg -i puppet7-release-focal.deb && \
     sudo dpkg -i puppet-tools-release-focal.deb && \
-    rm -f puppet6-release-focal.deb  puppet-tools-release-focal.deb && \
+    rm -f puppet7-release-focal.deb  puppet-tools-release-focal.deb && \
     sudo apt-get update && \
     sudo apt-get install -y pdk zsh puppet-agent && \
     sudo apt-get clean && \
