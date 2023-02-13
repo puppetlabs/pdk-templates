@@ -614,7 +614,9 @@ Gemfile:
     ':system_tests':
       - gem: 'puppet_litmus'
         version: '< 1.0.0'
-        platforms: ruby
+        platforms: 
+          - ruby
+          - x64_mingw
       - gem: 'serverspec'
         version: '~> 2.41'
 .gitlab-ci.yml:
