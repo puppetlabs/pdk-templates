@@ -574,7 +574,7 @@ Gemfile:
         version: '= 2.6.3'
         condition: "Gem::Requirement.create(['>= 3.2.0', '< 4.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'voxpupuli-puppet-lint-plugins'
-        version: '~> 3.1'
+        version: '~> 4.0'
       - gem: 'facterdb'
         version: '~> 1.18'
       - gem: 'metadata-json-lint'
@@ -583,8 +583,7 @@ Gemfile:
         - '< 4.0.0'
       - gem: 'puppetlabs_spec_helper'
         version:
-        - '>= 3.0.0'
-        - '< 5.0.0'
+        - '~> 5.0'
       - gem: 'rspec-puppet-facts'
         version: '~> 2.0'
       - gem: 'codecov'
