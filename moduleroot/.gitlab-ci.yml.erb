@@ -112,11 +112,20 @@ default:
 <%       if options['rubygems_version'] -%>
     RUBYGEMS_VERSION: '<%= options['rubygems_version'] -%>'
 <%       end -%>
+<%       if options['code_quality'] and check =~ %r{\blint\b}-%>
+    CODECLIMATE_REPORT_FILE: 'gl-code-quality-report.json'
+<%       end -%>
 <% if configs.has_key?('global_variables') -%>
 <%   configs['global_variables'].each do |key, value| -%>
     <%= key %>: '<%= value %>'
 <%   end -%>
 <% end -%>
+<%       if options['code_quality'] and check =~ %r{\blint\b}-%>
+  artifacts:
+    reports:
+      codequality: gl-code-quality-report.json
+    expire_in: 1 week
+<%       end -%>
 <%       if options['allow_failure'] -%>
 <%         if options['allow_failure'].include?(check) -%>
   allow_failure: true
