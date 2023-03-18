@@ -76,16 +76,6 @@ end
   (@configs['required'].keys + ((@configs['optional'] || {}).keys)).uniq.each do |key|
     groups[key] = (@configs['required'][key] || []) + ((@configs['optional'] || {})[key] || [])
   end
-
-  if respond_to?(:config_for)
-    common_config = config_for('common')
-
-    if common_config['disable_legacy_facts']
-      groups[':development'] << {
-        'gem' => 'puppet-lint-legacy_facts-check',
-      }
-    end
-  end
 -%>
 <% groups.each do |group, gems| -%>
 group <%= group %> do

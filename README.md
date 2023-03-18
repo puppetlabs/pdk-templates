@@ -34,7 +34,6 @@ The following is a description and explanation of each of the keys within config
 
 | Key                    | Description |
 |:-----------------------|:------------|
-| disable\_legacy\_facts | Set to `true` to configure PDK to prevent the use of [legacy Facter facts][legacy_facts_doc]. Currently this will install and enable the [legacy\_facts][legacy_facts_pl_plugin] plugin for puppet-lint for use during `pdk validate`. |
 | honeycomb | While enabled by default, honeycomb's use can be turned off: `enabled: false` |
 
 ### .editorconfig
@@ -342,7 +341,6 @@ Gemfile:
 Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.
 
 [legacy_facts_doc]: https://puppet.com/docs/facter/latest/core_facts.html#legacy-facts
-[legacy_facts_pl_plugin]: https://github.com/mmckinst/puppet-lint-legacy_facts-check
 
 ## Security Considerations on Github Actions
 
