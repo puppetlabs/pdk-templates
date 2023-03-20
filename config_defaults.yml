@@ -1,6 +1,5 @@
 ---
 common:
-  disable_legacy_facts: false
   owner: puppetlabs
   honeycomb:
     enabled: true
