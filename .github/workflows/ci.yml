@@ -1,0 +1,28 @@
+name: "ci"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+jobs:
+  ci:
+    runs-on: ubuntu-latest
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v3"
+
+      - name: "Export variables"
+        run: |
+          export PDK=release
+          export PDK_FRONTEND=noninteractive
+          echo $BASH_VERSION
+
+      - name: "Install PDK"
+        run: |
+          .ci/install_pdk.sh
+
+      - name: "Run Tests"
+        run: |
+          .ci/test_script.sh
