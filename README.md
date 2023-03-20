@@ -129,6 +129,49 @@ In this example the automated release prep workflow is triggered every Saturday 
 | required          | The default list of files or paths for PDK to ignore when building a module package.
 | paths             | Defines additional files or paths for PDK to ignore when building a module package.
 
+### .travis.yml
+
+>[Travis CI](https://travis-ci.org/) is a hosted continuous integration platform that is free for all open source projects hosted on Github.
+We can trigger automated builds with every change to our code base in the main branch, other branches or even a pull request.
+Travis uses a .travis.yml file in the root of your repository to learn about your project and how you want your builds to be executed.
+| Key            | Description   |
+| :------------- |:--------------|
+| os | Set to an array of operating systems to test. See the [TravisCI documentation](https://docs.travis-ci.com/user/multi-os/) for more details. |
+| dist | If specified, it will set the dist attribute. See the [TravisCI documentation](https://docs.travis-ci.com/user/reference/overview/#virtualisation-environment-vs-operating-system) for more details. |
+| simplecov      |Set to `true` to enable collecting ruby code coverage.|
+| ruby\_versions  |Define the ruby versions on which you want your builds to be executed.|
+| bundler\_args   |Define any arguments you want to pass through to bundler. The default is `--without system_tests` which avoids installing unnecessary gems.|
+| env            |Allows you to add new travis job matrix entries based on the included environment variables, one per `env` entry; for example, for adding jobs with specific `PUPPET_GEM_VERSION` and/or `CHECK` values.  See the [Travis Environment Variables](https://docs.travis-ci.com/user/environment-variables) documentation for details.|
+| global\_env     |Allows you to set global environment variables which will be defined for all travis jobs; for example, `PARALLEL_TEST_PROCESSORS` or `TIMEOUT`.  See the [Travis Global Environment Variables](https://docs.travis-ci.com/user/environment-variables/#Global-Variables) documentation for details.|
+|docker\_sets     |Allows you to configure sets of docker to run your tests on. For example, if I wanted to run on a docker instance of Ubuntu I would add  `set:docker/ubuntu-14.04` to my docker\_sets attribute.  The docker_sets is a hash that supports the 'set', 'testmode', and 'collection' keys. |
+|docker\_sets['set']| This should reference the docker nodeset that you wish to run. |
+|docker\_sets['testmode']| This configures the `BEAKER_TESTMODE` to use when testing the docker instance. The two options are `apply` and `agent` if omitted `apply` is used by default. |
+|docker_sets['collection]| This configures the `BEAKER_PUPPET_COLLECTION` to use when testing the docker instance. The default is `puppet6`.
+|docker_defaults |Defines what values are used as default when using the `docker_sets` definition. Includes ruby version, sudo being enabled, the distro, the services, the env variables and the script to execute.|
+|stages          |Allows the specification of order and conditions for travis-ci build stages. See [Specifying Stage Order and Conditions](https://docs.travis-ci.com/user/build-stages/#specifying-stage-order-and-conditions).|
+|before_install_pre  |Add install steps to the start of `before_install`. |
+|before_install_post |Add install steps to the end of `before_install`. |
+|includes        |Ensures that the .travis file includes the following checks by default: Rubocop, Puppet Lint, Metadata Lint.|
+|remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
+|branches        |Allows you to specify the only branches that travis will run builds on. The default branches are `main` and `/^v\d/`. |
+|branches_except |Allows you to specify branches that travis will not build on.|
+|remove_branches |Allows you to remove default branches set in config_defaults.yml.|
+|notifications   |Allows you to specify the notifications configuration in the .travis.yml file.|
+|remove_notifications   |Allows you to remove default branches set in config_defaults.yml.|
+|deploy_to_forge|Allows you to change the automatic deployment of modules to the forge. Sub keys are `enabled` and `tag_regex` which are detailed below|
+|deploy_to_forge\\**enabled**|Allows you to enable or disable automatic forge deployments. Default is true|
+|deploy_to_forge\\**tag_regex**|Allows you to use a regular expression to define which tags will trigger a deployment.  The default is `^v\d`|
+|before_deploy|An array which can allow a user to specify the commands to run before kicking off a deployment. See [https://docs.travis-ci.com/user/deployment/releases/#setting-the-tag-at-deployment-time].|
+|use_litmus| By default it is disabled. Set to `true` to configure travis to use Litmus testing tool for acceptance testing jobs with default values.|
+|litmus|Allows you to update default config values. Its sub keys are `provision_list`, `puppet_collection`, `rvm`, `install_wget` which are detailed below.|
+|litmus\\**puppet_collection**|Allows you to specify the puppet version under test. Default test are ran on _puppet 5_ and _puppet 6_.|
+|litmus\\**provision_list**|Allows you to specify the platforms list under test. Default test are ran on platformes defined in provision.yaml file under _travis_deb_ and _travis_el_|
+|litmus\\**rvm**|Allows you to specify the ruby version under test. Default it is set to _2.5.7_|
+|litmus\\**install_wget**|Allows you to enable automatic installation of wget on the platform under test. We need this when installing agent on travis_deb platforms. Default it is disabled. |
+|litmus\\**complex\\collection**|Allows you to specify multiple collections of `puppet_collection` and `provision_list`, allowing you to set certain OS to only run on certain Puppet versions. |
+|user|This string needs to be set to the Puppet Forge user name. To enable deployment the secure key also needs to be set.|
+|secure|This string needs to be set to the encrypted password to enable deployment. See [https://docs.travis-ci.com/user/encryption-keys/#usage](https://docs.travis-ci.com/user/encryption-keys/#usage) for instructions on how to encrypt your password.|
+
 ### .yardopts
 
 >[YARD](https://yardoc.org/) is a documentation generation tool for the Ruby programming language. It enables the user to generate consistent, usable documentation that can be exported to a number of formats very easily, and also supports extending for custom Ruby constructs such as custom class level definitions.

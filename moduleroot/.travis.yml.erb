@@ -1,0 +1,201 @@
+<%
+  if @configs['deploy_to_forge']['enabled']
+    # If Deploy To Forge is enabled..
+    # - Inject the deployment stage using the tag regex
+    @configs['stages'] << {
+      'name' => 'deploy',
+      'if'   => "tag =~ #{@configs['deploy_to_forge']['tag_regex']}"
+    }
+    # - Inject the deployment task into the includes
+    @configs['includes'] << {
+      'env'   => 'DEPLOY_TO_FORGE=yes',
+      'stage' => 'deploy'
+    }
+  end
+-%>
+---
+<% if @configs['os'] -%>
+os:
+<%   @configs['os'].each do |os| -%>
+  - <%= os %>
+<%   end -%>
+<% else -%>
+os: linux
+<% end -%>
+<% if @configs['dist'] -%>
+dist: <%= @configs['dist'] %>
+<% else -%>
+dist: xenial
+<% end -%>
+language: ruby
+cache: bundler
+<% if !@configs.nil? && @configs.has_key?('addons') -%>
+addons:
+<%   @configs['addons'].each do |addon, params| -%>
+  <%= addon %>:
+<%     params.each do |param_name, param_value| -%>
+    <%= param_name %>:<%= param_value.is_a?(String) ? " #{param_value}" : "" %>
+<%       if param_value.is_a?(Array) -%>
+<%         param_value.each do |r| -%>
+      - <%= r %>
+<%         end -%>
+<%       end -%>
+<%     end -%>
+<%   end -%>
+<% end -%>
+before_install:
+<% if @configs['before_install_pre'] -%>
+<%   @configs['before_install_pre'].each do |bip| -%>
+  - <%= bip %>
+<%   end -%>
+<% end -%>
+  - bundle -v
+  - rm -f Gemfile.lock
+  - "# Update system gems if requested. This is useful to temporarily workaround troubles in the test runner"
+  - "# See https://github.com/puppetlabs/pdk-templates/commit/705154d5c437796b821691b707156e1b056d244f for an example of how this was used"
+  - "# Ignore exit code of SIGPIPE'd yes to not fail with shell's pipefail set"
+  - '[ -z "$RUBYGEMS_VERSION" ] || (yes || true) | gem update --system $RUBYGEMS_VERSION'
+  - gem --version
+  - bundle -v
+<% if @configs['before_install_post'] -%>
+<%   @configs['before_install_post'].each do |bip| -%>
+  - <%= bip %>
+<%   end -%>
+<% end -%>
+script:
+<% if @configs['simplecov'] -%>
+  - 'SIMPLECOV=yes bundle exec rake $CHECK'
+<% else -%>
+  - 'bundle exec rake $CHECK'
+<% end -%>
+bundler_args: <%= @configs['bundler_args'] %>
+rvm:
+<% @configs['ruby_versions'].each do |ruby_version| -%>
+  - <%= ruby_version %>
+<% end -%>
+<% if @configs.has_key?('env') || @configs.has_key?('global_env') -%>
+env:
+<%   if @configs.has_key?('global_env') -%>
+  global:
+<%     @configs['global_env'].each do |env| -%>
+    - <%= env %>
+<%     end -%>
+<%   end -%>
+<%   if @configs.has_key?('env') -%>
+  jobs:
+<%     @configs['env'].each do |env| -%>
+    - <%= env %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+<% if @configs.has_key?('stages') -%>
+stages:
+<%   @configs['stages'].each do |stage| -%>
+<%     if stage.is_a?(String) -%>
+  - <%= stage %>
+<%     elsif stage.is_a?(Hash) -%>
+  -
+<%       stage.keys.sort.each do |key| -%>
+    <%= key %>: <%= stage[key] %>
+<%       end -%>
+<%     end -%>
+<%   end -%>
+<% end -%>
+jobs:
+  fast_finish: true
+  include:
+<% (@configs['docker_sets'] || []).each do |set| -%>
+<%   job = @configs['docker_defaults'].merge(set['options'] || {}) -%>
+    -
+<%   job.keys.sort.each do |key| -%>
+      <%= key %>: <%= job[key].gsub(/@@SET@@/, set['set']).gsub(/@@COLLECTION@@/, set.fetch('collection', 'puppet6')).gsub(/@@TESTMODE@@/, set.fetch('testmode', 'apply')) %>
+<%   end -%>
+<% end -%>
+<% if @configs['use_litmus']
+  configs = if @configs['litmus']['complex']
+              (@configs['litmus']['complex'] + [{'collection' =>@configs['litmus'] }])
+            else
+              [{'collection' =>@configs['litmus'] }]
+            end
+  configs.each do |config|
+  config['collection']['puppet_collection'].each do |puppet_version|
+  config['collection']['provision_list'].each do |platform|-%>
+    - before_script:
+      - "bundle exec rake 'litmus:provision_list[<%=platform%>]'"
+<%  if @configs['litmus']['install_wget']-%>
+      - "bundle exec bolt command run 'apt-get install wget -y || yum install wget -y' --inventoryfile inventory.yaml --targets='localhost*'"
+<%  end-%>
+      - "bundle exec rake 'litmus:install_agent[<%=puppet_version%>]'"
+      - "bundle exec rake litmus:install_module"
+<%  if config['collection']['dist']-%>
+      dist: <%=config['collection']['dist']%>
+<%  end -%>
+      env:
+        PLATFORMS: <%=platform%>_<%=puppet_version%>
+        BUNDLE_WITH: system_tests
+      rvm: <%=@configs['litmus']['rvm']%>
+      script: ["travis_wait 45 bundle exec rake litmus:acceptance:parallel"]
+      services: docker
+      stage: acceptance
+<%    end -%>
+<%   end -%>
+<%  end -%>
+<% end -%>
+<% (@configs['includes'] - (@configs['remove_includes'] || []) + (@configs['extras'] || [])).each do |job| -%>
+    -
+<%   job.keys.sort.each do |key| -%>
+      <%= key %>: <%= job[key] %>
+<%  end -%>
+<% end -%>
+<% if @configs['allow_failures'] -%>
+  allow_failures:
+<%   @configs['allow_failures'].each do |job| -%>
+    -
+<%     job.keys.sort.each do |key| -%>
+      <%= key %>: <%= job[key] %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+branches:
+<% if ((@configs['branches'] || []) - (@configs['remove_branches'] || [])).any? -%>
+  only:
+<%   (@configs['branches'] - (@configs['remove_branches'] || [])).each do |branch| -%>
+    - <%= branch %>
+<%   end -%>
+<% end -%>
+<% if @configs['branches_except'] -%>
+  except:
+<%   @configs['branches_except'].each do |branch| -%>
+    - <%= branch %>
+<%   end -%>
+<% end -%>
+notifications:
+<% notifications_arr = (@configs['notifications'].to_a - @configs['remove_notifications'].to_a) -%>
+<% unless notifications_arr.empty? -%>
+<%   notifications = Hash[*notifications_arr.flatten] -%>
+<%   notifications.keys.sort.each do |key| -%>
+<%     if notifications[key].is_a?(Array) or notifications[key].is_a?(Hash) -%>
+  <%= key %>:
+    <%= notifications[key].to_yaml.sub(/---\R/, '').gsub(/\R/, "\n    ").strip %>
+<%     else -%>
+  <%= key %>: <%= notifications[key] %>
+<%     end -%>
+<%   end -%>
+<% end -%>
+<% unless @configs['user'].nil? || @configs['secure'].nil? -%>
+<% if @configs['before_deploy'] -%>
+before_deploy:
+<%   @configs['before_deploy'].each do |b_deploy| -%>
+  - <%= b_deploy %>
+<%   end -%>
+<% end -%>
+deploy:
+  provider: puppetforge
+  username: <%= @configs['user'] %>
+  password:
+    secure: "<%= @configs['secure'] %>"
+  on:
+    tags: true
+    all_branches: true
+    condition: "$DEPLOY_TO_FORGE = yes"
+<% end -%>
