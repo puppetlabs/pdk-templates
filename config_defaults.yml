@@ -657,18 +657,11 @@ spec/spec_helper.rb:
   mock_with: ":rspec"
   strict_level: ":warning"
   strict_variables: true
-
-.github/workflows/nightly.yml:
-  unmanaged: true
-  slack-notifications:
-    channel: '#team-cat-bots'
-    name: 'GABot'
-.github/workflows/pr_test.yml:
-  unmanaged: true
 .github/workflows/auto_release.yml:
   unmanaged: true
-.github/workflows/spec.yml:
+.github/workflows/ci.yml:
   unmanaged: true
-  checks: 'validate lint check rubocop'
+.github/workflows/nightly.yml:
+  unmanaged: true
 .github/workflows/release.yml:
   unmanaged: true
