@@ -19,7 +19,10 @@ def report_cops(cops, msg)
 end
 
 def load_config
-  YAML.safe_load(`rubocop --show-cops --require rubocop-rspec --require rubocop-performance`)
+  YAML.safe_load(
+    `rubocop --show-cops --require rubocop-rspec --require rubocop-performance`,
+    permitted_classes: [Regexp, Symbol]
+  )
 end
 
 File.delete('.rubocop.yml') if File.exist?('.rubocop.yml')
