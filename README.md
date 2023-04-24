@@ -30,12 +30,6 @@ The following is a description and explanation of each of the keys within config
 
 ### common
 
-> A namespace for settings that affect multiple templates
-
-| Key                    | Description |
-|:-----------------------|:------------|
-| honeycomb | While enabled by default, honeycomb's use can be turned off: `enabled: false` |
-
 ### .editorconfig
 
 > EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs.

@@ -1,11 +1,6 @@
 ---
 common:
   owner: puppetlabs
-  honeycomb:
-    enabled: true
-    writekey: 7f3c63a70eecc61d635917de46bea4e6
-    dataset: litmus tests
-    
 .editorconfig:
   unmanaged: true
 .gitattributes:
