@@ -60,7 +60,7 @@ common:
     - '/Rakefile'
     - '/rakelib/'
     - '/.rspec'
-    - '/.rubocop.yml'
+    - '/..yml'
     - '/.travis.yml'
     - '/.yardopts'
     - '/spec/'
@@ -573,22 +573,19 @@ Gemfile:
         version: '= 2.6.3'
         condition: "Gem::Requirement.create(['>= 3.2.0', '< 4.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'voxpupuli-puppet-lint-plugins'
-        version: '~> 4.0'
+        version: '~> 5.0'
       - gem: 'facterdb'
         version: '~> 1.18'
       - gem: 'metadata-json-lint'
-        version:
-        - '>= 2.0.2'
-        - '< 4.0.0'
+        version: '~> 3.0'
       - gem: 'puppetlabs_spec_helper'
-        version:
-        - '~> 5.0'
+        version: '~> 6.0'
       - gem: 'rspec-puppet-facts'
         version: '~> 2.0'
       - gem: 'codecov'
         version: '~> 0.2'
       - gem: 'dependency_checker'
-        version: '~> 0.2'
+        version: '~> 1.0.0'
       - gem: 'parallel_tests'
         version: '= 3.12.1'
       - gem: 'pry'
@@ -598,11 +595,11 @@ Gemfile:
       - gem: 'puppet-debugger'
         version: '~> 1.0'
       - gem: 'rubocop'
-        version: '= 1.6.1'
+        version: '= 1.48.1'
       - gem: 'rubocop-performance'
-        version: '= 1.9.1'
+        version: '= 1.16.0'
       - gem: 'rubocop-rspec'
-        version: '= 2.0.1'
+        version: '= 2.19.0'
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
@@ -611,7 +608,8 @@ Gemfile:
           - x64_mingw
     ':system_tests':
       - gem: 'puppet_litmus'
-        version: '< 1.0.0'
+        version: 
+        - '~> 1.0'
         platforms: 
           - ruby
           - x64_mingw
