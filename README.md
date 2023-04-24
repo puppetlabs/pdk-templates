@@ -119,22 +119,6 @@ In this example the automated release prep workflow is triggered every Saturday 
 | markup         |Specifies the markup formatting of your documentation. Default is `markdown`.|
 | optional       |Define any additional arguments you want to pass through to the `yardoc` command.|
 
-### appveyor.yml
-
->[AppVeyor](https://www.appveyor.com/) is a hosted, distributed continuous integration service used to build and test projects hosted on GitHub by spinning up a Microsoft Windows virtual machine. AppVeyor is configured by adding a file named appveyor.yml, which is a YAML format text file, to the root directory of the code repository.
-
-| Key            | Description   |
-| :------------- |:--------------|
-|appveyor\_bundle\_install|Defines the bundle install command for the appveyor execution run. In our case we use bundle install `--without system_tests` as default, therefore avoiding redundant gem installation.|
-|install_pre  |Add install steps to the start of `install`. |
-|install_post |Add install steps to the end of `install`. |
-|environment|Defines any environment variables wanted for the job run. In our case we default to the latest Puppet 4 gem version.|
-|matrix|This defines the matrix of jobs to be executed at runtime. Each defines environment variables for that specific job run. In our defaults we have a Ruby version specfied, followed by the check that will be run for that job.|
-|simplecov|Set to `true` to enable collecting ruby code coverage.|
-|test\_script|This defines the test script that will be executed. For our purposes the default is set to `bundle exec rake %CHECK%`. As appveyor iterates through the test matrix as we defined above, it resolves the variable CHECK and runs the resulting command. For example, our last test script would be executed as `bundle exec rake spec`, which would run the spec tests of the module.|
-|use_litmus|Configures Appveyor to be able to use Litmus for acceptance testing jobs|
-|remove_includes |Allows you to remove includes set in `config_defaults.yml`.|
-
 ### Rakefile
 
 >[Rake](https://github.com/ruby/rake) is a Make-like program implemented in Ruby. Tasks and dependencies are specified in standard Ruby syntax within the Rakefile, present in the root directory of the code repository. Within modules context Rake tasks are used quite frequently, from ensuring the integrity of a module, running validation and tests, to tasks for releasing modules.

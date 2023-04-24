@@ -41,7 +41,6 @@ common:
 .pdkignore:
   required: *ignorepaths
   paths:
-    - '/appveyor.yml'
     - '/.fixtures.yml'
     - '/Gemfile'
     - '/.gitattributes'
@@ -60,23 +59,6 @@ common:
     - '/.devcontainer/'
 .yardopts:
   markup: markdown
-appveyor.yml:
-  appveyor_bundle_install: "bundle install --jobs 4 --retry 2 --without system_tests"
-  use_litmus: false
-  matrix:
-    - RUBY_VERSION: 25-x64
-      CHECK: "validate lint check rubocop"
-    - PUPPET_GEM_VERSION: ~> 6.0
-      RUBY_VERSION: 25
-      CHECK: parallel_spec
-    - PUPPET_GEM_VERSION: ~> 6.0
-      RUBY_VERSION: 25-x64
-      CHECK: parallel_spec
-  test_script:
-    - bundle exec rake %CHECK%
-  branches:
-    - main
-    - release
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
   default_disabled_lint_checks:
