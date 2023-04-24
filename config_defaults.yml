@@ -547,10 +547,6 @@ Gemfile:
           - x64_mingw
       - gem: 'serverspec'
         version: '~> 2.41'
-.gitpod.Dockerfile:
-  unmanaged: true
-.gitpod.yml:
-  unmanaged: true
 spec/default_facts.yml:
   ipaddress: "172.16.254.254"
   ipaddress6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"

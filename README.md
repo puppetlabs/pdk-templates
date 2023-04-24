@@ -47,16 +47,6 @@ The following is a description and explanation of each of the keys within config
 | required          | The default list of files or paths for git to ignore or untrack that are commonly specified in a module project.
 | paths             | Defines any additional files or paths for git to ignore or untrack. (see the [gitignore](https://git-scm.com/docs/gitignore) documentation).
 
-### Gitpod configuration
-If you are using Gitpod you will need to opt-in and enable gitpod support for pdk-templates.  To do this simple set the following configurations.
-
-```yaml
-.gitpod.Dockerfile:
-  unmanaged: false
-.gitpod.yml:
-  unmanaged: false
-```
-
 ### Github Workflows
 
 These workflows are depending on puppet-internal resources and are currently not suited for public consumption. Feel free to take them as inspiration how to run some tests on Github Actions. Please let us know at <ia_content@puppet.com> what you come up with!
