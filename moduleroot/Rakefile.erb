@@ -87,9 +87,6 @@ if Bundler.rubygems.find_name('github_changelog_generator').any?
 <% if @configs['github_endpoint'] -%>
     config.github_endpoint = <%= @configs['github_endpoint'].inspect %>
 <% end -%>
-<% if @configs['gitlab'] -%>
-    config.gitlab = <%= @configs['gitlab'].inspect %>
-<% end -%>
     config.user = "#{changelog_user}"
     config.project = "#{changelog_project}"
 <% if @configs['changelog_since_tag'] -%>

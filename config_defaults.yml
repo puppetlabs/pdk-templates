@@ -45,7 +45,6 @@ common:
     - '/Gemfile'
     - '/.gitattributes'
     - '/.gitignore'
-    - '/.gitlab-ci.yml'
     - '/.pdkignore'
     - '/.puppet-lint.rc'
     - '/Rakefile'
@@ -548,31 +547,6 @@ Gemfile:
           - x64_mingw
       - gem: 'serverspec'
         version: '~> 2.41'
-.gitlab-ci.yml:
-  defaults:
-    cache:
-      paths:
-        - 'vendor/bundle'
-    bundler_args: '--without system_tests --path vendor/bundle --jobs $(nproc)'
-    ruby_versions:
-      '2.5.7':
-        checks:
-          - 'validate lint check rubocop'
-          - parallel_spec
-        puppet_version: '~> 6'
-      '2.7.2':
-        checks:
-          - 'validate lint check rubocop'
-          - parallel_spec
-        puppet_version: '~> 7'
-    # beaker: true
-    use_litmus: false
-    litmus:
-      provision_list: [centos7]
-      puppet_collection: [puppet6]
-      ruby_version: '2.5.7'
-      install_wget: "no"
-    default_before_script: true
 .gitpod.Dockerfile:
   unmanaged: true
 .gitpod.yml:
