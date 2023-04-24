@@ -30,19 +30,6 @@ The following is a description and explanation of each of the keys within config
 
 ### common
 
-### .editorconfig
-
-> EditorConfig helps maintain consistent coding styles for multiple developers working on the same project across various editors and IDEs.
-
-Please see the [EditorConfig site](https://editorconfig.org) for details on how to install it as a plugin (or if your text editor or IDE includes support natively) and how to configure it.
-
-To enable adding a `.editorconfig`:
-
-```yaml
-.editorconfig:
-  unmanaged: false
-```
-
 ### .gitattributes
 
 >A .gitattributes file in your repo allows you to ensure consistent git settings.

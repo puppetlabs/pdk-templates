@@ -1,8 +1,6 @@
 ---
 common:
   owner: puppetlabs
-.editorconfig:
-  unmanaged: true
 .gitattributes:
   include:
     '*.rb': 'eol=lf'
@@ -44,7 +42,6 @@ common:
   required: *ignorepaths
   paths:
     - '/appveyor.yml'
-    - '/.editorconfig'
     - '/.fixtures.yml'
     - '/Gemfile'
     - '/.gitattributes'
