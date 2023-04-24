@@ -53,11 +53,11 @@ common:
     - '/rakelib/'
     - '/.rspec'
     - '/..yml'
-    - '/.travis.yml'
     - '/.yardopts'
     - '/spec/'
     - '/.vscode/'
     - '/.sync.yml'
+    - '/.devcontainer/'
 .yardopts:
   markup: markdown
 appveyor.yml:
