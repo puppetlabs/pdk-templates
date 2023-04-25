@@ -7,7 +7,7 @@ class Puppet::Util::NetworkDevice; end
 
 # The <%= name.capitalize %> module only contains the Device class to bridge from puppet's internals to the Transport.
 # All the heavy lifting is done bye the Puppet::ResourceApi::Transport::Wrapper
-module Puppet::Util::NetworkDevice::<%= name.capitalize %><% if name.include?('_') %> # rubocop:disable Style/ClassAndModuleCamelCase<% end %>
+module Puppet::Util::NetworkDevice::<%= name.capitalize %> # rubocop:disable<% if name.include?('_') %> Style/ClassAndModuleCamelCase,<% end %> Style/ClassAndModuleChildren
   # Bridging from puppet to the <%= name %> transport
   class Device < Puppet::ResourceApi::Transport::Wrapper
     def initialize(url_or_config, _options = {})
