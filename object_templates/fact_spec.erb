@@ -4,7 +4,7 @@ require 'spec_helper'
 require 'facter'
 require 'facter/<%= name %>'
 
-describe <%= name.to_sym.inspect %>, type: :fact do
+describe <%= name.to_sym.inspect %>, type: :fact do # rubocop:disable RSpec/DescribeClass
   subject(:fact) { Facter.fact(<%= name.to_sym.inspect %>) }
 
   # Mocking Facts

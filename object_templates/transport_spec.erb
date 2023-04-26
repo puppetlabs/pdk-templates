@@ -7,13 +7,13 @@ require 'puppet/transport/<%= name %>'
 RSpec.describe Puppet::Transport::<%= transport_class %> do
   subject(:transport) { described_class.new(context, connection_info) }
 
-  let(:context) { instance_double('Puppet::ResourceApi::BaseContext', 'context') }
+  let(:context) { instance_double(Puppet::ResourceApi::BaseContext, 'context') }
   let(:password) { 'aih6cu6ohvohpahN' }
   let(:connection_info) do
     {
       host: 'api.example.com',
       user: 'admin',
-      password: Puppet::Pops::Types::PSensitiveType::Sensitive.new(password),
+      password: Puppet::Pops::Types::PSensitiveType::Sensitive.new(password)
     }
   end
 

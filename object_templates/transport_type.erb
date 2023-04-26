@@ -4,27 +4,27 @@ require 'puppet/resource_api'
 
 Puppet::ResourceApi.register_transport(
   name: '<%= name %>',
-  desc: <<-EOS,
-      This transport provides Puppet with the capability to connect to <%= name %> targets.
-    EOS
+  desc: <<~DESC,
+    This transport provides Puppet with the capability to connect to <%= name %> targets.
+  DESC
   features: [],
   connection_info: {
     host: {
       type: 'String',
-      desc: 'The hostname or IP address to connect to for this target.',
+      desc: 'The hostname or IP address to connect to for this target.'
     },
     port: {
       type: 'Optional[Integer]',
-      desc: 'The port to connect to. Defaults to ...',
+      desc: 'The port to connect to. Defaults to ...'
     },
     user: {
       type: 'String',
-      desc: 'The name of the user to authenticate as.',
+      desc: 'The name of the user to authenticate as.'
     },
     password: {
-      type:      'String',
-      desc:      'The password for the user.',
-      sensitive: true,
-    },
+      type: 'String',
+      desc: 'The password for the user.',
+      sensitive: true
+    }
   },
 )

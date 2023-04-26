@@ -3,7 +3,7 @@
 require 'spec_helper'
 require 'puppet/type/<%= name %>'
 
-RSpec.describe 'the <%= name %> type' do
+RSpec.describe 'Puppet::Type.type(:<%= name %>)' do # rubocop:disable RSpec/DescribeClass
   it 'loads' do
     expect(Puppet::Type.type(:<%= name %>)).not_to be_nil
   end

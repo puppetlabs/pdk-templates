@@ -4,31 +4,31 @@ require 'puppet/resource_api'
 
 Puppet::ResourceApi.register_type(
   name: '<%= name %>',
-  docs: <<-EOS,
-@summary a <%= name %> type
-@example
-<%= name %> { 'foo':
-  ensure => 'present',
-}
+  docs: <<~DOCS,
+    @summary a <%= name %> type
+    @example
+    <%= name %> { 'foo':
+      ensure => 'present',
+    }
 
-This type provides Puppet with the capabilities to manage ...
+    This type provides Puppet with the capabilities to manage ...
 
-If your type uses autorequires, please document as shown below, else delete
-these lines.
-**Autorequires**:
-* `Package[foo]`
-EOS
+    If your type uses autorequires, please document as shown below, else delete
+    these lines.
+    **Autorequires**:
+    * `Package[foo]`
+  DOCS
   features: [],
   attributes: {
     ensure: {
       type: 'Enum[present, absent]',
       desc: 'Whether this resource should be present or absent on the target system.',
-      default: 'present',
+      default: 'present'
     },
     name: {
       type: 'String',
       desc: 'The name of the resource you want to manage.',
-      behaviour: :namevar,
-    },
+      behaviour: :namevar
+    }
   },
 )

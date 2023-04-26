@@ -1,8 +1,9 @@
 # frozen_string_literal: true
+<% function_name = name.to_sym.inspect.tr('"', "'") -%>
 <% dispatch_name = name.split(':').last -%>
 
 # https://github.com/puppetlabs/puppet-specifications/blob/master/language/func-api.md#the-4x-api
-Puppet::Functions.create_function(<%= name.to_sym.inspect %>) do
+Puppet::Functions.create_function(<%= function_name %>) do
   dispatch <%= dispatch_name.to_sym.inspect %> do
     param 'Numeric', :a
     return_type 'Numeric'
@@ -12,8 +13,8 @@ Puppet::Functions.create_function(<%= name.to_sym.inspect %>) do
   # required parameters below and puppet will enforce these
   # so change x to suit your needs although only one parameter is required
   # as defined in the dispatch method.
-  def <%= dispatch_name %>(x)
-    x * 2
+  def <%= dispatch_name %>(input)
+    input * 2
   end
 
   # you can define other helper methods in this code block as well

@@ -8,19 +8,19 @@ require 'puppet/provider/<%= name %>/<%= name %>'
 RSpec.describe Puppet::Provider::<%= provider_class %>::<%= provider_class %> do
   subject(:provider) { described_class.new }
 
-  let(:context) { instance_double('Puppet::ResourceApi::BaseContext', 'context') }
+  let(:context) { instance_double(Puppet::ResourceApi::BaseContext, 'context') }
 
   describe '#get' do
-    it 'processes resources' do
+    it 'processes resources' do # rubocop:disable RSpec/ExampleLength
       expect(context).to receive(:debug).with('Returning pre-canned example data')
       expect(provider.get(context)).to eq [
         {
           name: 'foo',
-          ensure: 'present',
+          ensure: 'present'
         },
         {
           name: 'bar',
-          ensure: 'present',
+          ensure: 'present'
         },
       ]
     end

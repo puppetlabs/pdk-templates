@@ -11,11 +11,11 @@ require 'rspec-puppet-facts'
 
 require 'spec_helper_local' if File.file?(File.join(File.dirname(__FILE__), 'spec_helper_local.rb'))
 
-include RspecPuppetFacts
+include RspecPuppetFacts # rubocop:disable Style/MixinUsage
 
 default_facts = {
   puppetversion: Puppet.version,
-  facterversion: Facter.version,
+  facterversion: Facter.version
 }
 
 default_fact_files = [
@@ -60,7 +60,7 @@ RSpec.configure do |c|
     Puppet.settings[:strict_variables] = <%= @configs['strict_variables'] %>
   end
   c.filter_run_excluding(bolt: true) unless ENV['GEM_BOLT']
-  c.after(:suite) do
+  c.after(:suite) do # rubocop:disable Lint/EmptyBlock
     <%- if @configs['coverage_report'] -%>
     RSpec::Puppet::Coverage.report!(<%= @configs['minimum_code_coverage_percentage'] %>)
     <%- end -%>
