@@ -553,7 +553,7 @@ spec/default_facts.yml:
   is_pe: false
   macaddress: "AA:AA:AA:AA:AA:AA"
 spec/spec_helper.rb:
-  coverage_report: false
+  coverage_report: true
   minimum_code_coverage_percentage: 0
   mock_with: ":rspec"
   strict_level: ":warning"
