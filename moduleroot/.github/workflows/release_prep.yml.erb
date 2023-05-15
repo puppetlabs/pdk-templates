@@ -1,5 +1,5 @@
 <% common = config_for('common') -%>
-name: "Auto release"
+name: "Release Prep"
 
 on:
 <% if common['release_schedule'] -%>
@@ -7,8 +7,14 @@ on:
     - cron: <%= common['release_schedule']['cron'] %>
 <% end -%>
   workflow_dispatch:
+    inputs:
+      version:
+        description: "Module version to be released. Must be a valid semver string. (1.2.3)"
+        required: true
 
 jobs:
   release_prep:
     uses: "puppetlabs/cat-github-actions/.github/workflows/module_release_prep.yml@main"
+    with:
+      version: "${{ github.event.inputs.version }}"
     secrets: "inherit"

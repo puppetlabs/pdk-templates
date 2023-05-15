@@ -558,11 +558,11 @@ spec/spec_helper.rb:
   mock_with: ":rspec"
   strict_level: ":warning"
   strict_variables: true
-.github/workflows/auto_release.yml:
-  unmanaged: true
 .github/workflows/ci.yml:
   unmanaged: true
 .github/workflows/nightly.yml:
   unmanaged: true
 .github/workflows/release.yml:
+  unmanaged: true
+.github/workflows/release_prep.yml:
   unmanaged: true
