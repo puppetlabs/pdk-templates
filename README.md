@@ -51,9 +51,9 @@ The following is a description and explanation of each of the keys within config
 
 These workflows are depending on puppet-internal resources and are currently not suited for public consumption. Feel free to take them as inspiration how to run some tests on Github Actions. Please let us know at <ia_content@puppet.com> what you come up with!
 
-### .github/workflows/auto_release.yml
+### .github/workflows/release_prep.yml
 
-The auto release workflows uses the PDK experimental command `pdk release prep` to prepare a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically.
+The auto release workflows prepares a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically.
 To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
 ```yaml
 release_schedule:
