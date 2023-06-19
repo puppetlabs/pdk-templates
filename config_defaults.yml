@@ -504,6 +504,10 @@ Gemfile:
       - gem: json
         version: '= 2.6.3'
         condition: "Gem::Requirement.create(['>= 3.2.0', '< 4.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+        # Forces ruby to use builtin racc vs trying to compile native extensions.
+      - gem: racc
+        version: '~> 1.4.0'
+        condition: "Gem::Requirement.create(['>= 2.5.0', '< 2.7.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 5.0'
       - gem: 'facterdb'
