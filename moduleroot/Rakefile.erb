@@ -12,11 +12,11 @@ end
 # frozen_string_literal: true
 
 require 'bundler'
-require 'puppet_litmus/rake_tasks' if Bundler.rubygems.find_name('puppet_litmus').any?
+require 'puppet_litmus/rake_tasks' if Gem.loaded_specs.key? 'puppet_litmus'
 require 'puppetlabs_spec_helper/rake_tasks'
 require 'puppet-syntax/tasks/puppet-syntax'
-require 'github_changelog_generator/task' if Bundler.rubygems.find_name('github_changelog_generator').any?
-require 'puppet-strings/tasks' if Bundler.rubygems.find_name('puppet-strings').any?
+require 'github_changelog_generator/task' if Gem.loaded_specs.key? 'github_changelog_generator'
+require 'puppet-strings/tasks' if Gem.loaded_specs.key? 'puppet-strings'
 <% if ! @configs['requires'].nil? -%>
 <%   @configs['requires'].each do |item| -%>
 <%= requires(item) %>
@@ -78,7 +78,7 @@ PuppetLint.configuration.ignore_paths = <%= @configs['linter_exclusions']%>
 <% end -%>
 
 
-if Bundler.rubygems.find_name('github_changelog_generator').any?
+if Gem.loaded_specs.key? 'github_changelog_generator'
   GitHubChangelogGenerator::RakeTask.new :changelog do |config|
     raise "Set CHANGELOG_GITHUB_TOKEN environment variable eg 'export CHANGELOG_GITHUB_TOKEN=valid_token_here'" if Rake.application.top_level_tasks.include? "changelog" and ENV['CHANGELOG_GITHUB_TOKEN'].nil?
 <% if @configs['github_site'] -%>
