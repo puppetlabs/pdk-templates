@@ -2,10 +2,11 @@
 #
 # Facts specified here will override the values provided by rspec-puppet-facts.
 ---
-ipaddress: "<%= @configs['ipaddress'] %>"
-ipaddress6: "<%= @configs['ipaddress6'] %>"
+networking:
+    ip: "<%= @configs['networking']['ip'] %>"
+    ip6: "<%= @configs['networking']['ip6'] %>"
+    mac: "<%= @configs['networking']['mac'] %>"
 is_pe: <%= @configs['is_pe'] %>
-macaddress: "<%= @configs['macaddress'] %>"
 <% if !@configs['extra_facts'].nil? -%>
 <% require 'yaml' -%>
 <%= @configs['extra_facts'].to_yaml[4..-1] %>

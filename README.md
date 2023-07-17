@@ -141,11 +141,20 @@ In this example the automated release prep workflow is triggered every Saturday 
 
 | Key            | Description   |
 | :------------- |:--------------|
-|concat_basedir|Overrides the concat_basedir fact's value in the base template. Defaults to "/tmp".|
-|ipaddress|Overrides the ipaddress fact's value in the base template. Defaults to "172.16.254.254".|
+|ip|Overrides the \[networking\]\[ip\] fact's value in the base template. Defaults to "172.16.254.254".|
+|ip6|Overrides the \[networking\]\[ip6\] fact's value in the base template. Defaults to "FE80:0000:0000:0000:AAAA:AAAA:AAAA".|
+|mac|Overrides the \[networking\]\[mac\] fact's value in the base template. Defaults to "AA:AA:AA:AA:AA:AA".
 |is_pe|Overrides the is_pe fact's value in the base template. Defaults to false.
-|macaddress|Overrides the macaddress fact's value in the base template. Defaults to "AA:AA:AA:AA:AA:AA".
 |extra_facts|List of extra facts to be added to the default_facts.yml file. They are in the form: "`name of fact`: `value of fact`"|
+
+```yaml
+---
+networking:
+    ip: "172.16.254.254"
+    ip6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
+    mac: "AA:AA:AA:AA:AA:AA"
+is_pe: false
+```
 
 ### spec/spec_helper.rb
 
@@ -195,11 +204,12 @@ To remove a value from an array, prefix the value `---`. For example, to remove
 ```
 
 To remove a key from a hash, set the value to `---`. For example, to remove the
-`ipaddress` fact from `spec/default_facts.yml`:
+`ip` fact from `spec/default_facts.yml`:
 
 ```yaml
 spec/default_facts.yml:
-  ipaddress: '---'
+  networking:
+    ip: '---'
 ```
 
 ## Setting custom gems in the Gemfile
