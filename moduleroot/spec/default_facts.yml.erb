@@ -1,3 +1,4 @@
+<% require 'yaml' -%>
 # Use default_module_facts.yml for module specific facts.
 #
 # Facts specified here will override the values provided by rspec-puppet-facts.
@@ -6,9 +7,13 @@ networking:
   ip: "<%= @configs['networking']['ip'] %>"
   ip6: "<%= @configs['networking']['ip6'] %>"
   mac: "<%= @configs['networking']['mac'] %>"
-
+<% if @configs.dig('extra_facts', 'networking') -%>
+<% @configs['extra_facts']['networking'].each do |k, v| -%>
+  <%=k%>: "<%= v %>"
+<% end -%>
+<% @configs['extra_facts'].delete('networking') -%>
+<% end -%>
 is_pe: <%= @configs['is_pe'] %>
-<% if !@configs['extra_facts'].nil? -%>
-<% require 'yaml' -%>
+<% if @configs.dig('extra_facts') && !@configs['extra_facts'].empty? -%>
 <%= @configs['extra_facts'].to_yaml[4..-1] %>
 <% end -%>

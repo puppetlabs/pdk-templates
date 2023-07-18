@@ -150,9 +150,9 @@ In this example the automated release prep workflow is triggered every Saturday 
 ```yaml
 ---
 networking:
-    ip: "172.16.254.254"
-    ip6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
-    mac: "AA:AA:AA:AA:AA:AA"
+  ip: "172.16.254.254"
+  ip6: "FE80:0000:0000:0000:AAAA:AAAA:AAAA"
+  mac: "AA:AA:AA:AA:AA:AA"
 is_pe: false
 ```
 
