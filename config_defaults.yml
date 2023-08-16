@@ -537,7 +537,7 @@ Gemfile:
       - gem: 'rubocop-rspec'
         version: '= 2.19.0'
       - gem: 'puppet-strings'
-        version: '~> 3.0'
+        version: '~> 4.0'
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
