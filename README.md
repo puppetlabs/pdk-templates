@@ -1,6 +1,6 @@
 # PDK Templates
 
-[![Code Owners](https://img.shields.io/badge/owners-DevX--team-blue)](https://github.com/puppetlabs/pdk/blob/main/CODEOWNERS)
+[![Code Owners](https://img.shields.io/badge/owners-DevX--team-blue)](https://github.com/puppetlabs/pdk-templates/blob/main/CODEOWNERS)
 ![ci](https://github.com/puppetlabs/pdk-templates/actions/workflows/ci.yml/badge.svg)
 
 The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. Look into these directories to find the templates:
