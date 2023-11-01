@@ -66,8 +66,8 @@ end
 <% checks.each do |check| -%>
 PuppetLint.configuration.send('disable_<%= check %>')
 <% end -%>
-<% if @configs['linter_fail_on_warnings'] -%>
-PuppetLint.configuration.fail_on_warnings = true
+<% if ! @configs['linter_fail_on_warnings'].nil? -%>
+PuppetLint.configuration.fail_on_warnings = <%= @configs['linter_fail_on_warnings'] %>
 <% end -%>
 <% linter_options =  @configs['linter_options'] || [] -%>
 <% linter_options.each do |option| -%>
