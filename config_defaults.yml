@@ -44,6 +44,7 @@ common:
     - '/.fixtures.yml'
     - '/Gemfile'
     - '/.gitattributes'
+    - '/.github/'
     - '/.gitignore'
     - '/.pdkignore'
     - '/.puppet-lint.rc'
