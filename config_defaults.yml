@@ -554,6 +554,11 @@ Gemfile:
           - x64_mingw
       - gem: 'serverspec'
         version: '~> 2.41'
+    ':release_prep':
+      - gem: 'puppet-strings'
+        version: '~> 4.0'
+      - gem: 'puppetlabs_spec_helper'
+        version: '~> 6.0'
 spec/default_facts.yml:
   is_pe: false
   networking:
