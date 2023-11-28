@@ -516,7 +516,7 @@ Gemfile:
       - gem: 'metadata-json-lint'
         version: '~> 3.0'
       - gem: 'puppetlabs_spec_helper'
-        version: '~> 6.0'
+        version: '~> 7.0'
       - gem: 'rspec-puppet-facts'
         version: '~> 2.0'
       - gem: 'codecov'
@@ -558,7 +558,7 @@ Gemfile:
       - gem: 'puppet-strings'
         version: '~> 4.0'
       - gem: 'puppetlabs_spec_helper'
-        version: '~> 6.0'
+        version: '~> 7.0'
 spec/default_facts.yml:
   is_pe: false
   networking:
