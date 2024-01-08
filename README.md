@@ -9,7 +9,7 @@ The PDK Templates is the default templates repository for use with the [Puppet D
 * `moduleroot_init` templates get only deployed when the target module does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
 * `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
 
-PDK builds the configuration of the module by reading a set of default configuration from `config_defaults.yml` and merging it with the contents of `.sync.yml` from module's root directory, if exists. Top-level keys of the resulting hash correspond to target files or represent a global configuration. Global configuration will be merged with the configuration hash for a particular target file. This allows a module developer to override/amend the configuration by putting new values into `.sync.yml`. A knockout prefix may be applied to elements within `.sync.yml` to [remove elements from the default set](#removing-default-configuration-values). Target files are created by rendering a corresponding template which is referring its configuration via the `@configs` hash. The data for a target file may include `delete: true` or `unmanaged: true` in order to have the particular file removed from the module or left unmanaged, respectively.
+PDK builds the configuration of the module by reading a set of default configuration from `config_defaults.yml` and merging it with the contents of `.sync.yml` from module's root directory, if exists. Top-level keys of the resulting hash correspond to target files or represent a global configuration. Global configuration will be merged with the configuration hash for a particular target file. This allows a module developer to override/amend the configuration by putting new values into `.sync.yml`. A knockout prefix may be applied to elements within `.sync.yml` to [remove elements from the default set](#removing-default-configuration-values). Target files are created by rendering a corresponding template which is referring its configuration via the `@configs` hash. The data for a target file may include `delete: true` or `unmanaged: true` in order to have the particular file removed from the module or left unmanaged, respectively. The PDK can also be configured to make files executable if the file is executable in the template by including `manage_execute_permissions: true` in the data for the target file or globally via the `common` config key.
 
 * [Basic usage](#basic-usage)
 * [Values of config\_defaults](#values)
@@ -32,6 +32,12 @@ For more on basic usage and more detailed description of the PDK in action pleas
 The following is a description and explanation of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
 
 ### common
+
+>Settings common to all templates
+
+| Key               | Description   |
+| :-----------------|:--------------|
+| manage_execute_permissions | Templates with execute permissions will be made executable in the module.|
 
 ### .gitattributes
 
@@ -253,7 +259,7 @@ Since this still has some overhead, we exclude some "big-name" action maintainer
 * Anything maintained as part of a bigger OSS project we're using, like [https://github.com/ruby/setup-ruby](https://github.com/ruby/setup-ruby)
 * Anything maintained by a Puppet employee
 
-### Updating actions guitelines
+### Updating actions guidelines
 
 To keep efforts low when updating actions, we list all forked actions here.
 To keep confusion to a minimum, the version we use is always on a `pdk-templates-v1` branch.
