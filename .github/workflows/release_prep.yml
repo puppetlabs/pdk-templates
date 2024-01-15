@@ -52,17 +52,17 @@ jobs:
           git config --local user.email "${{ github.repository_owner }}@users.noreply.github.com"
           git config --local user.name "GitHub Actions"
           git add .
-          git commit -m "Release prep v${{ steps.get_version.outputs.version }}"
+          git commit -m "Release prep v${{ github.event.inputs.version }}"
 
       - name: "Create pull Request"
         uses: "peter-evans/create-pull-request@v5"
         if: ${{ steps.check.outputs.release == 'true' }}
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          commit-message: "Release prep v${{ steps.get_version.outputs.version }}"
+          commit-message: "Release prep v${{ github.event.inputs.version }}"
           branch: "release-prep"
           delete-branch: true
-          title: "Release prep v${{ steps.get_version.outputs.version }}"
+          title: "Release prep v${{ github.event.inputs.version }}"
           base: "main"
           body: |
             Automated release-prep through [pdk-templates](https://github.com/puppetlabs/pdk-templates/blob/main/moduleroot/.github/workflows/auto_release.yml.erb) from commit ${{ github.sha }}.
