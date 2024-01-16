@@ -5,14 +5,6 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v3.0.2](https://github.com/puppetlabs/pdk-templates/tree/v3.0.2) - 2024-01-16
-
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.1...v3.0.2)
-
-### Fixed
-
-- (MAINT) - Remove github_changelog gem footprint [#547](https://github.com/puppetlabs/pdk-templates/pull/547) ([Ramesh7](https://github.com/Ramesh7))
-
 ## [3.0.1](https://github.com/puppetlabs/pdk-templates/tree/3.0.1) - 2023-12-12
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.0...3.0.1)
