@@ -519,6 +519,7 @@
 - Lint/DeprecatedConstants
 - Lint/DuplicateBranch
 - Lint/DuplicateMagicComment
+- Lint/DuplicateMatchPattern
 - Lint/DuplicateRegexpCharacterClassElement
 - Lint/EmptyBlock
 - Lint/EmptyClass
@@ -589,6 +590,7 @@
 - Style/CollectionCompact
 - Style/ComparableClamp
 - Style/ConcatArrayLiterals
+- Style/DataInheritance
 - Style/DirEmpty
 - Style/DocumentDynamicEvalDefinition
 - Style/EmptyHeredoc
@@ -623,6 +625,7 @@
 - Style/RedundantEach
 - Style/RedundantHeredocDelimiterQuotes
 - Style/RedundantInitialize
+- Style/RedundantLineContinuation
 - Style/RedundantSelfAssignmentBranch
 - Style/RedundantStringEscape
 - Style/SelectByRegexp
