@@ -35,7 +35,7 @@ profile = @configs['profiles'][@configs['selected_profile']]
 configs = defaults.dup
 DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
 
-default_version = '1.48.1'
+default_version = '1.50.0'
 
 # rubocop's dependencies have native extensions and are not available on windows currently
 # to preserve the dynamic behaviour, and still work in its current state, this workaround
