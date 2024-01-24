@@ -519,8 +519,6 @@ Gemfile:
         version: '~> 6.0'
       - gem: 'rspec-puppet-facts'
         version: '~> 2.0'
-      - gem: 'codecov'
-        version: '~> 0.2'
       - gem: 'dependency_checker'
         version: '~> 1.0.0'
       - gem: 'parallel_tests'
