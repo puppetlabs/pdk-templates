@@ -526,7 +526,7 @@ Gemfile:
       - gem: 'pry'
         version: '~> 0.10'
       - gem: 'simplecov-console'
-        version: '~> 0.5'
+        version: '~> 0.9'
       - gem: 'puppet-debugger'
         version: '~> 1.0'
       - gem: 'rubocop'
