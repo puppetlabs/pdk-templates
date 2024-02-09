@@ -81,6 +81,7 @@ end
 group <%= group %> do
 <%
      gems.map! do |gem|
+       gem = @configs['overrides']&.find { |prefer| prefer['gem'] == gem['gem'] } || gem
        {
          'gem'           => gem['gem'],
          'version'       => gem['version'],
