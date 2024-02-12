@@ -129,6 +129,7 @@ In this example the automated release prep workflow is triggered every Saturday 
 | :------------- |:--------------|
 |required|Allows you to specify gems that are required within the Gemfile. Gems can be defined here within groups, for example we use the :development gem group to add in several gems that are relevant to the development of any module and the :system_tests gem group for gems relevant only to acceptance testing.|
 |optional|Allows you to specify additional gems that are required within the Gemfile. This key can be used to further configure the Gemfile through assignment of a value in the .sync.yml file.|
+|overrides|Allows you to specify an array of gems that should override template default gems of the same name. _This is an advanced option which may result in unresolved dependencies or other unexpected interactions._ |
 
 >Within each Gem group defined using the options above one or more gem item definitions may be listed in an array. Each item in that array must be a gem item hash.
 
