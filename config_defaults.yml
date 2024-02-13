@@ -518,7 +518,7 @@ Gemfile:
       - gem: 'metadata-json-lint'
         version: '~> 4.0'
       - gem: 'rspec-puppet-facts'
-        version: '~> 2.0'
+        version: '~> 3.0'
       - gem: 'dependency_checker'
         version: '~> 1.0.0'
       - gem: 'parallel_tests'
