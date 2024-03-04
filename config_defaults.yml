@@ -552,7 +552,6 @@ Gemfile:
           - x64_mingw
       - gem: 'CFPropertyList'
         version: 
-        - '>= 2.2' 
         - '< 3.0.7'
       - gem: 'serverspec'
         version: '~> 2.41'
