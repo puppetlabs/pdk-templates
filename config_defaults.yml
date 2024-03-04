@@ -550,9 +550,13 @@ Gemfile:
         platforms: 
           - ruby
           - x64_mingw
+      - gem: 'CFPropertyList'
+        version: 
+        - '>= 2.2' 
+        - '< 3.0.7'
       - gem: 'serverspec'
         version: '~> 2.41'
-    ':release_prep':
+    ':release_prep': 
       - gem: 'puppet-strings'
         version: '~> 4.0'
       - gem: 'puppetlabs_spec_helper'
