@@ -20,7 +20,7 @@ Use this README to understand the purpose, basic usage, and common configurable 
 * [Introduction](#pdk-templates)
 * [How templates are used by PDK](#how-templates-are-used-by-pdk)
 * [Basic usage](#basic-usage)
-* [Adjusting templates via /sync.yml](#adjusting-templates-via-syncyml)
+* [Adjusting templates via .sync.yml](#adjusting-templates-via-syncyml)
   * [Adding configuration values](#adding-configuration-values)
   * [Removing default configuration values](#removing-default-configuration-values)
   * [Excluding files from default behaviour](#excluding-files-from-default-behaviour)
@@ -50,13 +50,19 @@ By default PDK uses the templates within this repository to render files for use
 pdk convert --template-url https://github.com/puppetlabs/pdk-templates
 ```
 
+PDK will default to the `main` branch when looking at the repository. You can specify other branches by using the `--template-ref`, like this:
+
+```bash
+pdk convert --template-url https://github.com/puppetlabs/pdk-templates --template-ref branch_name
+```
+
 Note: Commands run on PDK will use the last specified template repository. 
 
 When you have specified the template repository, you can get started with creating a module, if you don't already have one. Once your module is created, you can customize PDK-templates by editing the `.sync.yml` to override the default configuration, and then running `PDK update` on the module so that the new settings are applied.
 
 For more information on basic usage and more detailed description of PDK in action please refer to [PDK documentation](https://github.com/puppetlabs/pdk/blob/main/README.md), where you can find detailed instructions on how to create, convert and update modules, as well as other useful commands.
 
-## Adjusting templates via /sync.yml
+## Adjusting templates via .sync.yml
 
 > While we provide a basic template it is likely that it will not match what you need exactly, as such we allow it to be altered or added to through the use of the `.sync.yml` file.
 
@@ -66,13 +72,13 @@ Here we will provide some examples of how you can use `.sync.yml`. For a more co
 
 Values can be added to the data passed to the templates, thus allowing you to make changes such as testing against additional operating systems or adding new rubocop rules.
 
-To add a value to an array simply place it into the `.sync.yml` file as shown below, here is the structure to add an additional unit test run against Puppet 4:
+To add a value to an array simply place it into the `.sync.yml` file as shown below, here is the structure to add an additional unit test run against Puppet 6:
 
 ```yaml
 .travis.yml:
   includes:
-    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
-      rvm: 2.1.9
+    - env: PUPPET_GEM_VERSION="~> 6.0" CHECK=parallel_spec
+      rvm: 2.5.0
 ```
 
 ### Removing default configuration values
@@ -80,12 +86,12 @@ To add a value to an array simply place it into the `.sync.yml` file as shown be
 Values can be removed from the data passed to the templates using the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) `---` in `.sync.yml`.
 
 To remove a value from an array, prefix the value `---`. For example, to remove
-`2.5.1` from the `ruby_versions` array in `.travis.yml`:
+`2.7.8` from the `ruby_versions` array in `.travis.yml`:
 
 ```yaml
 .travis.yml:
   ruby_versions:
-    - '---2.5.1'
+    - '---2.7.8'
 ```
 
 To remove a key from a hash, set the value to `---`. For example, to remove the
@@ -143,8 +149,8 @@ To disable or enable certain Rubocop rules, use the following structure:
 ```yaml
 .rubocop.yml:
   default_configs:
-    Rule/Name:
-      Enabled: true/false
+    Style/Documentation:
+      Enabled: false
 ```
 
 ## PDK default config values
@@ -184,7 +190,7 @@ The following is a description and explanation of each of the keys within `.conf
 
 ### .github/workflows/release_prep.yml
 
-> The auto release workflows prepares a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically. To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
+> The release_prep workflow prepares a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically. To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
 ```yaml
 release_schedule:
    cron: '0 3 * * 6'
