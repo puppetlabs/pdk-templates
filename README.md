@@ -3,33 +3,155 @@
 [![Code Owners](https://img.shields.io/badge/owners-DevX--team-blue)](https://github.com/puppetlabs/pdk-templates/blob/main/CODEOWNERS)
 ![ci](https://github.com/puppetlabs/pdk-templates/actions/workflows/ci.yml/badge.svg)
 
-The PDK Templates is the default templates repository for use with the [Puppet Development Kit](https://github.com/puppetlabs/pdk), within which we have defined all the templates for the creation and configuration of a module. Look into these directories to find the templates:
+The pdk-templates repository contains the default templates (or blueprints) used by the [Puppet Development Kit](https://github.com/puppetlabs/pdk) to create, convert, and update modules. 
 
-* `moduleroot` templates get deployed on `new module`, `convert` and `update`; use them to enforce a common boilerplate for central files.
-* `moduleroot_init` templates get only deployed when the target module does not yet exist; use them to provide skeletons for files the developer needs to modify heavily.
-* `object_templates` templates are used by the various `new ...` commands for classes, defined types, etc.
+The following table shows the directories where different types of template are stored. 
 
-PDK builds the configuration of the module by reading a set of default configuration from `config_defaults.yml` and merging it with the contents of `.sync.yml` from module's root directory, if exists. Top-level keys of the resulting hash correspond to target files or represent a global configuration. Global configuration will be merged with the configuration hash for a particular target file. This allows a module developer to override/amend the configuration by putting new values into `.sync.yml`. A knockout prefix may be applied to elements within `.sync.yml` to [remove elements from the default set](#removing-default-configuration-values). Target files are created by rendering a corresponding template which is referring its configuration via the `@configs` hash. The data for a target file may include `delete: true` or `unmanaged: true` in order to have the particular file removed from the module or left unmanaged, respectively. The PDK can also be configured to make files executable if the file is executable in the template by including `manage_execute_permissions: true` in the data for the target file or globally via the `common` config key.
+|                   |               |
+| :-----------------|:--------------|
+| `moduleroot`      | Stores templates that are deployed on pdk new module, pdk convert and pdk update commands. Use the templates in this directory to enforce a common boilerplate for central files. |
+| `moduleroot_init` | Stores light versions of moduleroot templates. The templates in this directory create a skeleton for the files the developer will need. Deploy these templates when the target module does not yet exist. |
+| `object_templates`| Stores templates that are used by the various new <something> commands. These are in charge of building classes, defined types, etc |
 
+Use this README to understand the purpose, basic usage, and common configurable values for PDK templates. For further information about PDK, refer to our [documentation site](https://www.puppet.com/docs/pdk/2.x/pdk.html).
+
+#### Table of contents
+
+* [Introduction](#pdk-templates)
+* [How templates are used by PDK](#how-templates-are-used-by-pdk)
 * [Basic usage](#basic-usage)
-* [Values of config\_defaults](#values)
-* [Making local changes to the Template](#making-local-changes-to-the-template)
-* [Further Notes](#notes)
+* [Adjusting templates via /sync.yml](#adjusting-templates-via-syncyml)
+  * [Adding configuration values](#adding-configuration-values)
+  * [Removing default configuration values](#removing-default-configuration-values)
+  * [Excluding files from default behaviour](#excluding-files-from-default-behaviour)
+  * [Unmanaged and delete keys](#unmanaged-and-delete-keys)
+  * [Setting custom gems in the Gemfile](#setting-custom-gems-in-the-gemfile)
+  * [Manage Rubocop rules](#manage-rubocop-rules)
+* [PDK default config values](#pdk-default-config-values)
+* [Further Notes](#further-notes)
+
+## How templates are used by PDK
+
+When you use PDK to build, convert, or update a module, PDK accesses the relevant template in the pdk-templates repository to retrieve default “instructions” on how to build the module. Those instructions are applied to the local repo in which the command was run. 
+
+When configuring the module, PDK reads a set of default settings in `.config_defaults.yml` and merges it with the configuration settings in `.sync.yml`.
+
+The result of this merge creates a hidden hash containing the final configuration of the module that PDK applies. Top-level keys of this resulting hash correspond to target files. A global configuration is merged with the configuration hash for a particular target file. This allows module developers to override or amend the configuration by adding new values through `.sync.yml`. For example, a knockout prefix (---) can be applied to keys in `.sync.yml` to remove default configuration values. 
+
+Target files are created by rendering a corresponding template which refers its configuration via the `@configs` hash.
+
+You can configure PDK to make files executable if the file is executable in the template. To do this, include `manage_execute_permissions: true` either in the target file or globally via the common config key.
 
 ## Basic Usage
 
-Templates like this one can be used in conjunction with the PDK. As default the PDK itself uses the templates within this repository to render files for use within a module. Templates can be passed to the PDK as a flag for several of the commands.
+By default PDK uses the templates within this repository to render files for use within a module. To use a third-party template, pass its URL using the `–-template-url` flag as shown in the following example: 
 
 ```bash
 pdk convert --template-url https://github.com/puppetlabs/pdk-templates
 ```
 
-Please note that the template only needs to be passed in once if you wish to change it, every command run on the PDK will use the last specified template.
-For more on basic usage and more detailed description of the PDK in action please refer to the [PDK documentation](https://github.com/puppetlabs/pdk/blob/main/README.md).
+Note: Commands run on PDK will use the last specified template repository. 
 
-## Values of config\_defaults <a name="values"></a>
+When you have specified the template repository, you can get started with creating a module, if you don't already have one. Once your module is created, you can customize PDK-templates by editing the `.sync.yml` to override the default configuration, and then running `PDK update` on the module so that the new settings are applied.
 
-The following is a description and explanation of each of the keys within config\_defaults. This will help clarify the default settings we choose to apply to pdk modules.
+For more information on basic usage and more detailed description of PDK in action please refer to [PDK documentation](https://github.com/puppetlabs/pdk/blob/main/README.md), where you can find detailed instructions on how to create, convert and update modules, as well as other useful commands.
+
+## Adjusting templates via /sync.yml
+
+> While we provide a basic template it is likely that it will not match what you need exactly, as such we allow it to be altered or added to through the use of the `.sync.yml` file.
+
+Here we will provide some examples of how you can use `.sync.yml`. For a more comprehensive list of default settings, check the [PDK default config values](#pdk-default-config-values) section. 
+
+### Adding configuration values
+
+Values can be added to the data passed to the templates, thus allowing you to make changes such as testing against additional operating systems or adding new rubocop rules.
+
+To add a value to an array simply place it into the `.sync.yml` file as shown below, here is the structure to add an additional unit test run against Puppet 4:
+
+```yaml
+.travis.yml:
+  includes:
+    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
+      rvm: 2.1.9
+```
+
+### Removing default configuration values
+
+Values can be removed from the data passed to the templates using the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) `---` in `.sync.yml`.
+
+To remove a value from an array, prefix the value `---`. For example, to remove
+`2.5.1` from the `ruby_versions` array in `.travis.yml`:
+
+```yaml
+.travis.yml:
+  ruby_versions:
+    - '---2.5.1'
+```
+
+To remove a key from a hash, set the value to `---`. For example, to remove the
+`ip` fact from `spec/default_facts.yml`:
+
+```yaml
+spec/default_facts.yml:
+  networking:
+    ip: '---'
+```
+
+### Excluding files from default behaviour 
+
+You can also configure the system to ignore specific files when performing default configuration. For example, we can prevent all `.erb` files from being targeted by the `.gitattributes` group settings by using: 
+
+```yaml
+".gitattributes": 
+  exclude: 
+  - "*.erb"
+```
+
+### Unmanaged and delete keys 
+
+The `unmanaged` and `delete` keys also allow you to override default configurations. The `unmanaged` key allows you to specify files that are to be left untouched by the conversion or update, and `delete` allows you to specify that a file should be excluded from the module when you convert or update the module. 
+
+In the following example, the `unmanaged` and `delete` keys are used to specify that, regardless of the default setting defined in `config_defaults.yml`, PDK should leave the `ci.yml` file unmodified and delete `travis.yml`. 
+
+```yaml
+.github/workflows/ci.yml: 
+  unmanaged: true 
+```
+
+```yaml
+.travis.yml: 
+  delete: true
+```
+### Setting custom gems in the Gemfile
+
+To add a custom internal `puppet-lint` plugin served from an internal Rubygems source, add
+an entry similar to the following in `.sync.yml` file and run `pdk update`.
+
+```yaml
+Gemfile:
+  optional:
+    ':development':
+      - gem: 'puppet-lint-my_awesome_custom_module'
+        version: '>= 2.0'
+        source: 'https://myrubygems.example.com/'
+```
+
+### Manage Rubocop rules
+
+To disable or enable certain Rubocop rules, use the following structure:
+
+```yaml
+.rubocop.yml:
+  default_configs:
+    Rule/Name:
+      Enabled: true/false
+```
+
+## PDK default config values
+
+The following is a description and explanation of each of the keys within `.config_defaults.yml`. This will help clarify the default settings that are applied by PDK. 
+
+> All the values defined below can be overriden through `.sync.yml`.
 
 ### common
 
@@ -58,12 +180,11 @@ The following is a description and explanation of each of the keys within config
 
 ### Github Workflows
 
-These workflows are depending on puppet-internal resources and are currently not suited for public consumption. Feel free to take them as inspiration how to run some tests on Github Actions. Please let us know at <ia_content@puppet.com> what you come up with!
+> These workflows are depending on puppet-internal resources and are currently not suited for public consumption. Feel free to take them as inspiration how to run some tests on Github Actions. Please let us know at <ia_content@puppet.com> what you come up with!
 
 ### .github/workflows/release_prep.yml
 
-The auto release workflows prepares a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically.
-To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
+> The auto release workflows prepares a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically. To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
 ```yaml
 release_schedule:
    cron: '0 3 * * 6'
@@ -183,60 +304,7 @@ is_pe: false
 |coverage_report|Enable [rspec-puppet coverage reports](https://rspec-puppet.com/documentation/coverage/). Defaults to `false`|
 |minimum_code_coverage_percentage|The desired code coverage percentage required for tests to pass. Defaults to `0`|
 
-## Making local changes to the template
-
-> While we provide a basic template it is likely that it will not match what you need exactly, as such we allow it to be altered or added to through the use of the `.sync.yml` file.
-
-### Adding configuration values
-
-Values can be added to the data passed to the templates by adding them to your local `.sync.yml` file, thus allowing you to make changes such as testing against additional operating systems or adding new rubocop rules.
-
-To add a value to an array simply place it into the `.sync.yml` file as shown below, here I am adding an additional unit test run against Puppet 4:
-
-```yaml
-.travis.yml:
-  includes:
-    - env: PUPPET_GEM_VERSION="~> 4.0" CHECK=parallel_spec
-      rvm: 2.1.9
-```
-
-### Removing default configuration values
-
-Values can be removed from the data passed to the templates using the [knockout prefix](https://www.rubydoc.info/gems/puppet/DeepMerge) `---` in `.sync.yml`.
-
-To remove a value from an array, prefix the value `---`. For example, to remove
-`2.5.1` from the `ruby_versions` array in `.travis.yml`:
-
-```yaml
-.travis.yml:
-  ruby_versions:
-    - '---2.5.1'
-```
-
-To remove a key from a hash, set the value to `---`. For example, to remove the
-`ip` fact from `spec/default_facts.yml`:
-
-```yaml
-spec/default_facts.yml:
-  networking:
-    ip: '---'
-```
-
-## Setting custom gems in the Gemfile
-
-To add a custom internal `puppet-lint` plugin served from an internal Rubygems source, add
-an entry similar to the following in `.sync.yml` file and run `pdk update`.
-
-```yaml
-Gemfile:
-  optional:
-    ':development':
-      - gem: 'puppet-lint-my_awesome_custom_module'
-        version: '>= 2.0'
-        source: 'https://myrubygems.example.com/'
-```
-
-## Further Notes <a name="notes"></a>
+## Further Notes
 
 Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.
 
