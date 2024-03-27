@@ -515,8 +515,6 @@ Gemfile:
         version: '~> 1.18'
       - gem: 'metadata-json-lint'
         version: '~> 4.0'
-      - gem: 'puppetlabs_spec_helper'
-        version: '~> 6.0'
       - gem: 'rspec-puppet-facts'
         version: '~> 2.0'
       - gem: 'dependency_checker'
@@ -535,14 +533,17 @@ Gemfile:
         version: '= 1.16.0'
       - gem: 'rubocop-rspec'
         version: '= 2.19.0'
-      - gem: 'puppet-strings'
-        version: '~> 4.0'
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
           - mswin
           - mingw
           - x64_mingw
+    ':development, :release_prep':
+      - gem: 'puppet-strings'
+        version: '~> 4.0'
+      - gem: 'puppetlabs_spec_helper'
+        version: '~> 6.0'
     ':system_tests':
       - gem: 'puppet_litmus'
         version: 
@@ -559,11 +560,6 @@ Gemfile:
           - x64_mingw
       - gem: 'serverspec'
         version: '~> 2.41'
-    ':release_prep':
-      - gem: 'puppet-strings'
-        version: '~> 4.0'
-      - gem: 'puppetlabs_spec_helper'
-        version: '~> 6.0'
 spec/default_facts.yml:
   is_pe: false
   networking:
