@@ -546,13 +546,13 @@ Gemfile:
         version: '~> 7.0'
     ':system_tests':
       - gem: 'puppet_litmus'
-        version: 
+        version:
         - '~> 1.0'
-        platforms: 
+        platforms:
           - ruby
           - x64_mingw
       - gem: 'CFPropertyList'
-        version: 
+        version:
         - '< 3.0.7'
         platforms:
           - mswin
