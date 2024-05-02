@@ -3,19 +3,19 @@
 [![Code Owners](https://img.shields.io/badge/owners-DevX--team-blue)](https://github.com/puppetlabs/pdk-templates/blob/main/CODEOWNERS)
 ![ci](https://github.com/puppetlabs/pdk-templates/actions/workflows/ci.yml/badge.svg)
 
-The pdk-templates repository contains the default templates (or blueprints) used by the [Puppet Development Kit](https://github.com/puppetlabs/pdk) to create, convert, and update modules. 
+The pdk-templates repository contains the default templates (or blueprints) used by the [Puppet Development Kit](https://github.com/puppetlabs/pdk) to create, convert, and update modules.
 
-The following table shows the directories where different types of template are stored. 
+The following table shows the directories where different types of template are stored.
 
 |                   |               |
 | :-----------------|:--------------|
 | `moduleroot`      | Stores templates that are deployed on pdk new module, pdk convert and pdk update commands. Use the templates in this directory to enforce a common boilerplate for central files. |
 | `moduleroot_init` | Stores light versions of moduleroot templates. The templates in this directory create a skeleton for the files the developer will need. Deploy these templates when the target module does not yet exist. |
-| `object_templates`| Stores templates that are used by the various new <something> commands. These are in charge of building classes, defined types, etc |
+| `object_templates`| Stores templates that are used by the various new commands. These are in charge of building classes, defined types, etc |
 
 Use this README to understand the purpose, basic usage, and common configurable values for PDK templates. For further information about PDK, refer to our [documentation site](https://www.puppet.com/docs/pdk/2.x/pdk.html).
 
-#### Table of contents
+## Table of contents
 
 * [Introduction](#pdk-templates)
 * [How templates are used by PDK](#how-templates-are-used-by-pdk)
@@ -32,11 +32,11 @@ Use this README to understand the purpose, basic usage, and common configurable 
 
 ## How templates are used by PDK
 
-When you use PDK to build, convert, or update a module, PDK accesses the relevant template in the pdk-templates repository to retrieve default “instructions” on how to build the module. Those instructions are applied to the local repo in which the command was run. 
+When you use PDK to build, convert, or update a module, PDK accesses the relevant template in the pdk-templates repository to retrieve default “instructions” on how to build the module. Those instructions are applied to the local repo in which the command was run.
 
 When configuring the module, PDK reads a set of default settings in `.config_defaults.yml` and merges it with the configuration settings in `.sync.yml`.
 
-The result of this merge creates a hidden hash containing the final configuration of the module that PDK applies. Top-level keys of this resulting hash correspond to target files. A global configuration is merged with the configuration hash for a particular target file. This allows module developers to override or amend the configuration by adding new values through `.sync.yml`. For example, a knockout prefix (---) can be applied to keys in `.sync.yml` to remove default configuration values. 
+The result of this merge creates a hidden hash containing the final configuration of the module that PDK applies. Top-level keys of this resulting hash correspond to target files. A global configuration is merged with the configuration hash for a particular target file. This allows module developers to override or amend the configuration by adding new values through `.sync.yml`. For example, a knockout prefix (---) can be applied to keys in `.sync.yml` to remove default configuration values.
 
 Target files are created by rendering a corresponding template which refers its configuration via the `@configs` hash.
 
@@ -44,7 +44,7 @@ You can configure PDK to make files executable if the file is executable in the 
 
 ## Basic Usage
 
-By default PDK uses the templates within this repository to render files for use within a module. To use a third-party template, pass its URL using the `–-template-url` flag as shown in the following example: 
+By default PDK uses the templates within this repository to render files for use within a module. To use a third-party template, pass its URL using the `–-template-url` flag as shown in the following example:
 
 ```bash
 pdk convert --template-url https://github.com/puppetlabs/pdk-templates
@@ -56,7 +56,7 @@ PDK will default to the `main` branch when looking at the repository. You can sp
 pdk convert --template-url https://github.com/puppetlabs/pdk-templates --template-ref branch_name
 ```
 
-Note: Commands run on PDK will use the last specified template repository. 
+Note: Commands run on PDK will use the last specified template repository.
 
 When you have specified the template repository, you can get started with creating a module, if you don't already have one. Once your module is created, you can customize PDK-templates by editing the `.sync.yml` to override the default configuration, and then running `PDK update` on the module so that the new settings are applied.
 
@@ -66,7 +66,7 @@ For more information on basic usage and more detailed description of PDK in acti
 
 > While we provide a basic template it is likely that it will not match what you need exactly, as such we allow it to be altered or added to through the use of the `.sync.yml` file.
 
-Here we will provide some examples of how you can use `.sync.yml`. For a more comprehensive list of default settings, check the [PDK default config values](#pdk-default-config-values) section. 
+Here we will provide some examples of how you can use `.sync.yml`. For a more comprehensive list of default settings, check the [PDK default config values](#pdk-default-config-values) section.
 
 ### Adding configuration values
 
@@ -103,9 +103,9 @@ spec/default_facts.yml:
     ip: '---'
 ```
 
-### Excluding files from default behaviour 
+### Excluding files from default behaviour
 
-You can also configure the system to ignore specific files when performing default configuration. For example, we can prevent all `.erb` files from being targeted by the `.gitattributes` group settings by using: 
+You can also configure the system to ignore specific files when performing default configuration. For example, we can prevent all `.erb` files from being targeted by the `.gitattributes` group settings by using:
 
 ```yaml
 ".gitattributes": 
@@ -113,11 +113,11 @@ You can also configure the system to ignore specific files when performing defau
   - "*.erb"
 ```
 
-### Unmanaged and delete keys 
+### Unmanaged and delete keys
 
-The `unmanaged` and `delete` keys also allow you to override default configurations. The `unmanaged` key allows you to specify files that are to be left untouched by the conversion or update, and `delete` allows you to specify that a file should be excluded from the module when you convert or update the module. 
+The `unmanaged` and `delete` keys also allow you to override default configurations. The `unmanaged` key allows you to specify files that are to be left untouched by the conversion or update, and `delete` allows you to specify that a file should be excluded from the module when you convert or update the module.
 
-In the following example, the `unmanaged` and `delete` keys are used to specify that, regardless of the default setting defined in `config_defaults.yml`, PDK should leave the `ci.yml` file unmodified and delete `travis.yml`. 
+In the following example, the `unmanaged` and `delete` keys are used to specify that, regardless of the default setting defined in `config_defaults.yml`, PDK should leave the `ci.yml` file unmodified and delete `travis.yml`.
 
 ```yaml
 .github/workflows/ci.yml: 
@@ -128,6 +128,7 @@ In the following example, the `unmanaged` and `delete` keys are used to specify 
 .travis.yml: 
   delete: true
 ```
+
 ### Setting custom gems in the Gemfile
 
 To add a custom internal `puppet-lint` plugin served from an internal Rubygems source, add
@@ -191,10 +192,12 @@ The following is a description and explanation of each of the keys within `.conf
 ### .github/workflows/release_prep.yml
 
 > The release_prep workflow prepares a module release PR. By default the workflow can be triggered manually when a release preparation PR needs to be created, however it allows setting a cron based trigger that can run automatically. To set up the automated release cron you can add a configuration to your .sync.yml file that matches the following example:
+
 ```yaml
 release_schedule:
    cron: '0 3 * * 6'
 ```
+
 In this example the automated release prep workflow is triggered every Saturday at 3 am.
 
 ### .pdkignore
@@ -231,7 +234,7 @@ In this example the automated release prep workflow is triggered every Saturday 
 |github_endpoint|Override built-in default for public GitHub. Useful for GitHub Enterprise and other. (Example: `github_endpoint = https://git.domain.tld/api/v4`) |
 |default\_disabled\_lint\_checks| Defines any checks that are to be disabled by default when running lint checks. As default we disable the `--relative` lint check, which compares the module layout relative to the module root. _Does affect **.puppet-lint.rc**._ |
 |extra\_disabled\_lint\_checks| Defines any checks that are to be disabled as extras when running lint checks. No defaults are defined for this configuration. _Does affect **.puppet-lint.rc**._ |
-|extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile. Example, to add syntax check exclusion paths for plan directories:<pre><br>Rakefile:<br>  extras:<br>  - \'PuppetSyntax.exclude_paths = ["plans/\*\*/*.pp","central/modules/deployments/plans/\*\*/*.pp"]\'</pre>
+|extras|An array of extra lines to add into your Rakefile. As an alternative you can add a directory named `rakelib` to your module and files in that directory that end in `.rake` would be loaded by the Rakefile. Example, to add syntax check exclusion paths for plan directories:<pre><br>Rakefile:<br>  extras:<br>  - \'PuppetSyntax.exclude_paths = ["plans/\*\*/\*.pp","central/modules/deployments/plans/\*\*/\*.pp"]\'</pre> |
 |linter\_options| An array of options to be passed into linter config. _Does affect **.puppet-lint.rc**._ |
 |linter\_fail\_on\_warnings| A boolean indicating if the linter should exit non-zero on warnings as well as failures. _Does affect **.puppet-lint.rc**._ |
 |linter_exclusions | An array of paths that the linter should exclude from running against. |
@@ -280,8 +283,8 @@ In this example the automated release prep workflow is triggered every Saturday 
 | :------------- |:--------------|
 |ip|Overrides the \[networking\]\[ip\] fact's value in the base template. Defaults to "172.16.254.254".|
 |ip6|Overrides the \[networking\]\[ip6\] fact's value in the base template. Defaults to "FE80:0000:0000:0000:AAAA:AAAA:AAAA".|
-|mac|Overrides the \[networking\]\[mac\] fact's value in the base template. Defaults to "AA:AA:AA:AA:AA:AA".
-|is_pe|Overrides the is_pe fact's value in the base template. Defaults to false.
+|mac|Overrides the \[networking\]\[mac\] fact's value in the base template. Defaults to "AA:AA:AA:AA:AA:AA".|
+|is_pe|Overrides the is_pe fact's value in the base template. Defaults to false.|
 |extra_facts|List of extra facts to be added to the default_facts.yml file. They are in the form: "`name of fact`: `value of fact`"|
 
 ```yaml
@@ -314,8 +317,6 @@ is_pe: false
 
 Please note that the early version of this template contained only a 'moduleroot' directory, and did not have a 'moduleroot\_init'. The PDK 'pdk new module' command will still work with templates that only have 'moduleroot', however the 'pdk convert' command will fail if the template does not have a 'moduleroot_init' directory present. To remedy this please use the up to date version of the template.
 
-[legacy_facts_doc]: https://puppet.com/docs/facter/latest/core_facts.html#legacy-facts
-
 ## Security Considerations on Github Actions
 
 As explained in [Use GitHub actions at your own risk](https://julienrenaux.fr/2019/12/20/github-actions-security-risk/),
@@ -330,6 +331,7 @@ This allows us to consume updates at our pace and deploy changes across all modu
 while avoiding actions that surreptitiously change while we're not looking.
 
 Since this still has some overhead, we exclude some "big-name" action maintainers:
+
 * Anything maintained by Github, e.g. [https://github.com/actions](https://github.com/actions)
 * Anything maintained as part of a bigger OSS project we're using, like [https://github.com/ruby/setup-ruby](https://github.com/ruby/setup-ruby)
 * Anything maintained by a Puppet employee
