@@ -514,7 +514,7 @@ Gemfile:
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 5.0'
       - gem: 'facterdb'
-        version: '~> 1.18'
+        version: '~> 1.26'
       - gem: 'metadata-json-lint'
         version: '~> 4.0'
       - gem: 'rspec-puppet-facts'
