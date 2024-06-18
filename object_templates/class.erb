@@ -7,14 +7,14 @@
 <%- if params -%>
 #
 <%-   params.each do |param| -%>
-# @param <%= param[:name] %> A description of this parameter.
+# @param <%=h param[:name] %> A description of this parameter.
 <%-   end -%>
-class <%= name %> (
+class <%=h name %> (
 <%-   params.each do |param| -%>
-  <%= param[:type].ljust(max_type_length) %> $<%= param[:name] %>,
+  <%=h param[:type].ljust(max_type_length) %> $<%=h param[:name] %>,
 <%-   end -%>
 ) {
 <%- else -%>
-class <%= name %> {
+class <%=h name %> {
 <%- end -%>
 }
