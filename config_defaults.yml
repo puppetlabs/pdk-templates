@@ -516,7 +516,7 @@ Gemfile:
         version: '~> 1.4.0'
         condition: "Gem::Requirement.create(['>= 2.7.0', '< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: deep_merge
-        version: '~> 1.0'
+        version: '~> 1.2.2'
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 5.0'
       - gem: 'facterdb'
