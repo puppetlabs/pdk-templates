@@ -41,3 +41,7 @@ PuppetLint.configuration.send('<%= option %>')
 <% if @configs['linter_exclusions'] -%>
 PuppetLint.configuration.ignore_paths = <%= @configs['linter_exclusions']%>
 <% end -%>
+
+<%- [@configs['extras']].flatten.compact.each do |line| -%>
+<%= line %>
+<%- end -%>
