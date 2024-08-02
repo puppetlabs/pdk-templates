@@ -20,6 +20,7 @@
 /spec/fixtures/modules/
 /tmp/
 /vendor/
+/.vendor/
 /convert_report.txt
 # Rubocop profile builder temporary files
 /rubocop/.rubocop.yml
