@@ -68,8 +68,23 @@ common:
   markup: markdown
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
+  linter_fail_on_warnings: true
   default_disabled_lint_checks:
     - 'relative'
+    - '80chars'
+    - '140chars'
+    - 'class_inherits_from_params_class'
+    - 'autoloader_layout'
+    - 'documentation'
+    - 'single_quote_string_with_variables'
+  linter_exclusions:
+    - '.vendor/**/*.pp'
+    - 'bundle/**/*.pp'
+    - 'pkg/**/*.pp'
+    - 'spec/**/*.pp'
+    - 'tests/**/*.pp'
+    - 'types/**/*.pp'
+    - 'vendor/**/*.pp'
   extras: []
 .rubocop.yml:
   selected_profile: strict
