@@ -66,6 +66,8 @@ common:
     - '/.devcontainer/'
 .yardopts:
   markup: markdown
+# Ensure that any changes to lint here are reflected within the rake_tasks.rb file inside the puppetlabs_spec_helper:
+# - https://github.com/puppetlabs/puppetlabs_spec_helper/blob/main/lib/puppetlabs_spec_helper/rake_tasks.rb#L124
 Rakefile:
   changelog_version_tag_pattern: 'v%s'
   linter_fail_on_warnings: true
