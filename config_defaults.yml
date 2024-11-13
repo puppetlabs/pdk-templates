@@ -81,7 +81,7 @@ Rakefile:
     - 'single_quote_string_with_variables'
   linter_exclusions:
     - '.vendor/**/*.pp'
-    - 'bundle/**/*.pp'
+    - '.bundle/**/*.pp'
     - 'pkg/**/*.pp'
     - 'spec/**/*.pp'
     - 'tests/**/*.pp'
