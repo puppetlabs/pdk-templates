@@ -568,8 +568,7 @@ Gemfile:
       # Temporary Pin
       - gem: 'rexml'
         version: 
-          - '>= 3.0.0'
-          - '< 3.2.7'
+          - '>= 3.3.9'
     ':development, :release_prep':
       - gem: 'puppet-strings'
         version: '~> 4.0'
