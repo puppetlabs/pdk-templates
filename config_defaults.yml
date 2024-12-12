@@ -541,6 +541,8 @@ Gemfile:
         version: '~> 2.1'
       - gem: 'metadata-json-lint'
         version: '~> 4.0'
+      - gem: 'json-schema'
+        version: '< 5.1.1'
       - gem: 'rspec-puppet-facts'
         version: '~> 4.0'
       - gem: 'dependency_checker'
