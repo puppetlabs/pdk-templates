@@ -1,0 +1,38 @@
+name: Validate Puppetcore Gem Sources
+
+on:
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: 'Branch, tag or SHA to checkout'
+        required: true
+        default: 'main'
+
+jobs:
+  verify-gemfile:
+    runs-on: ubuntu-latest
+    name: Verify Gemfile Dependencies
+    
+    env:
+      PUPPET_AUTH_TOKEN: ${{ secrets.PUPPET_AUTH_TOKEN }}
+      BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM: "forge-key:${{ secrets.PUPPET_AUTH_TOKEN }}"
+    
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+          
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.2'
+          bundler-cache: true
+          cache-version: 0  # Helps manage cache versions explicitly
+          working-directory: .
+          
+      - name: Install dependencies
+        run: bundle install
+        
+      - name: Run Gemfile verification test
+        run: bundle exec rspec spec/support/gemfile_spec.rb --format documentation
