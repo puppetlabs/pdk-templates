@@ -14,8 +14,8 @@ jobs:
     name: Verify Gemfile Dependencies
     
     env:
-      PUPPET_AUTH_TOKEN: ${{ secrets.PUPPET_AUTH_TOKEN }}
-      BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM: "forge-key:${{ secrets.PUPPET_AUTH_TOKEN }}"
+      PUPPET_FORGE_TOKEN: ${{ secrets.PUPPET_FORGE_TOKEN }}
+      BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM: "forge-key:${{ secrets.PUPPET_FORGE_TOKEN }}"
     
     steps:
       - name: Checkout repository

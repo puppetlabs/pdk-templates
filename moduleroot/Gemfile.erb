@@ -109,9 +109,9 @@ puppet_version = ENV.fetch('PUPPET_GEM_VERSION', nil)
 facter_version = ENV.fetch('FACTER_GEM_VERSION', nil)
 hiera_version = ENV.fetch('HIERA_GEM_VERSION', nil)
 
-# If PUPPET_AUTH_TOKEN is set then use authenticated source for both puppet and facter, since facter is a transitive dependency of puppet
+# If PUPPET_FORGE_TOKEN is set then use authenticated source for both puppet and facter, since facter is a transitive dependency of puppet
 # Otherwise, do as before and use location_for to fetch gems from the default source
-if !ENV['PUPPET_AUTH_TOKEN'].to_s.empty?
+if !ENV['PUPPET_FORGE_TOKEN'].to_s.empty?
   gems['puppet'] = [puppet_version || '~> 8.11', { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
   gems['facter'] = [facter_version || '~> 4.0', { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
 else

@@ -7,7 +7,7 @@ RSpec.describe 'Gemfile.lock verification' do
   let(:parser) { Bundler::LockfileParser.new(Bundler.read_file(Bundler.default_lockfile)) }
   let(:private_source) { 'https://rubygems-puppetcore.puppet.com/' }
   let(:public_source) { 'https://rubygems.org/' }
-  let(:auth_token_present?) { !ENV['PUPPET_AUTH_TOKEN'].nil? }
+  let(:auth_token_present?) { !ENV['PUPPET_FORGE_TOKEN'].nil? }
 
   # Helper method to get source remotes for a specific gem
   def get_gem_source_remotes(gem_name)
@@ -19,9 +19,9 @@ RSpec.describe 'Gemfile.lock verification' do
     source.remotes.map(&:to_s)
   end
 
-  context 'when PUPPET_AUTH_TOKEN is present' do
+  context 'when PUPPET_FORGE_TOKEN is present' do
     before(:each) do
-      skip 'Skipping private source tests - PUPPET_AUTH_TOKEN not present' unless auth_token_present?
+      skip 'Skipping private source tests - PUPPET_FORGE_TOKEN not present' unless auth_token_present?
     end
 
     it 'has puppet under private source' do
@@ -41,9 +41,9 @@ RSpec.describe 'Gemfile.lock verification' do
     end
   end
 
-  context 'when PUPPET_AUTH_TOKEN is not present' do
+  context 'when PUPPET_FORGE_TOKEN is not present' do
     before(:each) do
-      skip 'Skipping public source tests - PUPPET_AUTH_TOKEN is present' if auth_token_present?
+      skip 'Skipping public source tests - PUPPET_FORGE_TOKEN is present' if auth_token_present?
     end
 
     it 'has puppet under public source' do
