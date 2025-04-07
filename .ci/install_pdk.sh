@@ -12,6 +12,9 @@ setup_apt() {
 
     wget "${deb_url}"
     sudo dpkg -i "${deb_file}"
+    
+    # Add the non-expiring key from the future endpoint
+    curl -fsSL https://apt.puppetlabs.com/DEB-GPG-KEY-future | sudo apt-key add -
 }
 
 main() {
