@@ -553,7 +553,7 @@ Gemfile:
       - gem: 'simplecov-console'
         version: '~> 0.9'
       - gem: 'puppet-debugger'
-        version: '~> 1.0'
+        version: '~> 1.6'
       - gem: 'rubocop'
         version: '~> 1.50.0'
       - gem: 'rubocop-performance'
