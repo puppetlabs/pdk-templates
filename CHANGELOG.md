@@ -5,31 +5,195 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.5.1](https://github.com/puppetlabs/pdk-templates/tree/v3.5.1) - 2025-06-05
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.5.0...v3.5.1)
+
+## [3.5.0](https://github.com/puppetlabs/pdk-templates/tree/3.5.0) - 2025-05-30
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.4.0.3...3.5.0)
+
+### Added
+
+- Implement and verify private gem source authentication in PDK templates [#611](https://github.com/puppetlabs/pdk-templates/pull/611) ([gavindidrichsen](https://github.com/gavindidrichsen))
+
+### Fixed
+
+- Update default puppet-debugger version [#616](https://github.com/puppetlabs/pdk-templates/pull/616) ([logicminds](https://github.com/logicminds))
+- (CAT-2286) Remove Ruby < 3.1 dependencies [#615](https://github.com/puppetlabs/pdk-templates/pull/615) ([LukasAud](https://github.com/LukasAud))
+- Only pin to the puppetcore versions. [#613](https://github.com/puppetlabs/pdk-templates/pull/613) ([gavindidrichsen](https://github.com/gavindidrichsen))
+- Update to latest puppetcore facter. [#612](https://github.com/puppetlabs/pdk-templates/pull/612) ([gavindidrichsen](https://github.com/gavindidrichsen))
+
+## [3.4.0.3](https://github.com/puppetlabs/pdk-templates/tree/3.4.0.3) - 2025-02-24
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.4.0.2...3.4.0.3)
+
+## [3.4.0.2](https://github.com/puppetlabs/pdk-templates/tree/3.4.0.2) - 2025-01-08
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.4.0.1...3.4.0.2)
+
+### Added
+
+- Update facterdb to 3.x and rspec-puppet-facts to 5.x [#593](https://github.com/puppetlabs/pdk-templates/pull/593) ([silug](https://github.com/silug))
+
+## [3.4.0.1](https://github.com/puppetlabs/pdk-templates/tree/3.4.0.1) - 2024-12-17
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.4.0...3.4.0.1)
+
+### Fixed
+
+- (CAT-1887) Remove rexml pin [#606](https://github.com/puppetlabs/pdk-templates/pull/606) ([david22swan](https://github.com/david22swan))
+- (BUGFIX) Pin json-schema below 5.1.1 to resolve issues with Ruby 2 on Windows [#605](https://github.com/puppetlabs/pdk-templates/pull/605) ([david22swan](https://github.com/david22swan))
+
+## [3.4.0](https://github.com/puppetlabs/pdk-templates/tree/3.4.0) - 2024-11-25
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.3.0.2...3.4.0)
+
+### Fixed
+
+- (BUGFIX) Correcting typo in linter exclusions [#603](https://github.com/puppetlabs/pdk-templates/pull/603) ([LukasAud](https://github.com/LukasAud))
+
+## [3.3.0.2](https://github.com/puppetlabs/pdk-templates/tree/3.3.0.2) - 2024-11-06
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.3.0.1...3.3.0.2)
+
+### Fixed
+
+- (CAT-2010) Update lint configuration to match puppetlabs_spec_helper [#600](https://github.com/puppetlabs/pdk-templates/pull/600) ([david22swan](https://github.com/david22swan))
+
+## [3.3.0.1](https://github.com/puppetlabs/pdk-templates/tree/3.3.0.1) - 2024-09-24
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.3.0...3.3.0.1)
+
+### Added
+
+- (CAT-2056) - add puppet-blacksmith to templates [#597](https://github.com/puppetlabs/pdk-templates/pull/597) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [3.3.0](https://github.com/puppetlabs/pdk-templates/tree/3.3.0) - 2024-09-09
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.2.0.4...3.3.0)
+
+## [3.2.0.4](https://github.com/puppetlabs/pdk-templates/tree/3.2.0.4) - 2024-08-21
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.2.0.3...3.2.0.4)
+
+### Fixed
+
+- (CAT-2009) Update facterdb to 2.1.x and rspec-puppet-facts to 4.x [#596](https://github.com/puppetlabs/pdk-templates/pull/596) ([david22swan](https://github.com/david22swan))
+
+## [3.2.0.3](https://github.com/puppetlabs/pdk-templates/tree/3.2.0.3) - 2024-08-05
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.2.0.2...3.2.0.3)
+
+### Added
+
+- .gitignore: Add /.vendor/ [#594](https://github.com/puppetlabs/pdk-templates/pull/594) ([bastelfreak](https://github.com/bastelfreak))
+
+### Fixed
+
+- fix: add config extras handling back to Rakefile [#590](https://github.com/puppetlabs/pdk-templates/pull/590) ([TheMeier](https://github.com/TheMeier))
+- (BUGFIX) Pin deep_merge to `~> 1.2.2` [#588](https://github.com/puppetlabs/pdk-templates/pull/588) ([david22swan](https://github.com/david22swan))
+
+## [3.2.0.2](https://github.com/puppetlabs/pdk-templates/tree/3.2.0.2) - 2024-06-06
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.2.0.1...3.2.0.2)
+
+## [3.2.0.1](https://github.com/puppetlabs/pdk-templates/tree/3.2.0.1) - 2024-05-29
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.2.0...3.2.0.1)
+
+### Added
+
+- Add bolt-related files to .gitignore default paths [#565](https://github.com/puppetlabs/pdk-templates/pull/565) ([jay7x](https://github.com/jay7x))
+
+### Fixed
+
+- (CAT-1868) - Remove .rspec.erb [#581](https://github.com/puppetlabs/pdk-templates/pull/581) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [3.2.0](https://github.com/puppetlabs/pdk-templates/tree/3.2.0) - 2024-05-02
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.1.0...3.2.0)
+
+### Fixed
+
+- (MAIT) Readme syntax fixes [#575](https://github.com/puppetlabs/pdk-templates/pull/575) ([david22swan](https://github.com/david22swan))
+- (GH-543) - Fix merging of nested default facts [#544](https://github.com/puppetlabs/pdk-templates/pull/544) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [3.1.0](https://github.com/puppetlabs/pdk-templates/tree/3.1.0) - 2024-04-08
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.1.3...3.1.0)
+
+### Fixed
+
+- (GH-543) - Fix merging of nested default facts [#544](https://github.com/puppetlabs/pdk-templates/pull/544) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [3.0.1.3](https://github.com/puppetlabs/pdk-templates/tree/3.0.1.3) - 2024-04-08
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.1.2...3.0.1.3)
+
+### Fixed
+
+- puppetlabs_spec_helper: Require 7.X [#560](https://github.com/puppetlabs/pdk-templates/pull/560) ([bastelfreak](https://github.com/bastelfreak))
+- (GH-543) - Fix merging of nested default facts [#544](https://github.com/puppetlabs/pdk-templates/pull/544) ([jordanbreen28](https://github.com/jordanbreen28))
+
+## [3.0.1.2](https://github.com/puppetlabs/pdk-templates/tree/3.0.1.2) - 2024-04-02
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.1.1...3.0.1.2)
+
+### Fixed
+
+- (CAT-1754) Remove duplicate gems [#571](https://github.com/puppetlabs/pdk-templates/pull/571) ([david22swan](https://github.com/david22swan))
+- puppetlabs_spec_helper: Require 7.X [#560](https://github.com/puppetlabs/pdk-templates/pull/560) ([bastelfreak](https://github.com/bastelfreak))
+
+## [3.0.1.1](https://github.com/puppetlabs/pdk-templates/tree/3.0.1.1) - 2024-03-27
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.1...3.0.1.1)
+
+### Added
+
+- allow overriding default gems [#559](https://github.com/puppetlabs/pdk-templates/pull/559) ([h0tw1r3](https://github.com/h0tw1r3))
+
+### Fixed
+
+- (CAT-1754) Remove duplicate gems [#571](https://github.com/puppetlabs/pdk-templates/pull/571) ([david22swan](https://github.com/david22swan))
+- (CAT-1743) Address .sync.yml not overriding cops [#569](https://github.com/puppetlabs/pdk-templates/pull/569) ([LukasAud](https://github.com/LukasAud))
+- (CAT-1739) Restrict CFPropertyList pin to Windows [#564](https://github.com/puppetlabs/pdk-templates/pull/564) ([david22swan](https://github.com/david22swan))
+- (CAT-1739) Pin `CFPropertyList` to resolve dependency brought in by Bolt [#563](https://github.com/puppetlabs/pdk-templates/pull/563) ([david22swan](https://github.com/david22swan))
+- Replace archived ruby vscode extension [#561](https://github.com/puppetlabs/pdk-templates/pull/561) ([jay7x](https://github.com/jay7x))
+- (CAT-1693) - Remove deprecated codecov gem [#556](https://github.com/puppetlabs/pdk-templates/pull/556) ([jordanbreen28](https://github.com/jordanbreen28))
+- (CAT-1688) - Pin rubocop to `~> 1.50.0` [#555](https://github.com/puppetlabs/pdk-templates/pull/555) ([LukasAud](https://github.com/LukasAud))
+- (BUGFIX) Enable Rubocop NewCops by default [#554](https://github.com/puppetlabs/pdk-templates/pull/554) ([david22swan](https://github.com/david22swan))
+- (MAINT) - Remove github_changelog gem footprint [#547](https://github.com/puppetlabs/pdk-templates/pull/547) ([Ramesh7](https://github.com/Ramesh7))
+- metadata-json-lint: Switch to 4.x [#545](https://github.com/puppetlabs/pdk-templates/pull/545) ([bastelfreak](https://github.com/bastelfreak))
+
 ## [3.0.1](https://github.com/puppetlabs/pdk-templates/tree/3.0.1) - 2023-12-12
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.0.0...3.0.1)
 
 ### Added
 
-- (CAT-1606) - Adding gem group for release_pre [#540](https://github.com/puppetlabs/pdk-templates/pull/540) ([Ramesh7](https://github.com/Ramesh7))
 - Allow puppet-lint fail_on_warnings to be disabled [#515](https://github.com/puppetlabs/pdk-templates/pull/515) ([nabertrand](https://github.com/nabertrand))
 
 ### Fixed
 
 - (CAT-1612) Revert removal of puppetlabs_spec_helper and puppet-string changes [#546](https://github.com/puppetlabs/pdk-templates/pull/546) ([david22swan](https://github.com/david22swan))
 
+### Other
+
+- (CAT-1606) - Adding gem group for release_pre [#540](https://github.com/puppetlabs/pdk-templates/pull/540) ([Ramesh7](https://github.com/Ramesh7))
+
 ## [3.0.0](https://github.com/puppetlabs/pdk-templates/tree/3.0.0) - 2023-08-16
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.7.5...3.0.0)
 
 ### Changed
+
 - (CONT-885) pdk-templates v3 prep [#510](https://github.com/puppetlabs/pdk-templates/pull/510) ([chelnak](https://github.com/chelnak))
 
 ### Added
 
 - (CONT-1229) - Allow nested extra networking facts [#529](https://github.com/puppetlabs/pdk-templates/pull/529) ([jordanbreen28](https://github.com/jordanbreen28))
 - (CONT-1119) Add puppet-strings [#522](https://github.com/puppetlabs/pdk-templates/pull/522) ([chelnak](https://github.com/chelnak))
-- Enable puppet coverage reports [#465](https://github.com/puppetlabs/pdk-templates/pull/465) ([bastelfreak](https://github.com/bastelfreak))
 
 ### Fixed
 
@@ -39,6 +203,10 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (maint) - Update fixtures/modules path for .gitignore [#517](https://github.com/puppetlabs/pdk-templates/pull/517) ([jordanbreen28](https://github.com/jordanbreen28))
 - (MAINT) Fix YAML.safe_load [#512](https://github.com/puppetlabs/pdk-templates/pull/512) ([chelnak](https://github.com/chelnak))
 - Add missing quotes around facter_implementation [#508](https://github.com/puppetlabs/pdk-templates/pull/508) ([ardrigh](https://github.com/ardrigh))
+
+### Other
+
+- Enable puppet coverage reports [#465](https://github.com/puppetlabs/pdk-templates/pull/465) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [2.7.5](https://github.com/puppetlabs/pdk-templates/tree/2.7.5) - 2023-04-22
 
@@ -60,27 +228,27 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.7.2...2.7.3)
 
-### Added
-
-- Add support for GitLab Code Quality reports [#499](https://github.com/puppetlabs/pdk-templates/pull/499) ([alexjfisher](https://github.com/alexjfisher))
-
 ### Fixed
 
 - (CONT-705) Pin parallel_tests gem [#500](https://github.com/puppetlabs/pdk-templates/pull/500) ([chelnak](https://github.com/chelnak))
+
+### Other
+
+- Add support for GitLab Code Quality reports [#499](https://github.com/puppetlabs/pdk-templates/pull/499) ([alexjfisher](https://github.com/alexjfisher))
 
 ## [2.7.2](https://github.com/puppetlabs/pdk-templates/tree/2.7.2) - 2023-03-01
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.7.1...2.7.2)
 
-### Added
+### Fixed
+
+- Ensure that the devcontainer.json is valid JSON [#490](https://github.com/puppetlabs/pdk-templates/pull/490) ([zigsphere](https://github.com/zigsphere))
+
+### Other
 
 - Add x64_mingw support for puppet_litmus [#497](https://github.com/puppetlabs/pdk-templates/pull/497) ([chelnak](https://github.com/chelnak))
 - (maint) Updates checkout action [#494](https://github.com/puppetlabs/pdk-templates/pull/494) ([mhashizume](https://github.com/mhashizume))
 - allow to configure rspec-puppet's facter_implementation [#473](https://github.com/puppetlabs/pdk-templates/pull/473) ([skoef](https://github.com/skoef))
-
-### Fixed
-
-- Ensure that the devcontainer.json is valid JSON [#490](https://github.com/puppetlabs/pdk-templates/pull/490) ([zigsphere](https://github.com/zigsphere))
 
 ## [2.7.1](https://github.com/puppetlabs/pdk-templates/tree/2.7.1) - 2023-01-16
 
@@ -95,20 +263,20 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.6.0...2.7.0)
 
-### Added
-
-- Enhance class_spec.rb file [#482](https://github.com/puppetlabs/pdk-templates/pull/482) ([bastelfreak](https://github.com/bastelfreak))
-- (CONT-19) Removal of puppet-module-gems [#481](https://github.com/puppetlabs/pdk-templates/pull/481) ([david22swan](https://github.com/david22swan))
-
 ### Fixed
 
 - (maint) Exclusion added against Json version [#483](https://github.com/puppetlabs/pdk-templates/pull/483) ([david22swan](https://github.com/david22swan))
+
+### Other
+
+- Enhance class_spec.rb file [#482](https://github.com/puppetlabs/pdk-templates/pull/482) ([bastelfreak](https://github.com/bastelfreak))
+- (CONT-19) Removal of puppet-module-gems [#481](https://github.com/puppetlabs/pdk-templates/pull/481) ([david22swan](https://github.com/david22swan))
 
 ## [2.6.0](https://github.com/puppetlabs/pdk-templates/tree/2.6.0) - 2022-10-05
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.5.0...2.6.0)
 
-### Added
+### Other
 
 - (CONT-19) Removal of puppet-module-gems [#481](https://github.com/puppetlabs/pdk-templates/pull/481) ([david22swan](https://github.com/david22swan))
 - Adds documentation for testing and mocking facts [#474](https://github.com/puppetlabs/pdk-templates/pull/474) ([logicminds](https://github.com/logicminds))
@@ -117,37 +285,30 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.4.0...2.5.0)
 
-### Added
-
-- (packaging) Enable puppet-lint-plugins also on Windows #468 [#469](https://github.com/puppetlabs/pdk-templates/pull/469) ([ConradGroth](https://github.com/ConradGroth))
-- Use voxpupuli-puppet-lint-plugins [#463](https://github.com/puppetlabs/pdk-templates/pull/463) ([bastelfreak](https://github.com/bastelfreak))
-
 ### Fixed
 
 - Update TargetrubyVersion for rubocop [#466](https://github.com/puppetlabs/pdk-templates/pull/466) ([MartyEwings](https://github.com/MartyEwings))
+
+### Other
+
+- (packaging) Enable puppet-lint-plugins also on Windows #468 [#469](https://github.com/puppetlabs/pdk-templates/pull/469) ([ConradGroth](https://github.com/ConradGroth))
+- Use voxpupuli-puppet-lint-plugins [#463](https://github.com/puppetlabs/pdk-templates/pull/463) ([bastelfreak](https://github.com/bastelfreak))
 
 ## [2.4.0](https://github.com/puppetlabs/pdk-templates/tree/2.4.0) - 2022-02-07
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.3.0...2.4.0)
 
-### Added
-
-- Add a knob to allow tasks testing using ruby_task_helper [#461](https://github.com/puppetlabs/pdk-templates/pull/461) ([smortex](https://github.com/smortex))
-
 ### Fixed
 
 - (MODULES-11220) Disable nightly workflows on forks [#458](https://github.com/puppetlabs/pdk-templates/pull/458) ([sanfrancrisko](https://github.com/sanfrancrisko))
 
+### Other
+
+- Add a knob to allow tasks testing using ruby_task_helper [#461](https://github.com/puppetlabs/pdk-templates/pull/461) ([smortex](https://github.com/smortex))
+
 ## [2.3.0](https://github.com/puppetlabs/pdk-templates/tree/2.3.0) - 2021-10-21
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.2.0...2.3.0)
-
-### Added
-
-- (GH-449) Adds `enabled` flag for honeycomb [#455](https://github.com/puppetlabs/pdk-templates/pull/455) ([da-ar](https://github.com/da-ar))
-- [IAC-1738] - exclude platforms from GA matrixes [#454](https://github.com/puppetlabs/pdk-templates/pull/454) ([adrianiurca](https://github.com/adrianiurca))
-- Add support for puppet-lint ignore-paths  [#450](https://github.com/puppetlabs/pdk-templates/pull/450) ([da-ar](https://github.com/da-ar))
-- Only auto release if the changelog is updated [#443](https://github.com/puppetlabs/pdk-templates/pull/443) ([jarretlavallee](https://github.com/jarretlavallee))
 
 ### Fixed
 
@@ -156,11 +317,18 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Remove env from GitHub template if all sub-keys are unset [#451](https://github.com/puppetlabs/pdk-templates/pull/451) ([thebeanogamer](https://github.com/thebeanogamer))
 - Don't append a tag to image name if one already exists [#446](https://github.com/puppetlabs/pdk-templates/pull/446) ([silug](https://github.com/silug))
 
+### Other
+
+- (GH-449) Adds `enabled` flag for honeycomb [#455](https://github.com/puppetlabs/pdk-templates/pull/455) ([da-ar](https://github.com/da-ar))
+- [IAC-1738] - exclude platforms from GA matrixes [#454](https://github.com/puppetlabs/pdk-templates/pull/454) ([adrianiurca](https://github.com/adrianiurca))
+- Add support for puppet-lint ignore-paths  [#450](https://github.com/puppetlabs/pdk-templates/pull/450) ([da-ar](https://github.com/da-ar))
+- Only auto release if the changelog is updated [#443](https://github.com/puppetlabs/pdk-templates/pull/443) ([jarretlavallee](https://github.com/jarretlavallee))
+
 ## [2.2.0](https://github.com/puppetlabs/pdk-templates/tree/2.2.0) - 2021-08-02
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.1.1...2.2.0)
 
-### Added
+### Other
 
 - Set `skip_branch_with_pr` to true by default in appveyor.yml template [#442](https://github.com/puppetlabs/pdk-templates/pull/442) ([TraGicCode](https://github.com/TraGicCode))
 - Run validation steps prior to the matrix build [#441](https://github.com/puppetlabs/pdk-templates/pull/441) ([ekohl](https://github.com/ekohl))
@@ -170,7 +338,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.1.0...2.1.1)
 
-### Added
+### Fixed
+
+- Fix Bug in .rubocop.yml.erb [#432](https://github.com/puppetlabs/pdk-templates/pull/432) ([cocker-cc](https://github.com/cocker-cc))
+- (maint) Update Gitpod to Puppet VSCode Extension to 1.2.0 [#423](https://github.com/puppetlabs/pdk-templates/pull/423) ([jpogran](https://github.com/jpogran))
+
+### Other
 
 - Use latest facter gem in spec tests [#439](https://github.com/puppetlabs/pdk-templates/pull/439) ([carabasdaniel](https://github.com/carabasdaniel))
 - Allow auto_release workflow schedule configuration [#438](https://github.com/puppetlabs/pdk-templates/pull/438) ([carabasdaniel](https://github.com/carabasdaniel))
@@ -182,21 +355,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Add EditorConfig [#428](https://github.com/puppetlabs/pdk-templates/pull/428) ([jeffbyrnes](https://github.com/jeffbyrnes))
 - git ignore spec/fixtures/litmus_inventory.yaml [#426](https://github.com/puppetlabs/pdk-templates/pull/426) ([adrianiurca](https://github.com/adrianiurca))
 
-### Fixed
-
-- Fix Bug in .rubocop.yml.erb [#432](https://github.com/puppetlabs/pdk-templates/pull/432) ([cocker-cc](https://github.com/cocker-cc))
-- (maint) Update Gitpod to Puppet VSCode Extension to 1.2.0 [#423](https://github.com/puppetlabs/pdk-templates/pull/423) ([jpogran](https://github.com/jpogran))
-
 ## [2.1.0](https://github.com/puppetlabs/pdk-templates/tree/2.1.0) - 2021-03-31
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/2.0.0...2.1.0)
-
-### Added
-
-- (GH-380) Relocation of inventory.yaml file [#414](https://github.com/puppetlabs/pdk-templates/pull/414) ([pmcmaw](https://github.com/pmcmaw))
-- Add manual module publish and tag workflow using FORGE_API_KEY secret [#408](https://github.com/puppetlabs/pdk-templates/pull/408) ([carabasdaniel](https://github.com/carabasdaniel))
-- Use different providers in Github Action workflows matrix [#398](https://github.com/puppetlabs/pdk-templates/pull/398) ([carabasdaniel](https://github.com/carabasdaniel))
-- (IAC-1307) Add Spec tests to nightly and pr_test GHActions configs [#372](https://github.com/puppetlabs/pdk-templates/pull/372) ([sanfrancrisko](https://github.com/sanfrancrisko))
 
 ### Fixed
 
@@ -204,38 +365,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (#412) Add .devcontainer to .pdkignore [#413](https://github.com/puppetlabs/pdk-templates/pull/413) ([silug](https://github.com/silug))
 - Add Puppet 7 tests to .gitlab-ci.yml [#411](https://github.com/puppetlabs/pdk-templates/pull/411) ([silug](https://github.com/silug))
 
+### Other
+
+- (GH-380) Relocation of inventory.yaml file [#414](https://github.com/puppetlabs/pdk-templates/pull/414) ([pmcmaw](https://github.com/pmcmaw))
+- Add manual module publish and tag workflow using FORGE_API_KEY secret [#408](https://github.com/puppetlabs/pdk-templates/pull/408) ([carabasdaniel](https://github.com/carabasdaniel))
+- Use different providers in Github Action workflows matrix [#398](https://github.com/puppetlabs/pdk-templates/pull/398) ([carabasdaniel](https://github.com/carabasdaniel))
+- (IAC-1307) Add Spec tests to nightly and pr_test GHActions configs [#372](https://github.com/puppetlabs/pdk-templates/pull/372) ([sanfrancrisko](https://github.com/sanfrancrisko))
+
 ## [2.0.0](https://github.com/puppetlabs/pdk-templates/tree/2.0.0) - 2021-02-24
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.18.1...2.0.0)
 
 ### Changed
+
 - Remove puppet5 from gitlab-ci defaults [#407](https://github.com/puppetlabs/pdk-templates/pull/407) ([carabasdaniel](https://github.com/carabasdaniel))
 - (MAINT) Remove puppet-module-system gems for older Puppet versions [#386](https://github.com/puppetlabs/pdk-templates/pull/386) ([scotje](https://github.com/scotje))
-
-### Added
-
-- Set auto_release.yml as unmanaged in default configs [#406](https://github.com/puppetlabs/pdk-templates/pull/406) ([carabasdaniel](https://github.com/carabasdaniel))
-- Use rspec-mocks as default mocking library [#404](https://github.com/puppetlabs/pdk-templates/pull/404) ([DavidS](https://github.com/DavidS))
-- Remove puppet5 from config_defaults.yml [#403](https://github.com/puppetlabs/pdk-templates/pull/403) ([carabasdaniel](https://github.com/carabasdaniel))
-- Don't enforce frozen string comments [#402](https://github.com/puppetlabs/pdk-templates/pull/402) ([DavidS](https://github.com/DavidS))
-- Finalise auto-release-prep using pdk-docker image and cleanup artifacts [#395](https://github.com/puppetlabs/pdk-templates/pull/395) ([carabasdaniel](https://github.com/carabasdaniel))
-- Add automatic release preparation workflow [#393](https://github.com/puppetlabs/pdk-templates/pull/393) ([carabasdaniel](https://github.com/carabasdaniel))
-- Fix handling of `pending` cops; configure some egregious cops [#383](https://github.com/puppetlabs/pdk-templates/pull/383) ([DavidS](https://github.com/DavidS))
-- Use ruby/setup-ruby Github action [#382](https://github.com/puppetlabs/pdk-templates/pull/382) ([ekohl](https://github.com/ekohl))
-- Add object templates for functions [#379](https://github.com/puppetlabs/pdk-templates/pull/379) ([logicminds](https://github.com/logicminds))
-- Update how we handle at-risk action sources [#377](https://github.com/puppetlabs/pdk-templates/pull/377) ([DavidS](https://github.com/DavidS))
-- Remove Layout/HashAlignment from the default cleanup cops [#375](https://github.com/puppetlabs/pdk-templates/pull/375) ([DavidS](https://github.com/DavidS))
-- Updates for ruby 2.4 and rubocop 1.6.1 [#371](https://github.com/puppetlabs/pdk-templates/pull/371) ([DavidS](https://github.com/DavidS))
-- Allow to use a different dist per collection [#366](https://github.com/puppetlabs/pdk-templates/pull/366) ([adrianiurca](https://github.com/adrianiurca))
-- Update honeycomb buildevents tracking [#365](https://github.com/puppetlabs/pdk-templates/pull/365) ([DavidS](https://github.com/DavidS))
-- Add github workflows with puppetlabs defaults for the provision_service [#363](https://github.com/puppetlabs/pdk-templates/pull/363) ([DavidS](https://github.com/DavidS))
-- Add object templates for generating new facts [#361](https://github.com/puppetlabs/pdk-templates/pull/361) ([logicminds](https://github.com/logicminds))
-- (#353) Add an empty, commented .sync.yml [#356](https://github.com/puppetlabs/pdk-templates/pull/356) ([silug](https://github.com/silug))
-- Add gitpod support for puppet modules [#354](https://github.com/puppetlabs/pdk-templates/pull/354) ([logicminds](https://github.com/logicminds))
-- (IAC-1026) - Update default travis/appveyor branches from master to main [#343](https://github.com/puppetlabs/pdk-templates/pull/343) ([david22swan](https://github.com/david22swan))
-- (IAC-940) Add a remove_includes configuration option [#342](https://github.com/puppetlabs/pdk-templates/pull/342) ([sheenaajay](https://github.com/sheenaajay))
-- Add optional litmus config to gitlab-ci [#338](https://github.com/puppetlabs/pdk-templates/pull/338) ([cdenneen](https://github.com/cdenneen))
-- Change global_variables key for GitLab CI to set defaults that can be overridden by jobs [#332](https://github.com/puppetlabs/pdk-templates/pull/332) ([cdenneen](https://github.com/cdenneen))
 
 ### Fixed
 
@@ -262,28 +406,48 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Fix disabling of BracesAroundHashParameters [#344](https://github.com/puppetlabs/pdk-templates/pull/344) ([alexjfisher](https://github.com/alexjfisher))
 - Conditional can't be used with false. Since default is true it is not needed [#337](https://github.com/puppetlabs/pdk-templates/pull/337) ([cdenneen](https://github.com/cdenneen))
 
+### Other
+
+- Set auto_release.yml as unmanaged in default configs [#406](https://github.com/puppetlabs/pdk-templates/pull/406) ([carabasdaniel](https://github.com/carabasdaniel))
+- Use rspec-mocks as default mocking library [#404](https://github.com/puppetlabs/pdk-templates/pull/404) ([DavidS](https://github.com/DavidS))
+- Remove puppet5 from config_defaults.yml [#403](https://github.com/puppetlabs/pdk-templates/pull/403) ([carabasdaniel](https://github.com/carabasdaniel))
+- Don't enforce frozen string comments [#402](https://github.com/puppetlabs/pdk-templates/pull/402) ([DavidS](https://github.com/DavidS))
+- Finalise auto-release-prep using pdk-docker image and cleanup artifacts [#395](https://github.com/puppetlabs/pdk-templates/pull/395) ([carabasdaniel](https://github.com/carabasdaniel))
+- Add automatic release preparation workflow [#393](https://github.com/puppetlabs/pdk-templates/pull/393) ([carabasdaniel](https://github.com/carabasdaniel))
+- Fix handling of `pending` cops; configure some egregious cops [#383](https://github.com/puppetlabs/pdk-templates/pull/383) ([DavidS](https://github.com/DavidS))
+- Use ruby/setup-ruby Github action [#382](https://github.com/puppetlabs/pdk-templates/pull/382) ([ekohl](https://github.com/ekohl))
+- Add object templates for functions [#379](https://github.com/puppetlabs/pdk-templates/pull/379) ([logicminds](https://github.com/logicminds))
+- Update how we handle at-risk action sources [#377](https://github.com/puppetlabs/pdk-templates/pull/377) ([DavidS](https://github.com/DavidS))
+- Remove Layout/HashAlignment from the default cleanup cops [#375](https://github.com/puppetlabs/pdk-templates/pull/375) ([DavidS](https://github.com/DavidS))
+- Updates for ruby 2.4 and rubocop 1.6.1 [#371](https://github.com/puppetlabs/pdk-templates/pull/371) ([DavidS](https://github.com/DavidS))
+- Allow to use a different dist per collection [#366](https://github.com/puppetlabs/pdk-templates/pull/366) ([adrianiurca](https://github.com/adrianiurca))
+- Update honeycomb buildevents tracking [#365](https://github.com/puppetlabs/pdk-templates/pull/365) ([DavidS](https://github.com/DavidS))
+- Add github workflows with puppetlabs defaults for the provision_service [#363](https://github.com/puppetlabs/pdk-templates/pull/363) ([DavidS](https://github.com/DavidS))
+- Add object templates for generating new facts [#361](https://github.com/puppetlabs/pdk-templates/pull/361) ([logicminds](https://github.com/logicminds))
+- (#353) Add an empty, commented .sync.yml [#356](https://github.com/puppetlabs/pdk-templates/pull/356) ([silug](https://github.com/silug))
+- Add gitpod support for puppet modules [#354](https://github.com/puppetlabs/pdk-templates/pull/354) ([logicminds](https://github.com/logicminds))
+- (IAC-1026) - Update default travis/appveyor branches from master to main [#343](https://github.com/puppetlabs/pdk-templates/pull/343) ([david22swan](https://github.com/david22swan))
+- (IAC-940) Add a remove_includes configuration option [#342](https://github.com/puppetlabs/pdk-templates/pull/342) ([sheenaajay](https://github.com/sheenaajay))
+- Add optional litmus config to gitlab-ci [#338](https://github.com/puppetlabs/pdk-templates/pull/338) ([cdenneen](https://github.com/cdenneen))
+- Change global_variables key for GitLab CI to set defaults that can be overridden by jobs [#332](https://github.com/puppetlabs/pdk-templates/pull/332) ([cdenneen](https://github.com/cdenneen))
+
 ## [1.18.1](https://github.com/puppetlabs/pdk-templates/tree/1.18.1) - 2020-07-16
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.18.0...1.18.1)
-
-### Added
-
-- Update changelog generation: default github labels and new upstream [#333](https://github.com/puppetlabs/pdk-templates/pull/333) ([DavidS](https://github.com/DavidS))
-- (IAC-805) add configuration option for more complex litmus matrices to travis [#331](https://github.com/puppetlabs/pdk-templates/pull/331) ([david22swan](https://github.com/david22swan))
 
 ### Fixed
 
 - (maint) Ensure wget install succeeds on RHEL OSs [#340](https://github.com/puppetlabs/pdk-templates/pull/340) ([sanfrancrisko](https://github.com/sanfrancrisko))
 - use --targets instead of --nodes for bolt command [#336](https://github.com/puppetlabs/pdk-templates/pull/336) ([TheMeier](https://github.com/TheMeier))
 
+### Other
+
+- Update changelog generation: default github labels and new upstream [#333](https://github.com/puppetlabs/pdk-templates/pull/333) ([DavidS](https://github.com/DavidS))
+- (IAC-805) add configuration option for more complex litmus matrices to travis [#331](https://github.com/puppetlabs/pdk-templates/pull/331) ([david22swan](https://github.com/david22swan))
+
 ## [1.18.0](https://github.com/puppetlabs/pdk-templates/tree/1.18.0) - 2020-05-12
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.17.0...1.18.0)
-
-### Added
-
-- Added strict_variables config setting [#326](https://github.com/puppetlabs/pdk-templates/pull/326) ([cdenneen](https://github.com/cdenneen))
-- (PDK-1591) Add option to enable legacy_facts puppet-lint plugin [#320](https://github.com/puppetlabs/pdk-templates/pull/320) ([rodjek](https://github.com/rodjek))
 
 ### Fixed
 
@@ -292,14 +456,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (MAINT) Fix documentation link in README template [#322](https://github.com/puppetlabs/pdk-templates/pull/322) ([geoffnichols](https://github.com/geoffnichols))
 - (PDK-1633) Update common.yaml [#321](https://github.com/puppetlabs/pdk-templates/pull/321) ([glennsarti](https://github.com/glennsarti))
 
+### Other
+
+- Added strict_variables config setting [#326](https://github.com/puppetlabs/pdk-templates/pull/326) ([cdenneen](https://github.com/cdenneen))
+- (PDK-1591) Add option to enable legacy_facts puppet-lint plugin [#320](https://github.com/puppetlabs/pdk-templates/pull/320) ([rodjek](https://github.com/rodjek))
+
 ## [1.17.0](https://github.com/puppetlabs/pdk-templates/tree/1.17.0) - 2020-02-27
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.16.0...1.17.0)
-
-### Added
-
-- Update to latest ruby version supported by the agent [#318](https://github.com/puppetlabs/pdk-templates/pull/318) ([DavidS](https://github.com/DavidS))
-- Add `default_facter_version` parameter to `.sync.yml` [#311](https://github.com/puppetlabs/pdk-templates/pull/311) ([rnelson0](https://github.com/rnelson0))
 
 ### Fixed
 
@@ -308,13 +472,14 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Updated for GitLab Advanced except/only ability [#314](https://github.com/puppetlabs/pdk-templates/pull/314) ([cdenneen](https://github.com/cdenneen))
 - resolve some Travis-CI build config validation issues [#312](https://github.com/puppetlabs/pdk-templates/pull/312) ([rtib](https://github.com/rtib))
 
+### Other
+
+- Update to latest ruby version supported by the agent [#318](https://github.com/puppetlabs/pdk-templates/pull/318) ([DavidS](https://github.com/DavidS))
+- Add `default_facter_version` parameter to `.sync.yml` [#311](https://github.com/puppetlabs/pdk-templates/pull/311) ([rnelson0](https://github.com/rnelson0))
+
 ## [1.16.0](https://github.com/puppetlabs/pdk-templates/tree/1.16.0) - 2020-02-05
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.15.0...1.16.0)
-
-### Added
-
-- Update puppet-module gems to current version [#291](https://github.com/puppetlabs/pdk-templates/pull/291) ([DavidS](https://github.com/DavidS))
 
 ### Fixed
 
@@ -330,19 +495,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - Fix rubygems update in runners with pipefail set [#305](https://github.com/puppetlabs/pdk-templates/pull/305) ([lusor](https://github.com/lusor))
 - (maint) Fix non-interactive rubygems update [#303](https://github.com/puppetlabs/pdk-templates/pull/303) ([rodjek](https://github.com/rodjek))
 - FM-8769 - add use_litmus to configure to use Litmus for acceptance testing jobs [#296](https://github.com/puppetlabs/pdk-templates/pull/296) ([lionce](https://github.com/lionce))
+- Update puppet-module gems to current version [#291](https://github.com/puppetlabs/pdk-templates/pull/291) ([DavidS](https://github.com/DavidS))
 
 ## [1.15.0](https://github.com/puppetlabs/pdk-templates/tree/1.15.0) - 2019-12-13
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.14.1...1.15.0)
 
-### Added
-
-- Support setting `os` and `install` keys for appveyor and travis [#293](https://github.com/puppetlabs/pdk-templates/pull/293) ([DavidS](https://github.com/DavidS))
-
 ### Other
 
 - Boolean to remove the before_script section in .gitlab-ci.yml [#299](https://github.com/puppetlabs/pdk-templates/pull/299) ([rodjek](https://github.com/rodjek))
 - (#290) Do not manually generate YAML in .gitlab-ci.yml [#298](https://github.com/puppetlabs/pdk-templates/pull/298) ([rodjek](https://github.com/rodjek))
+- Support setting `os` and `install` keys for appveyor and travis [#293](https://github.com/puppetlabs/pdk-templates/pull/293) ([DavidS](https://github.com/DavidS))
 - (maint) Make module deployment in Travis opt-out [#289](https://github.com/puppetlabs/pdk-templates/pull/289) ([glennsarti](https://github.com/glennsarti))
 - (PDK-1500) Update Litmus configuration in Appveyor [#288](https://github.com/puppetlabs/pdk-templates/pull/288) ([glennsarti](https://github.com/glennsarti))
 - (PDK-1500) Update Appveyor and Gemfile templates for Litmus [#287](https://github.com/puppetlabs/pdk-templates/pull/287) ([glennsarti](https://github.com/glennsarti))
@@ -403,24 +566,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.10.0...1.11.0)
 
-### Added
-
-- Addition of before_deploy option [#261](https://github.com/puppetlabs/pdk-templates/pull/261) ([HelenCampbell](https://github.com/HelenCampbell))
-- (maint) implement simplecov for appveyor [#252](https://github.com/puppetlabs/pdk-templates/pull/252) ([DavidS](https://github.com/DavidS))
-- (PDK-1355) Add hiera_config_ruby to accept ruby snippets [#245](https://github.com/puppetlabs/pdk-templates/pull/245) ([sheenaajay](https://github.com/sheenaajay))
-
 ### Other
 
+- Addition of before_deploy option [#261](https://github.com/puppetlabs/pdk-templates/pull/261) ([HelenCampbell](https://github.com/HelenCampbell))
 - (maint) Exclude spec folder for GetText/DecorateString [#259](https://github.com/puppetlabs/pdk-templates/pull/259) ([eimlav](https://github.com/eimlav))
 - (FM-7709) include litmus rake tasks if gem exists [#258](https://github.com/puppetlabs/pdk-templates/pull/258) ([tphoney](https://github.com/tphoney))
 - (maint) VSCode Recommended Extensions file [#256](https://github.com/puppetlabs/pdk-templates/pull/256) ([jpogran](https://github.com/jpogran))
 - (FM-8081) fix up last issues in transport template [#254](https://github.com/puppetlabs/pdk-templates/pull/254) ([DavidS](https://github.com/DavidS))
 - (FM-8081) Add DeviceShim template too [#253](https://github.com/puppetlabs/pdk-templates/pull/253) ([DavidS](https://github.com/DavidS))
+- (maint) implement simplecov for appveyor [#252](https://github.com/puppetlabs/pdk-templates/pull/252) ([DavidS](https://github.com/DavidS))
 - (FM-8081) Templates for `pdk new transport` [#251](https://github.com/puppetlabs/pdk-templates/pull/251) ([DavidS](https://github.com/DavidS))
 - Support setting puppet collection with docker_sets [#249](https://github.com/puppetlabs/pdk-templates/pull/249) ([treydock](https://github.com/treydock))
 - (MAINT) Add minimum version pinning to default puppet-module-* gem deps [#248](https://github.com/puppetlabs/pdk-templates/pull/248) ([scotje](https://github.com/scotje))
 - (MAINT) Require rubocop-i18n as part of default rubocop config [#247](https://github.com/puppetlabs/pdk-templates/pull/247) ([scotje](https://github.com/scotje))
 - improved README wording [#246](https://github.com/puppetlabs/pdk-templates/pull/246) ([rtib](https://github.com/rtib))
+- (PDK-1355) Add hiera_config_ruby to accept ruby snippets [#245](https://github.com/puppetlabs/pdk-templates/pull/245) ([sheenaajay](https://github.com/sheenaajay))
 - (MAINT) Ensure .gitlab-ci.yaml configs are merged in the correct order [#244](https://github.com/puppetlabs/pdk-templates/pull/244) ([scotje](https://github.com/scotje))
 - Add documentation to satisfy YARD [#243](https://github.com/puppetlabs/pdk-templates/pull/243) ([bjvrielink](https://github.com/bjvrielink))
 - (MAINT) --template-ref commit targetting again [#241](https://github.com/puppetlabs/pdk-templates/pull/241) ([scotje](https://github.com/scotje))
@@ -462,10 +622,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.9.0...1.9.1)
 
-### Added
-
-- Allow more control over puppet-lint options [#181](https://github.com/puppetlabs/pdk-templates/pull/181) ([Felixoid](https://github.com/Felixoid))
-
 ### Fixed
 
 - (PDK-1277) Update gitlab-ci config to test against latest Puppets. [#189](https://github.com/puppetlabs/pdk-templates/pull/189) ([bmjen](https://github.com/bmjen))
@@ -476,18 +632,11 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - update short description for `moduleroot_init` [#188](https://github.com/puppetlabs/pdk-templates/pull/188) ([TheMeier](https://github.com/TheMeier))
 - Add `update` to the list of commands making use of moduleroot [#186](https://github.com/puppetlabs/pdk-templates/pull/186) ([DavidS](https://github.com/DavidS))
 - (PDK-1269) Add plan template [#184](https://github.com/puppetlabs/pdk-templates/pull/184) ([npwalker](https://github.com/npwalker))
+- Allow more control over puppet-lint options [#181](https://github.com/puppetlabs/pdk-templates/pull/181) ([Felixoid](https://github.com/Felixoid))
 
 ## [1.9.0](https://github.com/puppetlabs/pdk-templates/tree/1.9.0) - 2019-01-25
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.8.0...1.9.0)
-
-### Added
-
-- (WIN-251) Add Bolt Filters to template files [#176](https://github.com/puppetlabs/pdk-templates/pull/176) ([RandomNoun7](https://github.com/RandomNoun7))
-- (MAINT) Update JSON pinning to cover Ruby 2.4.5 and future Rubies [#175](https://github.com/puppetlabs/pdk-templates/pull/175) ([scotje](https://github.com/scotje))
-- Add options for rspec-puppet coverage reports [#174](https://github.com/puppetlabs/pdk-templates/pull/174) ([genebean](https://github.com/genebean))
-- (PDK-1202) Generate a .puppet-lint.rc based on Rakefile [#169](https://github.com/puppetlabs/pdk-templates/pull/169) ([rodjek](https://github.com/rodjek))
-- allow configuring the docker image to use in gitlab ci [#137](https://github.com/puppetlabs/pdk-templates/pull/137) ([rtoma](https://github.com/rtoma))
 
 ### Fixed
 
@@ -500,27 +649,29 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 - (MODULES-8444) - Removal of Puppet 4 testing from travis and appveyor [#178](https://github.com/puppetlabs/pdk-templates/pull/178) ([david22swan](https://github.com/david22swan))
 - (PDK-1128) Expand the knockout prefix documentation [#177](https://github.com/puppetlabs/pdk-templates/pull/177) ([rodjek](https://github.com/rodjek))
+- (WIN-251) Add Bolt Filters to template files [#176](https://github.com/puppetlabs/pdk-templates/pull/176) ([RandomNoun7](https://github.com/RandomNoun7))
+- (MAINT) Update JSON pinning to cover Ruby 2.4.5 and future Rubies [#175](https://github.com/puppetlabs/pdk-templates/pull/175) ([scotje](https://github.com/scotje))
+- Add options for rspec-puppet coverage reports [#174](https://github.com/puppetlabs/pdk-templates/pull/174) ([genebean](https://github.com/genebean))
+- (PDK-1202) Generate a .puppet-lint.rc based on Rakefile [#169](https://github.com/puppetlabs/pdk-templates/pull/169) ([rodjek](https://github.com/rodjek))
+- allow configuring the docker image to use in gitlab ci [#137](https://github.com/puppetlabs/pdk-templates/pull/137) ([rtoma](https://github.com/rtoma))
 
 ## [1.8.0](https://github.com/puppetlabs/pdk-templates/tree/1.8.0) - 2018-11-27
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.7.1...1.8.0)
 
-### Added
-
-- add support for travis stages [#166](https://github.com/puppetlabs/pdk-templates/pull/166) ([rtib](https://github.com/rtib))
-- (maint) - Update travis.yml to default to ruby 2.5.1 [#162](https://github.com/puppetlabs/pdk-templates/pull/162) ([pmcmaw](https://github.com/pmcmaw))
-- (maint) Add optional puppet-strings tasks [#160](https://github.com/puppetlabs/pdk-templates/pull/160) ([DavidS](https://github.com/DavidS))
-- Fail on broken spec_helper_local [#152](https://github.com/puppetlabs/pdk-templates/pull/152) ([DavidS](https://github.com/DavidS))
-
 ### Other
 
 - (maint) Minor update to .travis.yml notifications [#167](https://github.com/puppetlabs/pdk-templates/pull/167) ([bmjen](https://github.com/bmjen))
+- add support for travis stages [#166](https://github.com/puppetlabs/pdk-templates/pull/166) ([rtib](https://github.com/rtib))
 - (PDK-1211) Manage .gitattributes when it exists [#163](https://github.com/puppetlabs/pdk-templates/pull/163) ([rodjek](https://github.com/rodjek))
+- (maint) - Update travis.yml to default to ruby 2.5.1 [#162](https://github.com/puppetlabs/pdk-templates/pull/162) ([pmcmaw](https://github.com/pmcmaw))
+- (maint) Add optional puppet-strings tasks [#160](https://github.com/puppetlabs/pdk-templates/pull/160) ([DavidS](https://github.com/DavidS))
 - Changes bunder to bundler in README.md [#158](https://github.com/puppetlabs/pdk-templates/pull/158) ([Rudikza](https://github.com/Rudikza))
 - (PDK-1191) Gracefully handle default_fact YAML load errors [#157](https://github.com/puppetlabs/pdk-templates/pull/157) ([rodjek](https://github.com/rodjek))
 - (PDK-1210) setting inherited const_defined lookup to false [#156](https://github.com/puppetlabs/pdk-templates/pull/156) ([Thomas-Franklin](https://github.com/Thomas-Franklin))
 - (GH-154) Fix appveyor double build [#155](https://github.com/puppetlabs/pdk-templates/pull/155) ([TraGicCode](https://github.com/TraGicCode))
 - (PDK-908) Update pdk-template to add data in module files [#153](https://github.com/puppetlabs/pdk-templates/pull/153) ([ardrigh](https://github.com/ardrigh))
+- Fail on broken spec_helper_local [#152](https://github.com/puppetlabs/pdk-templates/pull/152) ([DavidS](https://github.com/DavidS))
 - (maint) Prefer LF over CRLF line endings for .epp files [#151](https://github.com/puppetlabs/pdk-templates/pull/151) ([rodjek](https://github.com/rodjek))
 - Remove concat_basedir fact [#148](https://github.com/puppetlabs/pdk-templates/pull/148) ([ekohl](https://github.com/ekohl))
 - Implement notifications configuration for .travis.yml [#136](https://github.com/puppetlabs/pdk-templates/pull/136) ([nmaludy](https://github.com/nmaludy))
@@ -548,24 +699,17 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.6.1...1.7.0)
 
-### Added
-
-- (FM-7218) Changes to allow the use of parallel spec for the unit test… [#125](https://github.com/puppetlabs/pdk-templates/pull/125) ([david22swan](https://github.com/david22swan))
-
 ### Other
 
 - fixing stage job pinning so that spec jobs fall into unit stage [#130](https://github.com/puppetlabs/pdk-templates/pull/130) ([salderma](https://github.com/salderma))
 - Fix empty line at the top of the spec_helper.rb [#127](https://github.com/puppetlabs/pdk-templates/pull/127) ([DavidS](https://github.com/DavidS))
+- (FM-7218) Changes to allow the use of parallel spec for the unit test… [#125](https://github.com/puppetlabs/pdk-templates/pull/125) ([david22swan](https://github.com/david22swan))
 - (maint) Remove extra white space in .travis.yml branches [#123](https://github.com/puppetlabs/pdk-templates/pull/123) ([jarretlavallee](https://github.com/jarretlavallee))
 - Several beaker-related fixes from #104 [#105](https://github.com/puppetlabs/pdk-templates/pull/105) ([dhollinger](https://github.com/dhollinger))
 
 ## [1.6.1](https://github.com/puppetlabs/pdk-templates/tree/1.6.1) - 2018-07-25
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.6.0...1.6.1)
-
-### Added
-
-- (feature) add github changelog generator template [#111](https://github.com/puppetlabs/pdk-templates/pull/111) ([tphoney](https://github.com/tphoney))
 
 ### Fixed
 
@@ -577,18 +721,12 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (PDK-1044) changelog functions if changelog task [#118](https://github.com/puppetlabs/pdk-templates/pull/118) ([tphoney](https://github.com/tphoney))
 - (GH#530) Change quotes around hiera_config to single quotes [#116](https://github.com/puppetlabs/pdk-templates/pull/116) ([rodjek](https://github.com/rodjek))
 - add ability to support BEAKER_TESTMODE [#115](https://github.com/puppetlabs/pdk-templates/pull/115) ([b4ldr](https://github.com/b4ldr))
+- (feature) add github changelog generator template [#111](https://github.com/puppetlabs/pdk-templates/pull/111) ([tphoney](https://github.com/tphoney))
 - Add option to specify except branches in .travis.yml [#97](https://github.com/puppetlabs/pdk-templates/pull/97) ([jarretlavallee](https://github.com/jarretlavallee))
 
 ## [1.6.0](https://github.com/puppetlabs/pdk-templates/tree/1.6.0) - 2018-06-20
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.5.0...1.6.0)
-
-### Added
-
-- (feature) Allow code coverage in .travis.yml [#110](https://github.com/puppetlabs/pdk-templates/pull/110) ([tphoney](https://github.com/tphoney))
-- (PDK-681) Remove puppet-blacksmith [#79](https://github.com/puppetlabs/pdk-templates/pull/79) ([DavidS](https://github.com/DavidS))
-- (maint) Remove Geppetto support [#58](https://github.com/puppetlabs/pdk-templates/pull/58) ([DavidS](https://github.com/DavidS))
-- Make deploy optional in .travis.yml [#32](https://github.com/puppetlabs/pdk-templates/pull/32) ([ardrigh](https://github.com/ardrigh))
 
 ### Fixed
 
@@ -601,6 +739,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Other
 
 - Whitespace fix for `.travis.yml` [#113](https://github.com/puppetlabs/pdk-templates/pull/113) ([DavidS](https://github.com/DavidS))
+- (feature) Allow code coverage in .travis.yml [#110](https://github.com/puppetlabs/pdk-templates/pull/110) ([tphoney](https://github.com/tphoney))
 - (maint) Add a note about the knockout_prefix [#107](https://github.com/puppetlabs/pdk-templates/pull/107) ([jarretlavallee](https://github.com/jarretlavallee))
 - Fix newline warning in updated spec_helper and improve pre-merge CI testing [#100](https://github.com/puppetlabs/pdk-templates/pull/100) ([scotje](https://github.com/scotje))
 - (FIXUP) Fix rubocop validation failure for new provider spec tests [#99](https://github.com/puppetlabs/pdk-templates/pull/99) ([scotje](https://github.com/scotje))
@@ -612,6 +751,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (PDK-986) Only run parts of release_check task [#84](https://github.com/puppetlabs/pdk-templates/pull/84) ([npwalker](https://github.com/npwalker))
 - Addition of global_env section alongside configuration and docs update [#82](https://github.com/puppetlabs/pdk-templates/pull/82) ([HelenCampbell](https://github.com/HelenCampbell))
 - Gitlab jobs parsing [#81](https://github.com/puppetlabs/pdk-templates/pull/81) ([dhollinger](https://github.com/dhollinger))
+- (PDK-681) Remove puppet-blacksmith [#79](https://github.com/puppetlabs/pdk-templates/pull/79) ([DavidS](https://github.com/DavidS))
 - Update rubocop ignores for nested Gemfile, Rakefile, Puppetfile, and Vagrantfile [#77](https://github.com/puppetlabs/pdk-templates/pull/77) ([cdenneen](https://github.com/cdenneen))
 - More Gitlab CI improvements [#76](https://github.com/puppetlabs/pdk-templates/pull/76) ([dhollinger](https://github.com/dhollinger))
 - (MODULES-6891) - Enable puppet 5 installation when using beaker-puppet_install_helper on travis [#75](https://github.com/puppetlabs/pdk-templates/pull/75) ([pmcmaw](https://github.com/pmcmaw))
@@ -622,15 +762,13 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (PDK-964) Use gitlab ci caching [#68](https://github.com/puppetlabs/pdk-templates/pull/68) ([npwalker](https://github.com/npwalker))
 - Add a remove_includes configuration option [#67](https://github.com/puppetlabs/pdk-templates/pull/67) ([npwalker](https://github.com/npwalker))
 - Add yaml header to make yamllint happy [#65](https://github.com/puppetlabs/pdk-templates/pull/65) ([wmuizelaar](https://github.com/wmuizelaar))
+- (maint) Remove Geppetto support [#58](https://github.com/puppetlabs/pdk-templates/pull/58) ([DavidS](https://github.com/DavidS))
 - (maint) exclude lib/ directory from Style/Documentation cop [#46](https://github.com/puppetlabs/pdk-templates/pull/46) ([eputnam](https://github.com/eputnam))
+- Make deploy optional in .travis.yml [#32](https://github.com/puppetlabs/pdk-templates/pull/32) ([ardrigh](https://github.com/ardrigh))
 
 ## [1.5.0](https://github.com/puppetlabs/pdk-templates/tree/1.5.0) - 2018-04-30
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.4.1...1.5.0)
-
-### Added
-
-- (PDK-846) unit test for type and cleanup [#40](https://github.com/puppetlabs/pdk-templates/pull/40) ([tphoney](https://github.com/tphoney))
 
 ### Fixed
 
@@ -650,6 +788,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (maint) remove redundant require [#47](https://github.com/puppetlabs/pdk-templates/pull/47) ([DavidS](https://github.com/DavidS))
 - (MAINT) Add json pin for Ruby 2.4.3 [#45](https://github.com/puppetlabs/pdk-templates/pull/45) ([scotje](https://github.com/scotje))
 - (PDK-706) Remove vulnerable puppet3 support dependencies [#42](https://github.com/puppetlabs/pdk-templates/pull/42) ([bmjen](https://github.com/bmjen))
+- (PDK-846) unit test for type and cleanup [#40](https://github.com/puppetlabs/pdk-templates/pull/40) ([tphoney](https://github.com/tphoney))
 - Addition of release_checks to travis [#39](https://github.com/puppetlabs/pdk-templates/pull/39) ([HelenCampbell](https://github.com/HelenCampbell))
 - (MODULES-6828) Add blacksmith to Gemfile and Rakefile [#38](https://github.com/puppetlabs/pdk-templates/pull/38) ([HelenCampbell](https://github.com/HelenCampbell))
 - (MODULES-6781) Update Rakefile to allow disabling Lint rules [#37](https://github.com/puppetlabs/pdk-templates/pull/37) ([HelenCampbell](https://github.com/HelenCampbell))
@@ -667,10 +806,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/1.3.2...1.4.0)
 
-### Added
-
-- Add option to enable rubocop todos [#19](https://github.com/puppetlabs/pdk-templates/pull/19) ([DavidS](https://github.com/DavidS))
-
 ### Fixed
 
 - Fix geppetto metadata to work with newer versions of eclipse [#28](https://github.com/puppetlabs/pdk-templates/pull/28) ([hdeheer](https://github.com/hdeheer))
@@ -683,6 +818,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 - (maint) Allows customization of .yardopts [#25](https://github.com/puppetlabs/pdk-templates/pull/25) ([bmjen](https://github.com/bmjen))
 - Succeed with unsupported rubocop versions [#23](https://github.com/puppetlabs/pdk-templates/pull/23) ([DavidS](https://github.com/DavidS))
 - (PDK-776) Refactors ignore files for git and pdk, removes pmtignore. [#20](https://github.com/puppetlabs/pdk-templates/pull/20) ([bmjen](https://github.com/bmjen))
+- Add option to enable rubocop todos [#19](https://github.com/puppetlabs/pdk-templates/pull/19) ([DavidS](https://github.com/DavidS))
 - Removing openssl issue from appveyor config as is no longer required [#16](https://github.com/puppetlabs/pdk-templates/pull/16) ([HelenCampbell](https://github.com/HelenCampbell))
 - Add DS_store to gitignore [#15](https://github.com/puppetlabs/pdk-templates/pull/15) ([HelenCampbell](https://github.com/HelenCampbell))
 - (maint) Adds spec_helper_local support to spec_helper.rb [#14](https://github.com/puppetlabs/pdk-templates/pull/14) ([bmjen](https://github.com/bmjen))
