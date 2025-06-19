@@ -566,6 +566,12 @@ Gemfile:
           - mswin
           - mingw
           - x64_mingw
+      - gem: 'bigdecimal'
+        version: '< 3.2.2'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
     ':development, :release_prep':
       - gem: 'puppet-strings'
         version: '~> 4.0'
