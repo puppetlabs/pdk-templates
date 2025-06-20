@@ -544,6 +544,8 @@ Gemfile:
       - gem: 'rspec-puppet-facts'
         version: '~> 5.0'
         condition: "Gem::Requirement.create(['>= 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: 'puppet-strings'
+        version: '~> 1.0.0'
       - gem: 'dependency_checker'
         version: '~> 1.0.0'
       - gem: 'parallel_tests'
