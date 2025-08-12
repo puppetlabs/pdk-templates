@@ -56,18 +56,34 @@ def gem_spec(gem, max_len)
   output
 end
 -%>
-source ENV['GEM_SOURCE'] || 'https://rubygems.org'
+# For puppetcore, set GEM_SOURCE_PUPPETCORE = 'https://rubygems-puppetcore.puppet.com'
+gemsource_default = ENV['GEM_SOURCE'] || 'https://rubygems.org'
+gemsource_puppetcore = ENV['GEM_SOURCE_PUPPETCORE'] || gemsource_default
+source gemsource_default
 
-def location_for(place_or_version, fake_version = nil)
-  git_url_regex = %r{\A(?<url>(https?|git)[:@][^#]*)(#(?<branch>.*))?}
-  file_url_regex = %r{\Afile:\/\/(?<path>.*)}
+def location_for(place_or_constraint, fake_constraint = nil, opts = {})
+  git_url_regex  = /\A(?<url>(?:https?|git)[:@][^#]*)(?:#(?<branch>.*))?/
+  file_url_regex = %r{\Afile://(?<path>.*)}
 
-  if place_or_version && (git_url = place_or_version.match(git_url_regex))
-    [fake_version, { git: git_url[:url], branch: git_url[:branch], require: false }].compact
-  elsif place_or_version && (file_url = place_or_version.match(file_url_regex))
-    ['>= 0', { path: File.expand_path(file_url[:path]), require: false }]
+  if place_or_constraint && (git_url = place_or_constraint.match(git_url_regex))
+    # Git source → ignore :source, keep fake_constraint
+    [fake_constraint, { git: git_url[:url], branch: git_url[:branch], require: false }].compact
+
+  elsif place_or_constraint && (file_url = place_or_constraint.match(file_url_regex))
+    # File source → ignore :source, keep fake_constraint or default >= 0
+    [fake_constraint || '>= 0', { path: File.expand_path(file_url[:path]), require: false }]
+
   else
-    [place_or_version, { require: false }]
+    # Plain version constraint → merge opts (including :source if provided)
+    [place_or_constraint, { require: false }.merge(opts)]
+  end
+end
+
+# Print debug information if DEBUG_GEMS or VERBOSE is set
+def print_gem_statement_for(gems)
+  puts 'DEBUG: Gem definitions that will be generated:'
+  gems.each do |gem_name, gem_params|
+    puts "DEBUG:   gem #{([gem_name.inspect] + gem_params.map(&:inspect)).join(', ')}"
   end
 end
 
@@ -109,18 +125,12 @@ puppet_version = ENV.fetch('PUPPET_GEM_VERSION', nil)
 facter_version = ENV.fetch('FACTER_GEM_VERSION', nil)
 hiera_version = ENV.fetch('HIERA_GEM_VERSION', nil)
 
-# If PUPPET_FORGE_TOKEN is set then use authenticated source for both puppet and facter, since facter is a transitive dependency of puppet
-# Otherwise, do as before and use location_for to fetch gems from the default source
-if !ENV['PUPPET_FORGE_TOKEN'].to_s.empty?
-  gems['puppet'] = ['~> 8.11', { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
-  gems['facter'] = ['~> 4.11', { require: false, source: 'https://rubygems-puppetcore.puppet.com' }]
-else
-  gems['puppet'] = location_for(puppet_version)
-  gems['facter'] = location_for(facter_version) if facter_version
-end
-
+gems['puppet'] = location_for(puppet_version, nil, { source: gemsource_puppetcore })
+gems['facter'] = location_for(facter_version, nil, { source: gemsource_puppetcore })
 gems['hiera'] = location_for(hiera_version) if hiera_version
 
+# Generate the gem definitions
+print_gem_statement_for(gems) if ENV['DEBUG_GEMS'] || ENV['VERBOSE']
 gems.each do |gem_name, gem_params|
   gem gem_name, *gem_params
 end
@@ -128,12 +138,14 @@ end
 # Evaluate Gemfile.local and ~/.gemfile if they exist
 extra_gemfiles = [
   "#{__FILE__}.local",
-  File.join(Dir.home, '.gemfile'),
+  File.join(Dir.home, '.gemfile')
 ]
 
 extra_gemfiles.each do |gemfile|
-  if File.file?(gemfile) && File.readable?(gemfile)
-    eval(File.read(gemfile), binding)
-  end
+  next unless File.file?(gemfile) && File.readable?(gemfile)
+
+  # rubocop:disable Security/Eval
+  eval(File.read(gemfile), binding)
+  # rubocop:enable Security/Eval
 end
 # vim: syntax=ruby
