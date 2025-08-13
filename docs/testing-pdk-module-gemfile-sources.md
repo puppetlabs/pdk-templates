@@ -131,7 +131,7 @@ Create a new module and test basic functionality with public rubygems.org.
 ```bash
 cd ~/pdk_gemfile_testing
 mkdir -p new_module_tests && cd new_module_tests
-source ../clean_environment.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
 
 # Create new module with enhanced template (local filesystem)
 pdk new module test_default_gems --skip-interview --template-url="${TEMPLATE_URL}"
@@ -162,14 +162,14 @@ pdk test unit
 Create a new module and test with authenticated puppetcore sources.
 
 ```bash
+# clean the environment before creating the module
+source ~/pdk_gemfile_testing/clean_environment.sh
+
 cd ~/pdk_gemfile_testing/new_module_tests
-source ../clean_environment.sh
-source ../set_puppetcore_authentication.sh
-export GEM_SOURCE_PUPPETCORE='https://rubygems-puppetcore.puppet.com'
 
 # Create new module with enhanced template (local filesystem)
-pdk new module test_puppetcore_gems --skip-interview \
-  --template-url="${TEMPLATE_URL}"
+rm -rf ~/pdk_gemfile_testing/new_module_tests/test_puppetcore_gems 
+pdk new module test_puppetcore_gems --skip-interview --template-url="${TEMPLATE_URL}"
 
 # Alternative for Git repository:
 # pdk new module test_puppetcore_gems --skip-interview \
@@ -178,10 +178,15 @@ pdk new module test_puppetcore_gems --skip-interview \
 
 cd test_puppetcore_gems
 
+# clean again before bundle install and set authentication
+source ~/pdk_gemfile_testing/clean_environment.sh
+source ~/pdk_gemfile_testing/set_puppetcore_authentication.sh
+export GEM_SOURCE_PUPPETCORE='https://rubygems-puppetcore.puppet.com'
+
 # Test gem installation with puppetcore
-pdk bundle install
-pdk bundle info puppet    # Expected: Latest puppetcore version
-pdk bundle info facter    # Expected: Latest puppetcore version
+bundle install
+bundle info puppet    # Expected: Latest puppetcore version, e.g., 8.14.0
+bundle info facter    # Expected: Latest puppetcore version, e.g., 4.14.0
 
 # Verify puppetcore sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
@@ -198,7 +203,7 @@ Create a new module and test with git-based gem sources.
 
 ```bash
 cd ~/pdk_gemfile_testing/new_module_tests
-source ../clean_environment.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
 export PUPPET_GEM_VERSION='https://github.com/puppetlabs/puppet.git#main'
 export FACTER_GEM_VERSION='https://github.com/puppetlabs/facter.git#main'
 
@@ -237,7 +242,7 @@ Create a module with default template, then update to enhanced template.
 ```bash
 cd ~/pdk_gemfile_testing
 mkdir -p update_module_tests && cd update_module_tests
-source ../clean_environment.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
 
 # Create module with default PDK template first
 pdk new module test_update_module --skip-interview
@@ -270,8 +275,8 @@ Update existing module and test with custom gem sources.
 
 ```bash
 cd ~/pdk_gemfile_testing/update_module_tests
-source ../clean_environment.sh
-source ../set_puppetcore_authentication.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
+source ~/pdk_gemfile_testing/set_puppetcore_authentication.sh
 export GEM_SOURCE_PUPPETCORE='https://rubygems-puppetcore.puppet.com'
 
 # Create standard module
@@ -301,7 +306,7 @@ Test version constraints work correctly with enhanced template.
 
 ```bash
 cd ~/pdk_gemfile_testing/new_module_tests
-source ../clean_environment.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
 export PUPPET_GEM_VERSION='~> 7.24.0'
 export FACTER_GEM_VERSION='= 4.4.0'
 
@@ -329,7 +334,7 @@ Test combination of local file paths and remote sources.
 
 ```bash
 cd ~/pdk_gemfile_testing/new_module_tests
-source ../clean_environment.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
 
 # Clone local puppet for testing
 git clone https://github.com/puppetlabs/puppet.git tmp/puppet
@@ -359,7 +364,7 @@ Test using a corporate gem mirror for all gems.
 
 ```bash
 cd ~/pdk_gemfile_testing/new_module_tests
-source ../clean_environment.sh
+source ~/pdk_gemfile_testing/clean_environment.sh
 export GEM_SOURCE='https://your-corporate-mirror.com/rubygems/'
 
 pdk new module test_corporate_mirror --skip-interview \
@@ -487,6 +492,188 @@ export PUPPET_GEM_VERSION='~> 8.10.0'
 pdk bundle install
 pdk validate
 ```
+
+## Using PDK with Bundled Environment
+
+### Important: PDK Version Behavior
+
+PDK has its own internal Puppet installation and doesn't automatically use the bundled Puppet version. When you run `pdk validate`, it will use PDK's internal Puppet version (e.g., 8.10.0) instead of your bundled version (e.g., 8.14.0 from puppetcore).
+
+**Why can't PDK use your bundled environment?**
+
+PDK is designed as a self-contained tool with its own isolated Ruby and gem environment for consistency and reliability. Attempting to run `bundle exec pdk` will fail with bundler version conflicts and missing native extensions because:
+
+1. **PDK uses its own Ruby**: `/opt/puppetlabs/pdk/private/ruby/3.2.5/`
+2. **PDK expects specific bundler version**: e.g., `bundler (= 2.6.9)`
+3. **Your bundle has different versions**: This creates incompatible environments
+4. **Native gem extensions**: PDK can't access system gems compiled for your Ruby
+
+### Solution: Use Bundle Exec for Validation
+
+To ensure you're testing with the correct Puppet version from your bundle, use individual validation tools through `bundle exec`:
+
+```bash
+# ✅ CORRECT: Use bundle exec to test with bundled Puppet version
+cd test_puppetcore_gems
+
+# 1. Verify you have the correct bundled version
+bundle info puppet    # Should show 8.14.0 from puppetcore
+
+# 2. Create content to test
+pdk new class example_class
+
+# 3. Validate using bundled Puppet version (8.14.0)
+bundle exec puppet parser validate manifests/example_class.pp
+bundle exec puppet-lint manifests/
+bundle exec rspec spec/
+
+# 4. PDK generation commands still work (these use PDK's internal Puppet)
+pdk new class another_class  # Uses PDK's Puppet 8.10.0 for generation
+pdk new defined_type my_type # Uses PDK's Puppet 8.10.0 for generation
+```
+
+### What Works With Each Approach
+
+| Command | Puppet Version Used | Purpose |
+|---------|-------------------|---------|
+| `pdk validate` | PDK's internal (8.10.0) | ❌ Won't use your bundled gems |
+| `bundle exec pdk` | **DOES NOT WORK** | ❌ PDK has its own Ruby environment |
+| `bundle exec puppet parser validate` | Bundled (8.14.0) | ✅ Uses your specific Puppet version |
+| `bundle exec puppet-lint` | Bundled environment | ✅ Uses bundled gems |
+| `bundle exec rspec` | Bundled (8.14.0) | ✅ Tests with correct Puppet version |
+| `pdk new class` | PDK's internal (8.10.0) | ✅ Code generation works fine |
+| `pdk bundle install` | N/A | ✅ Installs your specified gems |
+
+**Important**: `bundle exec pdk` does not work because PDK has its own isolated Ruby/gem environment with specific bundler version requirements. You must run PDK commands directly (e.g., `pdk new class`) and use `bundle exec` only for individual validation tools (e.g., `bundle exec puppet`, `bundle exec rspec`).
+
+### Example: Complete Testing Workflow
+
+```bash
+# After setting up puppetcore authentication and running pdk bundle install
+
+# 1. Verify correct versions are installed
+bundle info puppet    # Expected: 8.14.0 from puppetcore
+bundle info facter    # Expected: 4.14.0 from puppetcore
+
+# 2. Create test content
+pdk new class test_class
+
+# 3. Test with correct Puppet version
+echo "Testing with bundled Puppet $(bundle exec puppet --version):"
+bundle exec puppet parser validate manifests/test_class.pp
+bundle exec puppet-lint manifests/test_class.pp
+
+# 4. Run spec tests with correct version
+bundle exec rspec spec/classes/test_class_spec.rb
+
+# 5. Check that you're using the right gems
+echo "Verification - sources from Gemfile.lock:"
+cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
+```
+
+This approach ensures you're actually testing your module with the specific Puppet and Facter versions from your chosen gem source (puppetcore, git, etc.) rather than PDK's default versions.
+
+## Advanced PDK Workarounds
+
+### Can I Force PDK to Use My Bundled Environment?
+
+**Short answer**: No, not reliably.
+
+**Long answer**: PDK is intentionally designed as a self-contained tool. While there are some experimental approaches, they're not recommended for production use:
+
+#### Attempted Workaround 1: Bundle Exec PDK (Fails)
+
+```bash
+# ❌ THIS DOES NOT WORK
+bundle exec pdk validate
+
+# Results in errors like:
+# Could not find gem 'bundler (= 2.6.9)' with executable bundle
+# Could not find racc-1.8.1, prism-1.4.0, nkf-0.2.0, bigdecimal-3.2.2, io-console-0.8.1
+```
+
+#### Attempted Workaround 2: Gem Path Override (Unreliable)
+
+```bash
+# ❌ EXPERIMENTAL - May break PDK functionality
+GEM_PATH="$(bundle config path)/ruby/$(ruby -e 'puts RUBY_VERSION')" pdk validate
+```
+
+This may work sometimes but can cause unpredictable failures.
+
+#### Attempted Workaround 3: Symlink Approach (Complex)
+
+Some users create symlinks from PDK's gem directory to their bundled gems, but this:
+
+- Requires admin access to PDK installation
+- Breaks when PDK updates
+- Can cause version conflicts
+- Is not officially supported
+
+### Recommended Approach: Hybrid Workflow
+
+**Best practice**: Use PDK and bundle exec together strategically:
+
+```bash
+# ✅ Use PDK for what it's good at
+pdk new module my_module                    # Module generation
+pdk new class my_class                      # Code generation  
+pdk new defined_type my_type               # Code scaffolding
+pdk update                                 # Template updates
+
+# ✅ Use bundle exec for validation with your specific versions
+bundle exec puppet parser validate manifests/*.pp
+bundle exec puppet-lint manifests/ 
+bundle exec rspec spec/
+bundle exec rubocop
+
+# ✅ Use bundle exec for specific gem information
+bundle info puppet                         # Check actual version installed
+bundle exec puppet --version              # Verify version used
+```
+
+### When This Matters Most
+
+This hybrid approach is especially important when:
+
+1. **Testing with puppetcore gems** - You need to validate against internal Puppet versions
+2. **Testing with git branches** - You're testing unreleased Puppet features
+3. **Corporate environments** - You have specific gem source requirements
+4. **Version-specific testing** - You need to test against exact Puppet versions
+5. **CI/CD pipelines** - You need reproducible, exact version testing
+
+### Alternative: Custom Validation Script
+
+Create a custom script that mimics `pdk validate` but uses your bundled environment:
+
+```bash
+# Create custom_validate.sh
+cat << 'EOF' > custom_validate.sh
+#!/bin/bash
+echo "🔍 Custom validation using bundled Puppet $(bundle exec puppet --version)"
+
+echo "📝 Puppet syntax validation..."
+find manifests -name "*.pp" -exec bundle exec puppet parser validate {} \;
+
+echo "🎨 Puppet-lint validation..."
+bundle exec puppet-lint manifests/
+
+echo "🧪 RSpec tests..."
+bundle exec rspec spec/
+
+echo "💎 Ruby style validation..."
+bundle exec rubocop
+
+echo "✅ All validations complete!"
+EOF
+
+chmod +x custom_validate.sh
+
+# Use your custom validator
+./custom_validate.sh
+```
+
+This gives you the validation functionality of `pdk validate` but using your bundled environment.
 
 ## Debugging
 
