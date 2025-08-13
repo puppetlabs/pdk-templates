@@ -73,20 +73,6 @@ export TEMPLATE_URL="file:///Users/gavin.didrichsen/@REFERENCES/github/app/devel
 - **Local filesystem**: Use `--template-url="${TEMPLATE_URL}"`
 - **Git repository**: Use `--template-ref="${TEMPLATE_REF}" --template-branch="${TEMPLATE_BRANCH}"`
 
-#### Advantages of Local Filesystem Path
-
-- **Speed**: No network latency or git operations
-- **Real-time testing**: Test changes immediately without committing/pushing
-- **Offline development**: Works without internet connection
-- **Debugging**: Easy to modify template and retest quickly
-- **Iteration**: Perfect for development workflow
-
-#### When to Use Each Option
-
-- **Local Filesystem**: Development, testing, debugging template changes
-- **Git Repository**: CI/CD, sharing with team, production testing
-- **File URL**: Alternative to filesystem path, some PDK versions prefer this format
-
 ### Create Helper Scripts
 
 Before running any scenarios, make sure to export `PUPPET_FORGE_TOKEN` with a valid token if you have access to puppetcore:
