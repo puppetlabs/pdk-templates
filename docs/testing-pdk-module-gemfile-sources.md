@@ -134,6 +134,7 @@ mkdir -p new_module_tests && cd new_module_tests
 source ~/pdk_gemfile_testing/clean_environment.sh
 
 # Create new module with enhanced template (local filesystem)
+rm -rf ~/pdk_gemfile_testing/new_module_tests/test_default_gems 
 pdk new module test_default_gems --skip-interview --template-url="${TEMPLATE_URL}"
 
 # Alternative for Git repository:
@@ -144,9 +145,9 @@ pdk new module test_default_gems --skip-interview --template-url="${TEMPLATE_URL
 cd test_default_gems
 
 # Test gem installation and sources
-pdk bundle install
-pdk bundle info puppet    # Expected: Latest public puppet version, e.g., 8.10.0 from rubygems.org
-pdk bundle info facter    # Expected: Latest public facter version, e.g., 4.10.0 from rubygems.org
+bundle install
+bundle info puppet    # Expected: Latest public puppet version, e.g., 8.10.0 from rubygems.org
+bundle info facter    # Expected: Latest public facter version, e.g., 4.10.0 from rubygems.org
 
 # Verify gem sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
@@ -204,12 +205,12 @@ Create a new module and test with git-based gem sources.
 ```bash
 cd ~/pdk_gemfile_testing/new_module_tests
 source ~/pdk_gemfile_testing/clean_environment.sh
-export PUPPET_GEM_VERSION='https://github.com/puppetlabs/puppet.git#main'
-export FACTER_GEM_VERSION='https://github.com/puppetlabs/facter.git#main'
+export PUPPET_GEM_VERSION='https://github.com/puppetlabs/puppet-private.git#main'
+export FACTER_GEM_VERSION='https://github.com/puppetlabs/facter-private.git#main'
 
 # Create new module with enhanced template (local filesystem)
-pdk new module test_git_gems --skip-interview \
-  --template-url="${TEMPLATE_URL}"
+rm -rf test_git_gems
+pdk new module test_git_gems --skip-interview --template-url="${TEMPLATE_URL}"
 
 # Alternative for Git repository:
 # pdk new module test_git_gems --skip-interview \
@@ -218,10 +219,13 @@ pdk new module test_git_gems --skip-interview \
 
 cd test_git_gems
 
+# remove Gemfile and vendor because the pdk creates the module with a different lock file
+rm -rf Gemfile.lock vendor
+
 # Test gem installation from git sources
-pdk bundle install
-pdk bundle info puppet    # Expected: Git version (e.g., '8.x.x ab48604')
-pdk bundle info facter    # Expected: Git version (e.g., '4.x.x 5554178')
+bundle install
+bundle info puppet    # Expected: Git version (e.g., '8.x.x ab48604')
+bundle info facter    # Expected: Git version (e.g., '4.x.x 5554178')
 
 # Verify git sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
