@@ -2,63 +2,83 @@
 
 ## Description
 
-This guide shows you how to manually test the `Gemfile` logic introduced by this PR <https://github.com/puppetlabs/pdk-templates/pull/621>.  These tests validate gem installation behavior by varying gemsources (public <https://rubygems.org>, private puppetcore <https://rubygems-puppetcore.puppet.com>, etc), and by replacing puppet/facter versions with git repositories, and local file paths.  Swapping in a file path reference to puppet, for example, is a good way develop and troubleshoot.
+This guide explains how to vary the gemsources and gem versions in the Gemfile of your pdk module using the following environment variables:
 
-The scenarios focus on two areas:
+| Environment Variable      | Purpose                                                                                   | Example Value                                                      |
+|--------------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
+| GEM_SOURCE               | Sets the default gem source for all gems.                                                 | https://rubygems.org<br>https://artifactory.delivery.puppetlabs.net/artifactory/api/gems/rubygems |
+| GEM_SOURCE_PUPPETCORE    | Sets the gem source specifically for puppetcore gems (puppet, facter).                    | https://rubygems-puppetcore.puppet.com                             |
+| PUPPET_GEM_VERSION       | Specifies the Puppet gem version, git repo, or local path to use.                         | 8.10.0<br>https://github.com/puppetlabs/puppet.git<br>/path/to/puppet |
+| FACTER_GEM_VERSION       | Specifies the Facter gem version, git repo, or local path to use.                         | 4.0.52<br>https://github.com/puppetlabs/facter.git<br>/path/to/facter |
+| DEBUG                    | Enables verbose Gemfile output for troubleshooting when set to a non-empty string.         | true     
+
+This flexibility is essential for development workflows, allowing modules to be tested against different puppet and facter versions, whether sourced from public or private gem servers, local file paths, or git repositories.
+
+## Setup
+
+### Environment variables
+
+- Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
+
+Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
+
+```bash
+export PUPPET_FORGE_TOKEN=<VALID-LONG-TOKEN>
+```
+
+
+
+- Export some pdk template referencs
+
+```bash
+
+pdk new module test_default_gems --skip-interview --template-url="${TEMPLATE_URL}"
+```
+
+
+
+
+### Helper scripts
+
+- Create a local directory for testing:
+
+  ```bash
+  # Create testing workspace
+  mkdir -p ~/pdk_gemfile_testing/{new_module_tests,update_module_tests}
+  cd ~/pdk_gemfile_testing
+  ```
+
+- Create reusable environment management scripts.  Each scenario can now be setup accurately and quickly.
+
+  ```bash
+  # Create environment cleanup script
+  cat << 'EOF' > clean_environment.sh
+  # Clean environment variables
+  unset GEM_SOURCE GEM_SOURCE_PUPPETCORE
+  unset PUPPET_GEM_VERSION FACTER_GEM_VERSION HIERA_GEM_VERSION  
+  unset BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM
+  # Clean bundler state
+  rm -f Gemfile.lock && rm -rf vendor .bundle
+  EOF
+  chmod +x clean_environment.sh
+
+  # Create puppetcore authentication script (if you have access)
+  cat << 'EOF' > set_puppetcore_authentication.sh
+  export BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM="forge-key:${PUPPET_FORGE_TOKEN}"
+  EOF
+  chmod +x set_puppetcore_authentication.sh
+  ```
+
+**Important**: Use `source ./script.sh` or `. ./script.sh` to execute these scripts otherwise the environment variables may not get registered on your terminal session.
+
+## Scenarios
+
+The following scenarios are categorised into two areas:
 
 - `pdk new module` - Can a new module swap in different gemsources and puppet/facter versions?
 - `pdk update` - Will an existing module convert to the new Gemfile ok?
 
-## Setup
-
-Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
-
-```bash
-export PUPPET_FORGE_TOKEN=<VALID-LONG-TOKEN>
-```
-
-Create a local directory for testing:
-
-```bash
-# Create testing workspace
-mkdir -p ~/pdk_gemfile_testing/{new_module_tests,update_module_tests}
-cd ~/pdk_gemfile_testing
-```
-
-Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
-
-```bash
-export PUPPET_FORGE_TOKEN=<VALID-LONG-TOKEN>
-```
-
-Create reusable environment management scripts.  Each scenario can now be setup accurately and quickly.
-
-```bash
-# Create environment cleanup script
-cat << 'EOF' > clean_environment.sh
-# Clean environment variables
-unset GEM_SOURCE GEM_SOURCE_PUPPETCORE
-unset PUPPET_GEM_VERSION FACTER_GEM_VERSION HIERA_GEM_VERSION  
-unset BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM
-# Clean bundler state
-rm -f Gemfile.lock && rm -rf vendor .bundle
-EOF
-chmod +x clean_environment.sh
-
-# Create puppetcore authentication script (if you have access)
-cat << 'EOF' > set_puppetcore_authentication.sh
-export BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM="forge-key:${PUPPET_FORGE_TOKEN}"
-EOF
-chmod +x set_puppetcore_authentication.sh
-```
-
-**Important**: Use `source ./script.sh` or `. ./script.sh` to execute these scripts otherwise the environment variables may not get registered on your terminal session.
-
-## Testing Scenarios
-
-### Verifying `pdk new module`
-
-Create new modules using the enhanced Gemfile template to test initial setup scenarios.
+### `pdk new module` scenarios
 
 #### Scenario 1: Default Public RubyGems (New Module)
 
@@ -171,7 +191,7 @@ pdk validate
 pdk new class git_based_class
 ```
 
-### Verifying `pdk update`
+### `pdk update` scenarios
 
 Test updating existing modules to use the enhanced Gemfile template.
 
@@ -191,7 +211,7 @@ git clone https://github.com/puppetlabs/puppetlabs-motd.git
 cd puppetlabs-motd
 
 # Update using --template-ref, e.g.,
-pdk update --template-ref=https://github.com/puppetlabs/pdk-templates --template-ref=cat_2416_fix_pdk_templates_gemfile  
+pdk update --template-ref=https://github.com/puppetlabs/pdk-templates --template-ref=${TEMPLATE_REPO_BRANCH}  
 
 export PUPPET_GEM_VERSION='https://github.com/puppetlabs/puppet-private.git#main'
 
@@ -209,7 +229,7 @@ pdk validate
 pdk new class git_based_class
 ```
 
-### Finally do a clean reset
+### Clean up
 
 Return to default state and clean up test modules.
 
@@ -261,5 +281,3 @@ export TEMPLATE_REF="cat_2416_fix_pdk_templates_gemfile"  # Your feature branch
 # Alternative: Use specific commit hash if needed
 # export TEMPLATE_BRANCH="35f8fc1"  # Specific commit hash
 ```
-
-#### PDK Command Differences
