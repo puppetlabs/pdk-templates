@@ -20,23 +20,9 @@ This flexibility is essential for development workflows, allowing modules to be 
 
 - Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
 
-Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
-
-```bash
-export PUPPET_FORGE_TOKEN=<VALID-LONG-TOKEN>
-```
-
-
-
-- Export some pdk template referencs
-
-```bash
-
-pdk new module test_default_gems --skip-interview --template-url="${TEMPLATE_URL}"
-```
-
-
-
+  ```bash
+  export PUPPET_FORGE_TOKEN=<VALID-LONG-TOKEN>
+  ```
 
 ### Helper scripts
 
@@ -91,14 +77,9 @@ source ~/pdk_gemfile_testing/clean_environment.sh
 
 # Create new module with enhanced template (local filesystem)
 rm -rf ~/pdk_gemfile_testing/new_module_tests/test_default_gems 
-pdk new module test_default_gems --skip-interview --template-url="${TEMPLATE_URL}"
+pdk new module test_default_gems --skip-interview --template-ref="${TEMPLATE_URL}"
 
-# Alternative for Git repository:
-# pdk new module test_default_gems --skip-interview \
-#   --template-ref="${TEMPLATE_REF}" \
-#   --template-branch="${TEMPLATE_BRANCH}"
-
-cd test_default_gems
+cd ~/pdk_gemfile_testing/new_module_tests/test_default_gems
 
 # Test gem installation and sources
 bundle install
@@ -107,11 +88,6 @@ bundle info facter    # Expected: Latest public facter version, e.g., 4.10.0 fro
 
 # Verify gem sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
-
-# Test PDK functionality
-pdk validate
-pdk new class example_class
-pdk test unit
 ```
 
 #### Scenario 2: Authenticated Puppetcore (New Module)
@@ -128,12 +104,7 @@ cd ~/pdk_gemfile_testing/new_module_tests
 rm -rf ~/pdk_gemfile_testing/new_module_tests/test_puppetcore_gems 
 pdk new module test_puppetcore_gems --skip-interview --template-url="${TEMPLATE_URL}"
 
-# Alternative for Git repository:
-# pdk new module test_puppetcore_gems --skip-interview \
-#   --template-ref="${TEMPLATE_REF}" \
-#   --template-branch="${TEMPLATE_BRANCH}"
-
-cd test_puppetcore_gems
+cd test_puppetcore_gems 
 
 # clean again before bundle install and set authentication
 source ~/pdk_gemfile_testing/clean_environment.sh
@@ -147,11 +118,6 @@ bundle info facter    # Expected: Latest puppetcore version, e.g., 4.14.0
 
 # Verify puppetcore sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
-
-# Test PDK functionality
-pdk validate
-pdk new class puppetcore_class
-pdk test unit
 ```
 
 #### Scenario 3: Git Repository Sources (New Module)
@@ -165,13 +131,8 @@ export PUPPET_GEM_VERSION='https://github.com/puppetlabs/puppet-private.git#main
 export FACTER_GEM_VERSION='https://github.com/puppetlabs/facter-private.git#main'
 
 # Create new module with enhanced template (local filesystem)
-rm -rf test_git_gems
+rm -rf ~/pdk_gemfile_testing/new_module_tests/test_git_gems
 pdk new module test_git_gems --skip-interview --template-url="${TEMPLATE_URL}"
-
-# Alternative for Git repository:
-# pdk new module test_git_gems --skip-interview \
-#   --template-ref="${TEMPLATE_REF}" \
-#   --template-branch="${TEMPLATE_BRANCH}"
 
 cd test_git_gems
 
@@ -185,10 +146,6 @@ bundle info facter    # Expected: Git version (e.g., '4.x.x 5554178')
 
 # Verify git sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
-
-# Test PDK functionality
-pdk validate
-pdk new class git_based_class
 ```
 
 ### `pdk update` scenarios
@@ -223,10 +180,6 @@ bundle info facter    # Expected: Git version (e.g., '4.x.x 5554178')
 
 # Verify git sources
 cat Gemfile.lock | ruby -ne 'puts $_ if $_ =~ /remote:|^\s{4}(puppet|facter)\s\(/'
-
-# Test PDK functionality
-pdk validate
-pdk new class git_based_class
 ```
 
 ### Clean up
@@ -238,7 +191,7 @@ cd ~/pdk_gemfile_testing
 source ./clean_environment.sh
 
 # Optional: Clean up test modules
-# rm -rf new_module_tests update_module_tests
+# rm -rf ~/pdk_gemfile_testing
 ```
 
 ## Appendix
@@ -246,38 +199,3 @@ source ./clean_environment.sh
 ### Why can't PDK use your bundled environment?
 
 PDK is designed as a self-contained tool with its own isolated Ruby and gem environment for consistency and reliability. In other words, the PDK has its own internal Puppet installation and doesn't automatically use the bundled Puppet version.  For example, when you run `pdk validate`, it will use PDK's internal Puppet version (e.g., 8.10.0) instead of your bundled version (e.g., 8.14.0 from puppetcore).
-
-### Template Reference Setup
-
-To test the enhanced Gemfile template, you have several options for referencing your template:
-
-- **Local filesystem**: Use `--template-url="${TEMPLATE_URL}"`
-- **Git repository**: Use `--template-ref="${TEMPLATE_REF}" --template-ref="${TEMPLATE_BRANCH}"`
-
-#### Option 1: Local Filesystem Path (Recommended for Development) ⭐
-
-PDK uses `--template-url` for local filesystem paths.  No branch parameter needed for local filesystem
-
-```bash
-# Use local filesystem path - much faster for iterative testing
-export TEMPLATE_URL="/Users/gavin.didrichsen/@REFERENCES/github/app/development/tools/puppet/repositories/puppetlabs/pdk-templates"
-
-# OR alternatively with "file://" (some PDK versions prefer this)
-export TEMPLATE_URL="file:///Users/gavin.didrichsen/@REFERENCES/github/app/development/tools/puppet/repositories/puppetlabs/pdk-templates"
-
-# create the new module
-pdk new module test_puppetcore_gems --skip-interview --template-url="${TEMPLATE_URL}"
-```
-
-Although `pdk new module` works fine with the above, the `pdk update` does not.  It requires both  `--template-ref`.
-
-#### Option 2: Git Repository Reference (Remote)
-
-```bash
-# Set template reference variables for your testing
-export TEMPLATE_URL="https://github.com/puppetlabs/pdk-templates.git"
-export TEMPLATE_REF="cat_2416_fix_pdk_templates_gemfile"  # Your feature branch
-
-# Alternative: Use specific commit hash if needed
-# export TEMPLATE_BRANCH="35f8fc1"  # Specific commit hash
-```
