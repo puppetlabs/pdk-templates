@@ -1,9 +1,12 @@
 <%-
 # note that these hashes need to use rockets, not colons, because rubocop config requires strings as keys
 defaults = {
-  'require' => [
+  'plugins' => [
     'rubocop-performance',
     'rubocop-rspec',
+    'rubocop-rspec_rails',
+    'rubocop-factory_bot',
+    'rubocop-capybara',
   ],
   'AllCops' => {
     'NewCops' => 'enable',
