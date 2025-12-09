@@ -5,6 +5,33 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
+## [v3.6.0](https://github.com/puppetlabs/pdk-templates/tree/v3.6.0) - 2025-12-09
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.5.1...v3.6.0)
+
+### Added
+
+- (CAT-2357) Add bolt puppetcore [#625](https://github.com/puppetlabs/pdk-templates/pull/625) ([gavindidrichsen](https://github.com/gavindidrichsen))
+
+### Fixed
+
+- (CAT-2453) Update rubocop to remove rexml dependency [#624](https://github.com/puppetlabs/pdk-templates/pull/624) ([david22swan](https://github.com/david22swan))
+
+## [3.5.1](https://github.com/puppetlabs/pdk-templates/tree/3.5.1) - 2025-09-02
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.5.0...3.5.1)
+
+### Added
+
+- (CAT-2416) Enhance PDK Gemfile Template to Support Flexible Source Testing [#621](https://github.com/puppetlabs/pdk-templates/pull/621) ([gavindidrichsen](https://github.com/gavindidrichsen))
+- (CAT-2357) Update puppet_litmus pin to test against puppetcore [#620](https://github.com/puppetlabs/pdk-templates/pull/620) ([david22swan](https://github.com/david22swan))
+- (CAT-2297) Update Rubocop template to allow TargetRubyVersion to be set [#618](https://github.com/puppetlabs/pdk-templates/pull/618) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- (CAT-2431) Restore PUPPET_FORGE_TOKEN backward compatibility for puppetcore gem sourcing [#622](https://github.com/puppetlabs/pdk-templates/pull/622) ([gavindidrichsen](https://github.com/gavindidrichsen))
+- (CAT-2319) Pin bigdecimal on windows [#619](https://github.com/puppetlabs/pdk-templates/pull/619) ([david22swan](https://github.com/david22swan))
+
 ## [3.5.0](https://github.com/puppetlabs/pdk-templates/tree/3.5.0) - 2025-05-30
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.4.0.3...3.5.0)
