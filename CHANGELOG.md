@@ -5,9 +5,13 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v3.6.0](https://github.com/puppetlabs/pdk-templates/tree/v3.6.0) - 2025-12-09
+## [v3.6.1](https://github.com/puppetlabs/pdk-templates/tree/v3.6.1) - 2026-01-07
 
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.5.1...v3.6.0)
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.6.0...v3.6.1)
+
+## [3.6.0](https://github.com/puppetlabs/pdk-templates/tree/3.6.0) - 2025-12-04
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.5.1...3.6.0)
 
 ### Added
 
