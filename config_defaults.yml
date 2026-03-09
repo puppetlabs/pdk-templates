@@ -566,6 +566,12 @@ Gemfile:
         version: '~> 2.27.0'
       - gem: 'rubocop-capybara'
         version: '~> 2.22.0'
+      - gem: 'rubocop-ast'
+        version: '< 1.43.0'
+        platforms:
+          - mswin
+          - mingw
+          - x64_mingw
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
