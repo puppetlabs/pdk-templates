@@ -100,3 +100,4 @@ If you change template behavior, update:
 - Never work directly on the `main` or `master` branch.
 - Never push a branch without explicit instruction.
 - Never delete a file without permission — this applies even after a blanket "yes to all".
+- Never output, log, save, or hardcode security-sensitive values — this includes passwords, tokens, API keys, private keys, secrets, and credentials of any kind. Do not write them to files, include them in commit messages, or print them in responses.
