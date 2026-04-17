@@ -97,7 +97,8 @@ If you change template behavior, update:
 ## Project Rules
 
 - At the start of a coding session, review the repository structure and any relevant README or documentation files to understand the area you are working in.
-- Always read the files relevant to the task before suggesting or making a change.- Never merge a pull request.
+- Always read the files relevant to the task before suggesting or making a change.
+- Never merge a pull request.
 - Never work directly on the `main` or `master` branch.
 - Never push a branch without explicit instruction.
 - Never delete a file without permission — this applies even after a blanket "yes to all".
