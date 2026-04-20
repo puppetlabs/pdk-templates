@@ -1,0 +1,7 @@
+# frozen_string_literal: true
+
+require 'json'
+
+shared_context 'RHEL 7' do
+  let(:facts) { JSON.parse(File.read('spec/RHEL7_facts.json')) }
+end
