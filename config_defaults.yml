@@ -609,10 +609,7 @@ Gemfile:
       - gem: 'CFPropertyList'
         version:
         - '< 3.0.7'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
+        condition: "RUBY_PLATFORM.include?('darwin')"
       - gem: 'serverspec'
         version: '~> 2.41'
 spec/default_facts.yml:
