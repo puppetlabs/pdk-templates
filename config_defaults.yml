@@ -569,21 +569,15 @@ Gemfile:
       - gem: 'rubocop-ast'
         version: '< 1.43.0'
         platforms:
-          - mswin
-          - mingw
-          - x64_mingw
+          - windows
       - gem: 'rb-readline'
         version: '= 0.5.5'
         platforms:
-          - mswin
-          - mingw
-          - x64_mingw
+          - windows
       - gem: 'bigdecimal'
         version: '< 3.2.2'
         platforms:
-          - mswin
-          - mingw
-          - x64_mingw
+          - windows
     ':development, :release_prep':
       - gem: 'puppet-strings'
         version: '~> 4.0'
@@ -597,22 +591,19 @@ Gemfile:
         - '~> 2.0'
         platforms:
           - ruby
-          - x64_mingw
+          - windows
         condition: "!ENV['PUPPET_FORGE_TOKEN'].to_s.empty?"
       - gem: 'puppet_litmus'
         version:
         - '~> 1.0'
         platforms:
           - ruby
-          - x64_mingw
+          - windows
         condition: "ENV['PUPPET_FORGE_TOKEN'].to_s.empty?"
       - gem: 'CFPropertyList'
         version:
         - '< 3.0.7'
-        platforms:
-          - mswin
-          - mingw
-          - x64_mingw
+        condition: "RUBY_PLATFORM.include?('darwin')"
       - gem: 'serverspec'
         version: '~> 2.41'
 spec/default_facts.yml:
