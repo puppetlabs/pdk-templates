@@ -5,9 +5,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v3.6.1](https://github.com/puppetlabs/pdk-templates/tree/v3.6.1) - 2026-01-07
+## [v3.7.0](https://github.com/puppetlabs/pdk-templates/tree/v3.7.0) - 2026-05-14
 
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.6.0...v3.6.1)
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.6.1...v3.7.0)
+
+### Fixed
+
+- (CAT-2569) Remove rubocop-ast gem dependency pin [#634](https://github.com/puppetlabs/pdk-templates/pull/634) ([david22swan](https://github.com/david22swan))
+- (maint) Correct CFPropertlyList platforms, replace deprecated Windows platforms [#633](https://github.com/puppetlabs/pdk-templates/pull/633) ([mhashizume](https://github.com/mhashizume))
+- (CAT-2564) Restrict rubocop-ast to ruby based parser [#629](https://github.com/puppetlabs/pdk-templates/pull/629) ([joshcooper](https://github.com/joshcooper))
+
+## [3.6.1](https://github.com/puppetlabs/pdk-templates/tree/3.6.1) - 2026-01-07
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.6.0...3.6.1)
 
 ## [3.6.0](https://github.com/puppetlabs/pdk-templates/tree/3.6.0) - 2025-12-04
 
