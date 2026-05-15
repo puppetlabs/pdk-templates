@@ -1,0 +1,15 @@
+# frozen_string_literal: true
+
+require 'spec_helper_acceptance'
+
+describe '<%= name %>' do
+  let(:pp) do
+    <<-MANIFEST
+      include <%= name %>
+    MANIFEST
+  end
+
+  it 'applies idempotently' do
+    idempotent_apply(pp)
+  end
+end
