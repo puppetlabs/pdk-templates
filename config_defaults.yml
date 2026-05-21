@@ -520,6 +520,9 @@ Gemfile:
       - gem: json
         version: '= 2.6.3'
         condition: "Gem::Requirement.create(['>= 3.2.0', '< 4.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: json
+        version: '= 2.18.0'
+        condition: "Gem::Requirement.create(['>= 4.0.0', '< 5.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
         # Forces ruby to use builtin racc vs trying to compile native extensions.
       - gem: racc
         version: '~> 1.4.0'
@@ -596,6 +599,9 @@ Gemfile:
           - ruby
           - windows
         condition: "ENV['PUPPET_FORGE_TOKEN'].to_s.empty?"
+      - gem: 'faraday'
+        version:
+        - '~> 2.5'
       - gem: 'CFPropertyList'
         version:
         - '< 3.0.7'
