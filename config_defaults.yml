@@ -587,18 +587,7 @@ Gemfile:
     ':system_tests':
       - gem: 'puppet_litmus'
         version:
-        - '~> 2.0'
-        platforms:
-          - ruby
-          - windows
-        condition: "!ENV['PUPPET_FORGE_TOKEN'].to_s.empty?"
-      - gem: 'puppet_litmus'
-        version:
-        - '~> 1.0'
-        platforms:
-          - ruby
-          - windows
-        condition: "ENV['PUPPET_FORGE_TOKEN'].to_s.empty?"
+        - '~> 2.5'
       - gem: 'faraday'
         version:
         - '~> 2.5'
