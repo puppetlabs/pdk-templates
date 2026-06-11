@@ -583,7 +583,9 @@ Gemfile:
       - gem: 'puppetlabs_spec_helper'
         version: '~> 8.0'
       - gem: 'puppet-blacksmith'
-        version: '~> 7.0'
+        version:
+        - '>= 7.0'
+        - '< 10.0'
     ':system_tests':
       - gem: 'puppet_litmus'
         version:
