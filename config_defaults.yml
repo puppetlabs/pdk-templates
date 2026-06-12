@@ -58,7 +58,6 @@ common:
     - '/Rakefile'
     - '/rakelib/'
     - '/.rspec'
-    - '/..yml'
     - '/.yardopts'
     - '/spec/'
     - '/.vscode/'
