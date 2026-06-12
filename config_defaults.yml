@@ -452,7 +452,9 @@ Rakefile:
         RSpec/SubjectStub:
         RSpec/VerifiedDoubles:
         Security/Eval:
+        Security/IoMethods:
         Security/MarshalLoad:
+        Security/Open:
         Naming/AsciiIdentifiers:
         Style/BeginBlock:
         Style/CaseEquality:
