@@ -251,6 +251,17 @@ In this example the automated release prep workflow is triggered every Saturday 
 |cleanup\_cops    |Defines a set of cleanup cops to then be included within a rubocop profile. Cops are defined by their full name, and further configuration can be done by specifying secondary keys. By default we specify a large amount of cleanup cops using their default configuration.|
 |profiles         |Defines the profiles that can be enabled and used within rubocop through the `selected_profile` option. By default we have set up three profiles: cleanups\_only, strict, hardcore and off.|
 
+#### Puppet 9 subprocess-creation detection
+
+The `strict` profile enables two security cops that flag the pipe-based subprocess creation removed in Ruby 4.0 (which ships with Puppet 9). See [Ruby #19630](https://bugs.ruby-lang.org/issues/19630).
+
+| Cop | Flags | Recommended replacement |
+| :-- | :---- | :---------------------- |
+| `Security/Open` | `open(...)` / `URI.open(...)` with a pipe argument (`open("\| cmd")`) or a dynamic argument (`open(var)`). Literal file paths such as `open("foo.txt")` are not flagged. | `File.open`, `IO.popen`, or `URI.parse(...).open` |
+| `Security/IoMethods` | `IO.read` / `IO.write` / `IO.binread` / `IO.binwrite` / `IO.foreach` / `IO.readlines` used for file access (e.g. `IO.read("foo.txt")`). | `File.read`, `File.write`, etc. (autocorrectable) |
+
+Known gaps (not statically detectable, so not flagged): the explicit-receiver `Kernel.open(...)` form, and the deliberate `IO.read("| cmd")` pipe-subprocess form (intentionally allowed by `Security/IoMethods`). Both cops are overridable per module through `.sync.yml`.
+
 ### Gemfile
 
 >A Gemfile is a file we create which is used for describing gem dependencies for Ruby programs. All modules should have an associated Gemfile for installing the relevant gems. As development and testing is somewhat consistant between modules we have used the template to define a set of gems relevant to these processes.
