@@ -563,6 +563,8 @@ Gemfile:
         version: '~> 1.73.0'
       - gem: 'rubocop-performance'
         version: '~> 1.24.0'
+      - gem: 'rubocop-hash_inspect'
+        version: '~> 0.2'
       - gem: 'rubocop-rspec'
         version: '~> 3.5.0'
       - gem: 'rubocop-rspec_rails'
