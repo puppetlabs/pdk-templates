@@ -1,5 +1,31 @@
 # frozen_string_literal: true
 
+<%- if @configs['simplecov'] -%>
+# SimpleCov must start before any application code is required so that every
+# line is tracked. Gated behind the COVERAGE env var so local `rake spec` runs
+# are unaffected; the coverage workflow sets COVERAGE=yes.
+if ENV['COVERAGE'] == 'yes'
+  require 'simplecov'
+  require 'simplecov-lcov'
+
+  SimpleCov::Formatter::LcovFormatter.config do |config|
+    config.report_with_single_file = true
+  end
+  SimpleCov.formatters = SimpleCov::Formatter::MultiFormatter.new(
+    [
+      SimpleCov::Formatter::SimpleFormatter,
+      SimpleCov::Formatter::LcovFormatter,
+    ],
+  )
+  SimpleCov.start do
+    track_files 'lib/**/*.rb'
+    add_filter '/spec/'
+    add_filter '/vendor/'
+    add_filter '/.vendor/'
+  end
+end
+
+<%- end -%>
 <%- if @configs['mock_with'] -%>
 RSpec.configure do |c|
   c.mock_with <%= @configs['mock_with'] %>

@@ -200,6 +200,17 @@ release_schedule:
 
 In this example the automated release prep workflow is triggered every Saturday at 3 am.
 
+### .github/workflows/coverage.yml
+
+> The coverage workflow enforces Ruby unit-test coverage on pull requests. It runs `bundle exec rake spec` with [SimpleCov](https://github.com/simplecov-ruby/simplecov) enabled (driven by the `simplecov` key on `spec/spec_helper.rb`), uploads the LCOV report as a build artifact, and posts the coverage result as a PR comment. It delegates to the reusable `puppetlabs/cat-github-actions/.github/workflows/module_coverage.yml` workflow. The gate runs in one of two modes:
+
+| Key            | Description   |
+| :------------- |:--------------|
+|threshold|In absolute mode, the minimum line coverage percentage required for the build to pass. Defaults to `80`.|
+|baseline_mode|When `true` (the default), the build gates against a `.coverage_baseline` file in the repo root instead of `threshold`: it fails only if coverage drops below the recorded baseline, and stays green (suggesting a new baseline) when coverage rises. When no `.coverage_baseline` file exists the baseline is `0`, so the gate is a no-op and rollout is non-breaking. Set to `false` to gate against `threshold` instead.|
+
+To start ratcheting coverage in baseline mode, commit a `.coverage_baseline` file containing the current line coverage percentage (for example `82.5`). To switch a module to a fixed target, set `baseline_mode: false` and tune `threshold` in `.sync.yml`. To opt a module out entirely, set both `simplecov: false` (on `spec/spec_helper.rb`) and `unmanaged: true` on `.github/workflows/coverage.yml`.
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
@@ -323,6 +334,7 @@ is_pe: false
 |strict_variables| Defines the [Puppet Strict Variables configuration parameter](https://puppet.com/docs/puppet/5.4/configuration.html#strict_variables). Defaults to `true` however due to `puppetlabs_spec_helper` forced override (https://github.com/puppetlabs/puppetlabs_spec_helper/blob/070ecb79a63cb8fa10f46532c413c055e2697682/lib/puppetlabs_spec_helper/module_spec_helper.rb#L71). Set to `false` to align with true default or with `STRICT_VARIABLES=no` environment setting.|
 |coverage_report|Enable [rspec-puppet coverage reports](https://rspec-puppet.com/documentation/coverage/). Defaults to `false`|
 |minimum_code_coverage_percentage|The desired code coverage percentage required for tests to pass. Defaults to `0`|
+|simplecov|Enables the [SimpleCov](https://github.com/simplecov-ruby/simplecov) hook used by the coverage workflow to measure Ruby line coverage of `lib/`. The hook only activates when the `COVERAGE` environment variable is set to `yes` (the coverage workflow sets this), so local `rake spec` runs are unaffected. Defaults to `true`. This is separate from `coverage_report`, which measures Puppet resource coverage.|
 
 ## Further Notes
 
