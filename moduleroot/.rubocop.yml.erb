@@ -41,10 +41,10 @@ selected = { true => 'on', false => 'off' }.fetch(selected, selected)
 profile = @configs['profiles'] && @configs['profiles'][selected]
 raise "Unknown rubocop selected_profile #{selected.inspect}; valid: #{(@configs['profiles'] || {}).keys.join(', ')}" unless profile.is_a?(Hash) && profile['configs']
 configs = defaults.dup
-DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
+DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "---", preserve_unmergeables: false)
 
 if @configs['cop_overrides'] && !@configs['cop_overrides'].empty?
-  DeepMerge::deep_merge!(@configs['cop_overrides'], configs, knockout_prefix: "--", preserve_unmergeables: false)
+  DeepMerge::deep_merge!(@configs['cop_overrides'], configs, knockout_prefix: "---", preserve_unmergeables: false)
 end
 -%>
 <%= YAML.dump(configs) -%>
