@@ -31,66 +31,20 @@ defaults = {
   },
 }
 
-
 defaults['inherit_from'] = '.rubocop_todo.yml' if @configs['include_todos']
 defaults['AllCops']['TargetRubyVersion'] = @configs['TargetRubyVersion'] if @configs['TargetRubyVersion']
 
 require 'deep_merge/core'
-profile = @configs['profiles'][@configs['selected_profile']]
+selected = @configs['selected_profile']
+# YAML 1.1 may coerce an unquoted on/off profile name to true/false; map it back.
+selected = { true => 'on', false => 'off' }.fetch(selected, selected)
+profile = @configs['profiles'] && @configs['profiles'][selected]
+raise "Unknown rubocop selected_profile #{selected.inspect}; valid: #{(@configs['profiles'] || {}).keys.join(', ')}" unless profile.is_a?(Hash) && profile['configs']
 configs = defaults.dup
 DeepMerge::deep_merge!(profile['configs'], configs, knockout_prefix: "--", preserve_unmergeables: false)
 
-default_version = '1.50.0'
-
-# rubocop's dependencies have native extensions and are not available on windows currently
-# to preserve the dynamic behaviour, and still work in its current state, this workaround
-# will keep the lights on
-version = begin
-  require 'rubocop/version'
-  RuboCop::Version.version
-rescue LoadError
-  default_version
+if @configs['cop_overrides'] && !@configs['cop_overrides'].empty?
+  DeepMerge::deep_merge!(@configs['cop_overrides'], configs, knockout_prefix: "--", preserve_unmergeables: false)
 end
-
-# If people have a different rubocop installed, and supported in their template
-# this allows them to use that configuration.
-# If the rubocop version is not installed, fall back to the default
-base_path = File.join(__FILE__, '..', '..', 'rubocop')
-dynamic_path = File.absolute_path(File.join(base_path, "defaults-#{version}.yml"))
-default_path = File.absolute_path(File.join(base_path, "defaults-#{default_version}.yml"))
-path = File.exist?(dynamic_path) ? dynamic_path : default_path
-
-# The following block builds default_enabled_cops and default_pending_cops based on the existing values at defaults-<current_version>.yml, which usually lives at ∼/rubocop/
-require 'yaml'
-config_defaults = YAML.load(File.read(path))
-default_enabled_cops = config_defaults[:default_enabled_cops] || []
-default_pending_cops = config_defaults[:default_pending_cops] || []
-
-# This line builds cop_configs based on the values existing at profile, which was previously configured to retrieve the values of a specific profile in config_defaults.yml
-cop_configs = (profile['enabled_cops'] || {})
-
-if cop_configs == 'all'
-  enabled_cops = default_enabled_cops + default_pending_cops
-elsif cop_configs.respond_to?(:keys)
-  enabled_cops = cop_configs.keys
-else
-  enabled_cops = []
-end
-
-# Create a filtered list of enabled cops that should be disabled.
-disabled_cops = enabled_cops.select { |c| configs[c] && configs[c]['Enabled'] == false }
-
-# The following block builds the final configuration based on the values of enabled_cops, default_enabled_cops, default_pending_cops, and cop_configs
-(enabled_cops & default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] if cop_configs[c] }
-(enabled_cops - default_enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = true }
-(default_enabled_cops - enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] || {}; configs[c]['Enabled'] = false }
-
-# force set pending cops to something to avoid the messages
-(default_pending_cops & enabled_cops).sort.each { |c| configs[c] ||= cop_configs[c] if cop_configs[c]; configs[c]['Enabled'] = true } 
-(default_pending_cops - enabled_cops).sort.each { |c| configs[c] = { 'Enabled' => false } }
-
-# Set overriden cops to false if 'Enabled: false'. This can be the case when users override default behaviour via .sync.yml
-(disabled_cops).sort.each { |c| configs[c] = { 'Enabled' => false } }
-
 -%>
 <%= YAML.dump(configs) -%>
