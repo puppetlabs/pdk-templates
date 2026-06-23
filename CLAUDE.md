@@ -66,10 +66,12 @@ The `unmanaged: true` key tells PDK to leave a file untouched; `delete: true` te
 
 `moduleroot/.rubocop.yml.erb` uses `deep_merge` to layer configuration in the order `defaults -> profile['configs'] -> cop_overrides` before rendering the final `.rubocop.yml`:
 
-- `default_configs`: a YAML anchor in `config_defaults.yml` holding the base EnforcedStyle tunings that the `'on'` profile reuses as its `configs` (resolved when `config_defaults.yml` is assembled, not read directly at render time).
+- `default_configs`: a YAML anchor in `config_defaults.yml` holding the base EnforcedStyle tunings that the `'on'` profile reuses as its `configs` (resolved when `config_defaults.yml` is assembled, not read directly at render time). The anchor also tunes several PDK / rspec-puppet-convention cops (e.g. trailing-comma style, the rspec-puppet describe/context/double idioms) so that freshly-scaffolded modules validate clean under `NewCops: enable`. Each such tuning carries an inline `Description:` rationale explaining why it exists; do NOT remove those `Description:` lines, as they prevent future drift and accidental re-enabling.
 - `profiles`: defined in `config_defaults.yml` under `.rubocop.yml.profiles`. Two profiles exist: `'on'` (canonical; `NewCops: enable`) and `'off'` (`DisabledByDefault: true`, `NewCops: disable`). The names `cleanups_only`, `strict`, and `hardcore` are backward-compatible aliases that resolve to `'on'`.
-- `cop_overrides`: the authoritative per-module override surface, merged last. Use `CopName: { Enabled: false }` to disable a cop; use the knockout prefix `---` to remove an override.
+- `cop_overrides`: the authoritative per-module override surface, merged last. Use `CopName: { Enabled: false }` to disable a cop; use the knockout prefix `---` to remove an override. The same `---` prefix applies to both PDK's `.sync.yml` overlay (the outer PDK merge) and this template's internal `defaults -> profile -> cop_overrides` deep-merge, so there is one knockout prefix everywhere.
 - `selected_profile`: chooses which profile is active (ships as `strict`, a backward-compatible alias that resolves to `'on'`). Set to `'off'` to disable all cops.
+
+**Future improvements:** The convention tunings above cover the object types that `.ci/test_script.sh` actually scaffolds and validates. Object types NOT currently exercised by CI -- notably `plan` and the legacy V1 `function` -- were intentionally left untouched: there is no scaffold coverage to validate a change against, so fixing them speculatively would be unverifiable. They are candidates for future template-validation coverage once CI scaffolds them.
 
 ## Packaging and Release Context
 
