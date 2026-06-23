@@ -154,6 +154,60 @@ Rakefile:
       Description: Using percent style obscures symbolic intent of array's contents.
       EnforcedStyle: brackets
 
+    Style/TrailingCommaInHashLiteral:
+      Description: PDK generates multiline hashes with trailing commas. Align with Style/TrailingCommaInArguments and Style/TrailingCommaInArrayLiteral (both comma) so hash literals follow the same project style.
+      EnforcedStyleForMultiline: comma
+
+    # PDK/rspec-puppet convention cops -- tuned here (not in cop_overrides) because these
+    # are structural conventions of rspec-puppet and rspec-puppet-facts that every module
+    # scaffolded by PDK encounters, not module-specific style preferences (D-19).
+
+    RSpec/DescribeClass:
+      Description: rspec-puppet describes its subject by string class/define name (no Ruby constant exists to reference), so this cop is never satisfiable for puppet specs. This is structurally inapplicable, not a style preference -- distinct from D-08 which governs style cops.
+      Enabled: false
+
+    RSpec/MessageSpies:
+      Description: The resource-API provider specs PDK generates legitimately use message spies (expect().to receive) in their scaffolded examples. Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/ExampleLength:
+      Description: The resource-API provider specs PDK generates contain multi-line examples covering multiple CRUD operations. Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/MultipleExpectations:
+      Description: The resource-API provider specs PDK generates use multiple expectations per example to cover resource attribute checks. Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/VerifiedDoubleReference:
+      Description: The resource-API provider and transport specs PDK generates use string-referenced instance doubles (the Puppet provider constant is not loaded in the spec context). Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/ContextWording:
+      Description: rspec-puppet-facts uses the `context "on #{os}"` idiom in generated facts, class, and defined-type specs. The `on` prefix is added to the allowed list so this well-known idiom does not trigger the cop.
+      Prefixes:
+        - when
+        - with
+        - without
+        - 'on'
+
+    Style/MixinUsage:
+      Description: rspec-puppet-facts requires the top-level `include RspecPuppetFacts` idiom in spec_helper, which cannot be cleanly restructured without breaking the facts test harness. Scoped to spec_helper only (D-07).
+      Exclude:
+        - 'spec/spec_helper.rb'
+
+    Lint/EmptyClass:
+      Description: The generated transport device file uses the idiomatic Ruby namespace forward-declaration `class Puppet::Util::NetworkDevice; end`. An empty class is the standard namespace-shim idiom here and is not non-idiomatic code. Scoped to the network_device path only (D-08).
+      Exclude:
+        - 'lib/puppet/util/network_device/**/*.rb'
+
   profiles:
     # Runs all cops using RuboCop's native NewCops: enable governance.
     # EnforcedStyle settings from default_configs are applied.
