@@ -154,363 +154,88 @@ Rakefile:
       Description: Using percent style obscures symbolic intent of array's contents.
       EnforcedStyle: brackets
 
-  cleanup_cops: &cleanup_cops
-    Bundler/OrderedGems:
-    Layout/AccessModifierIndentation:
-    Layout/ArrayAlignment:
-    Layout/ParameterAlignment:
-    Layout/BlockEndNewline:
-    Layout/CaseIndentation:
-    Layout/ClosingParenthesisIndentation:
-    Layout/CommentIndentation:
-    Layout/DotPosition:
-    Layout/ElseAlignment:
-    Layout/EmptyLineAfterMagicComment:
-    Layout/EmptyLineBetweenDefs:
-    Layout/EmptyLines:
-    Layout/EmptyLinesAroundAccessModifier:
-    Layout/EmptyLinesAroundBlockBody:
-    Layout/EmptyLinesAroundClassBody:
-    Layout/EmptyLinesAroundExceptionHandlingKeywords:
-    Layout/EmptyLinesAroundMethodBody:
-    Layout/EmptyLinesAroundModuleBody:
-    Layout/ExtraSpacing:
-    Layout/FirstParameterIndentation:
-    Layout/FirstArrayElementIndentation:
-    Layout/AssignmentIndentation:
-    Layout/FirstHashElementIndentation:
-    Layout/IndentationConsistency:
-    Layout/IndentationWidth:
-    Layout/InitialIndentation:
-    Layout/LeadingCommentSpace:
-    Layout/MultilineArrayBraceLayout:
-    Layout/MultilineBlockLayout:
-    Layout/MultilineHashBraceLayout:
-    Layout/MultilineMethodCallBraceLayout:
-    Layout/MultilineMethodCallIndentation:
-    Layout/MultilineMethodDefinitionBraceLayout:
-    Layout/MultilineOperationIndentation:
-    Layout/RescueEnsureAlignment:
-    Layout/SpaceAfterColon:
-    Layout/SpaceAfterComma:
-    Layout/SpaceAfterMethodName:
-    Layout/SpaceAfterNot:
-    Layout/SpaceAfterSemicolon:
-    Layout/SpaceAroundBlockParameters:
-    Layout/SpaceAroundEqualsInParameterDefault:
-    Layout/SpaceAroundKeyword:
-    Layout/SpaceAroundOperators:
-    Layout/SpaceBeforeBlockBraces:
-    Layout/SpaceBeforeComma:
-    Layout/SpaceBeforeComment:
-    Layout/SpaceBeforeFirstArg:
-    Layout/SpaceBeforeSemicolon:
-    Layout/SpaceInLambdaLiteral:
-    Layout/SpaceInsideArrayPercentLiteral:
-    Layout/SpaceInsideBlockBraces:
-    Layout/SpaceInsideHashLiteralBraces:
-    Layout/SpaceInsideParens:
-    Layout/SpaceInsidePercentLiteralDelimiters:
-    Layout/SpaceInsideRangeLiteral:
-    Layout/SpaceInsideStringInterpolation:
-    Layout/IndentationStyle:
-    Layout/TrailingEmptyLines:
-    Layout/TrailingWhitespace:
-    Layout/BlockAlignment:
-    Layout/DefEndAlignment:
-    Lint/DeprecatedClassMethods:
-    Lint/EmptyInterpolation:
-    Lint/LiteralInInterpolation:
-    Lint/MultipleComparison:
-    Lint/PercentStringArray:
-    Lint/PercentSymbolArray:
-    Lint/RescueType:
-    Lint/SafeNavigationChain:
-    Lint/RedundantStringCoercion:
-    Lint/UnifiedInteger:
-    Lint/RedundantSplatExpansion:
-    Lint/UnusedBlockArgument:
-    Lint/UnusedMethodArgument:
-    Performance/CaseWhenSplat:
-    Performance/Casecmp:
-    Performance/CompareWithBlock:
-    Performance/Count:
-    Performance/Detect:
-    Performance/DoubleStartEndWith:
-    Performance/FlatMap:
-    Performance/RangeInclude:
-    Performance/RedundantBlockCall:
-    Performance/RedundantMatch:
-    Performance/RedundantMerge:
-    Style/RedundantSortBy:
-    Performance/RegexpMatch:
-    Performance/ReverseEach:
-    Style/Sample:
-    Performance/Size:
-    Performance/StartWith:
-    Performance/StringReplacement:
-    Performance/TimesMap:
-    RSpec/BeEql:
-    RSpec/DescribedClass:
-    RSpec/EmptyLineAfterFinalLet:
-    RSpec/EmptyLineAfterSubject:
-    RSpec/ExampleWording:
-    RSpec/HookArgument:
-    RSpec/ImplicitExpect:
-    RSpec/InstanceSpy:
-    RSpec/ItBehavesLike:
-    RSpec/LeadingSubject:
-    RSpec/NotToNot:
-    RSpec/SharedContext:
-    RSpec/SingleArgumentMessageChain:
-    Security/JSONLoad:
-    Security/YAMLLoad:
-    Style/Alias:
-    Style/AndOr:
-    Style/ArrayJoin:
-    Style/Attr:
-    Style/BarePercentLiterals:
-    Style/BlockComments:
-    Style/BlockDelimiters:
-    Style/CharacterLiteral:
-    Style/ClassCheck:
-    Style/ClassMethods:
-    Style/CollectionMethods:
-    Style/ColonMethodCall:
-    Style/CommandLiteral:
-    Style/CommentAnnotation:
-    Style/ConditionalAssignment:
-    Style/DefWithParentheses:
-    Style/EachForSimpleLoop:
-    Style/EachWithObject:
-    Style/EmptyCaseCondition:
-    Style/EmptyElse:
-    Style/EmptyLiteral:
-    Style/EmptyMethod:
-    Style/EvenOdd:
-    Style/FormatString:
-    Style/HashSyntax:
-    Style/InfiniteLoop:
-    Style/InverseMethods:
-    Style/Lambda:
-    Style/LambdaCall:
-    Style/LineEndConcatenation:
-    Style/MethodCallWithoutArgsParentheses:
-    Style/MethodDefParentheses:
-    Style/MixinGrouping:
-    Style/MultilineIfThen:
-    Style/MultilineMemoization:
-    Style/MutableConstant:
-    Style/NegatedIf:
-    Style/NegatedWhile:
-    Style/NestedModifier:
-    Style/NestedParenthesizedCalls:
-    Style/Next:
-    Style/NilComparison:
-    Style/NonNilCheck:
-    Style/Not:
-    Style/NumericLiteralPrefix:
-    Style/NumericLiterals:
-    Style/OneLineConditional:
-    Style/ParallelAssignment:
-    Style/ParenthesesAroundCondition:
-    Style/PercentLiteralDelimiters:
-    Style/PercentQLiterals:
-    Style/PerlBackrefs:
-    Style/PreferredHashMethods:
-    Style/Proc:
-    Style/RaiseArgs:
-    Style/RedundantBegin:
-    Style/RedundantException:
-    Style/RedundantFreeze:
-    Style/RedundantParentheses:
-    Style/RedundantReturn:
-    Style/RedundantSelf:
-    Style/RegexpLiteral:
-    Style/RescueModifier:
-    Style/SafeNavigation:
-    Style/Semicolon:
-    Style/SignalException:
-    Style/SingleLineMethods:
-    Style/SpecialGlobalVars:
-    Style/StabbyLambdaParentheses:
-    Style/StringLiterals:
-    Style/StringLiteralsInInterpolation:
-    Style/StringMethods:
-    Style/SymbolArray:
-    Style/SymbolLiteral:
-    Style/TernaryParentheses:
-    Style/TrailingCommaInArguments:
-    Style/TrailingCommaInArrayLiteral:
-    Style/TrailingUnderscoreVariable:
-    Style/TrivialAccessors:
-    Style/UnlessElse:
-    Style/RedundantCapitalW:
-    Style/RedundantInterpolation:
-    Style/RedundantPercentQ:
-    Style/VariableInterpolation:
-    Style/WhenThen:
-    Style/WhileUntilDo:
-    Style/WhileUntilModifier:
-    Style/WordArray:
-      EnforcedStyle: brackets
-    Style/YodaCondition:
-    Style/ZeroLengthPredicate:
+    Style/TrailingCommaInHashLiteral:
+      Description: PDK generates multiline hashes with trailing commas. Align with Style/TrailingCommaInArguments and Style/TrailingCommaInArrayLiteral (both comma) so hash literals follow the same project style.
+      EnforcedStyleForMultiline: comma
+
+    # PDK/rspec-puppet convention cops -- tuned here (not in cop_overrides) because these
+    # are structural conventions of rspec-puppet and rspec-puppet-facts that every module
+    # scaffolded by PDK encounters, not module-specific style preferences (D-19).
+
+    RSpec/DescribeClass:
+      Description: rspec-puppet describes its subject by string class/define name (no Ruby constant exists to reference), so this cop is never satisfiable for puppet specs. This is structurally inapplicable, not a style preference -- distinct from D-08 which governs style cops.
+      Enabled: false
+
+    RSpec/MessageSpies:
+      Description: The resource-API provider specs PDK generates legitimately use message spies (expect().to receive) in their scaffolded examples. Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/ExampleLength:
+      Description: The resource-API provider specs PDK generates contain multi-line examples covering multiple CRUD operations. Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/MultipleExpectations:
+      Description: The resource-API provider specs PDK generates use multiple expectations per example to cover resource attribute checks. Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/VerifiedDoubleReference:
+      Description: The resource-API provider and transport specs PDK generates use string-referenced instance doubles (the Puppet provider constant is not loaded in the spec context). Scoped to PDK-generated provider and transport spec paths only (D-08).
+      Exclude:
+        - 'spec/unit/puppet/provider/**/*_spec.rb'
+        - 'spec/unit/puppet/transport/**/*_spec.rb'
+
+    RSpec/ContextWording:
+      Description: rspec-puppet-facts uses the `context "on #{os}"` idiom in generated facts, class, and defined-type specs. The `on` prefix is added to the allowed list so this well-known idiom does not trigger the cop.
+      Prefixes:
+        - when
+        - with
+        - without
+        - 'on'
+
+    Style/MixinUsage:
+      Description: rspec-puppet-facts requires the top-level `include RspecPuppetFacts` idiom in spec_helper, which cannot be cleanly restructured without breaking the facts test harness. Scoped to spec_helper only (D-07).
+      Exclude:
+        - 'spec/spec_helper.rb'
+
+    Lint/EmptyClass:
+      Description: The generated transport device file uses the idiomatic Ruby namespace forward-declaration `class Puppet::Util::NetworkDevice; end`. An empty class is the standard namespace-shim idiom here and is not non-idiomatic code. Scoped to the network_device path only (D-08).
+      Exclude:
+        - 'lib/puppet/util/network_device/**/*.rb'
 
   profiles:
-    # no rubocops enabled, caveat emptor!
-    off:
-      enabled_cops: {}
-
-    # a sanitized list of cops that'll cleanup a code base without much effort
-    # they all support autocorrect, and should be fairly uncontroversial across
-    # wide segments of the Community.
-    cleanups_only:
+    # Runs all cops using RuboCop's native NewCops: enable governance.
+    # EnforcedStyle settings from default_configs are applied.
+    'on': &on_profile
       configs: *default_configs
-      enabled_cops: *cleanup_cops
 
-    # a good mix of cops with community recommended settings
-    strict:
-      configs: *default_configs
-      enabled_cops:
-        <<: *cleanup_cops
-        Bundler/DuplicatedGem:
-        Layout/EmptyLinesAroundBeginBody:
-        Lint/AmbiguousBlockAssociation:
-        Lint/AmbiguousOperator:
-        Lint/AmbiguousRegexpLiteral:
-        Lint/AssignmentInCondition:
-        Lint/CircularArgumentReference:
-        Layout/ConditionPosition:
-        Lint/Debugger:
-        Lint/DuplicateCaseCondition:
-        Lint/DuplicateMethods:
-        Lint/DuplicateHashKey:
-        Lint/EachWithObjectArgument:
-        Lint/ElseLayout:
-        Lint/EmptyEnsure:
-        Lint/EmptyExpression:
-        Lint/EmptyWhen:
-        Layout/EndAlignment:
-        Style/EndBlock:
-        Lint/EnsureReturn:
-        Lint/FloatOutOfRange:
-        Lint/FormatParameterMismatch:
-        Lint/SuppressedException:
-        Lint/ImplicitStringConcatenation:
-        Lint/IneffectiveAccessModifier:
-        Lint/InheritException:
-        Lint/LiteralAsCondition:
-        Lint/Loop:
-        Lint/NestedMethodDefinition:
-        Lint/NextWithoutAccumulator:
-        Lint/NonLocalExitFromIterator:
-        Lint/ParenthesesAsGroupedExpression:
-        Lint/RandOne:
-        Lint/RequireParentheses:
-        Lint/RescueException:
-        Lint/ScriptPermission:
-        Lint/ShadowedException:
-        Lint/ShadowingOuterLocalVariable:
-        Lint/UnderscorePrefixedVariableName:
-        Lint/RedundantCopDisableDirective:
-        Lint/UnreachableCode:
-        Lint/UselessAccessModifier:
-        Lint/UselessAssignment:
-        Lint/BinaryOperatorWithIdenticalOperands:
-        Lint/UselessElseWithoutRescue:
-        Lint/UselessSetterCall:
-        Lint/Void:
-        Layout/LineLength:
-        Performance/Caller:
-        Performance/EndWith:
-        Performance/FixedSize:
-        Style/HashEachMethods:
-        RSpec/AnyInstance:
-        RSpec/AroundBlock:
-        RSpec/BeforeAfterAll:
-        RSpec/DescribeMethod:
-        RSpec/DescribeSymbol:
-        RSpec/EmptyExampleGroup:
-        RSpec/ExpectActual:
-        RSpec/ExpectOutput:
-        RSpec/FilePath:
-        RSpec/Focus:
-        RSpec/InstanceVariable:
-        RSpec/IteratedExpectation:
-        RSpec/LetSetup:
-        RSpec/MessageChain:
-        RSpec/MessageSpies:
-          EnforcedStyle: receive
-        RSpec/MultipleDescribes:
-        RSpec/NamedSubject:
-        RSpec/OverwritingSetup:
-        RSpec/RepeatedDescription:
-        RSpec/RepeatedExample:
-        RSpec/ScatteredLet:
-        RSpec/ScatteredSetup:
-        RSpec/SubjectStub:
-        RSpec/VerifiedDoubles:
-        Security/Eval:
-        Security/IoMethods:
-        Security/MarshalLoad:
-        Security/Open:
-        Naming/AsciiIdentifiers:
-        Style/BeginBlock:
-        Style/CaseEquality:
-        Naming/ClassAndModuleCamelCase:
-        Style/ClassAndModuleChildren:
-        Style/ClassVars:
-        Naming/ConstantName:
-        Style/Documentation:
-          Exclude:
-            - 'lib/puppet/parser/functions/**/*'
-            - 'spec/**/*'
-        Style/DoubleNegation:
-        Naming/FileName:
-        Lint/FlipFlop:
-        Style/For:
-        Style/FormatStringToken:
-        Style/GlobalVars:
-        Style/GuardClause:
-        Style/IdenticalConditionalBranches:
-        Style/IfInsideElse:
-        Style/IfUnlessModifierOfIfUnless:
-        Style/IfWithSemicolon:
-        Style/MethodCalledOnDoEndBlock:
-        Lint/MissingSuper:
-        Style/MissingRespondToMissing:
-        Naming/MethodName:
-        Style/ModuleFunction:
-        Style/MultilineBlockChain:
-        Style/MultilineIfModifier:
-        Style/MultilineTernaryOperator:
-        Style/MultipleComparison:
-        Style/NestedTernaryOperator:
-        Naming/BinaryOperatorParameterName:
-        Style/OptionalArguments:
-        Naming/PredicateName:
-        Style/SelfAssignment:
-        Style/StructInheritance:
-        Naming/VariableName:
-        RSpec/VariableName:
-        Performance/AncestorsInclude:
-        Performance/BigDecimalWithNumericArgument:
-        Performance/BlockGivenWithExplicitBlock:
-        Performance/ConstantRegexp:
-        Performance/MethodObjectAsBlock:
-        Performance/RedundantSortBlock:
-        Performance/RedundantStringChars:
-        Performance/ReverseFirst:
-        Performance/SortReverse:
-        Performance/Squeeze:
-        Performance/StringInclude:
-        Performance/Sum:
+    # No cops enabled. Uses RuboCop's native DisabledByDefault switch
+    # instead of enumerating per-cop Enabled: false.
+    'off':
+      configs:
+        AllCops:
+          DisabledByDefault: true
+          NewCops: disable
 
-    # Uses rubocop default cops
-    hardcore:
-      configs: *default_configs
-      enabled_cops: all
+    # Backward-compatible aliases: cleanups_only, strict, and hardcore all
+    # resolve to the same output as on. Existing .sync.yml files that set
+    # any of these names continue to work with zero migration required.
+    cleanups_only: *on_profile
+    strict: *on_profile
+    hardcore: *on_profile
+
+  # Authoritative maintainer override surface. Merged last (after defaults and
+  # profile configs), so entries here take precedence:
+  #   defaults -> profile configs -> cop_overrides
+  # Add, configure, or disable individual cops here (e.g. CopName: { Enabled: false }
+  # or CopName: { EnforcedStyle: example }). In a module's .sync.yml, entries under
+  # this key deep-merge via PDK's @configs; the knockout prefix --- removes a value.
+  cop_overrides: {}
 Gemfile:
   required:
     ':development':
