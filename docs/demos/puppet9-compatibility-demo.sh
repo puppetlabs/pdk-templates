@@ -169,7 +169,7 @@ bold ">> Demonstrating the gap: validation PASSES even though 'csv' is undeclare
 assert_validate pass "issue #3 -- PDK does not flag the bare require"
 
 bold ">> The detection the ticket recommends is grep (not pdk validate):"
-( cd "${MODULE_DIR}" && grep -rn "require 'csv'\|require 'logger'\|require 'ostruct'\|require 'benchmark'\|require 'racc'" lib/ spec/ ) || true
+( cd "${MODULE_DIR}" && grep -rEn "require '(csv|logger|ostruct|benchmark|racc)'" lib/ spec/ ) || true
 echo
 echo "Fix: declare the gem so it is present on Ruby 4. In the module Gemfile:"
 echo "    gem 'csv', '~> 3.0'"
