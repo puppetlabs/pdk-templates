@@ -1,13 +1,13 @@
 # Demo: PDK Puppet 9 / Ruby 4 compatibility checks
 
-A short (~2 minute) walkthrough showing module code that **fails** `pdk validate`
-because of Puppet 9 / Ruby 4 incompatibilities, then the corrected code that
-**passes**. Tracks [CAT-2683](https://perforce.atlassian.net/browse/CAT-2683).
+A short (~2 minute) walkthrough showing module code that **fails**
+`pdk validate ruby` because of Puppet 9 / Ruby 4 incompatibilities, then the
+corrected code that **passes**. Tracks [CAT-2683](https://perforce.atlassian.net/browse/CAT-2683).
 
 Puppet 9 ships Ruby 4.0, which removes or changes several long-standing
 behaviours. This demo covers the three the ticket calls out:
 
-| # | Issue | Severity | Caught by `pdk validate`? | Cop |
+| # | Issue | Severity | Caught by `pdk validate ruby`? | Cop |
 | - | ----- | -------- | ------------------------- | --- |
 | 1 | `Kernel.open` pipe subprocess | Hard break (`NoMethodError`) | **Yes** | `Security/Open` |
 | 2 | `Hash#inspect` format reliance | Silent test drift | **Yes** | `HashInspect/LegacyHashInspectFormat` |
