@@ -7,21 +7,25 @@
   os_names = os_support.map { |o| ((o['operatingsystem'] || '').to_s.downcase rescue '') }
   linux_names = %w[redhat centos oraclelinux scientific sles suse opensuse debian ubuntu rocky almalinux amazon fedora virtuozzolinux gentoo archlinux]
   has_windows = os_names.include?('windows')
+  # Empty/unknown metadata (e.g. a fresh `pdk new module`) defaults to the Linux section. Modules that
+  # support only non-Linux, non-Windows platforms (AIX/Solaris/Darwin) render neither OS section and
+  # rely on the OS-agnostic guidance above -- rather than being mislabelled as Linux.
   has_linux = os_names.empty? || os_names.any? { |n| linux_names.include?(n) }
-  # Guarantee at least one OS section: any non-Windows module (incl. AIX/Solaris/Darwin-only)
-  # defaults to the Linux content; Windows-only modules stay Windows-only.
-  has_linux ||= !has_windows
 -%>
 # CLAUDE.md
 
 This file provides guidance to Claude Code (claude.ai/code) and human contributors when
 working with code in this repository.
 
-> **This file is synced from [puppetlabs/pdk-templates](https://github.com/puppetlabs/pdk-templates)
-> (`moduleroot/CLAUDE.md.erb`).** Do not edit it directly in a module repo -- changes are
-> overwritten on the next `pdk update`. To customise per module, add module-specific notes via a
-> `## Module-specific notes` section in a file PDK does not manage, or opt this file out entirely
-> with `CLAUDE.md: unmanaged: true` in the module's `.sync.yml` and maintain a hand-written copy.
+> **Starting point, not a straitjacket.** This file ships from
+> [puppetlabs/pdk-templates](https://github.com/puppetlabs/pdk-templates) as a baseline of conventions
+> common to CAT-supported modules. **Tailor it to this repo** -- add the specifics Claude actually
+> needs: what the manifests/types/providers/functions here do, module-specific gotchas, and anything
+> learned while working in the codebase. A generic framework alone is not enough to guide good changes.
+>
+> PDK adds this file when a module is first created (`pdk new module`, or `pdk convert` for a module
+> that doesn't have one yet) and then leaves it alone -- it is **not** re-synced or overwritten on
+> `pdk update`. It is yours to edit freely; keep it current as the module grows.
 
 For generic Puppet/PDK workflow that *is* derivable from the files themselves (the full PDK command
 reference, CI matrix mechanics, README badges), see the PDK docs and the README. The notes below are
@@ -98,6 +102,8 @@ bundle exec rake litmus:acceptance:parallel
 - Every class/defined type should have `it { is_expected.to compile.with_all_deps }` -- a clean
   compile across the supported OS matrix is the baseline gate.
 - Drive OS variants with `on_supported_os` (reads `metadata.json`) rather than hand-listing facts.
+- Facts come largely from **facterdb** (via `rspec-puppet-facts` / `on_supported_os`) -- you rarely
+  need to hand-build fact hashes; override only the specific facts a test needs on top of the OS set.
 - Stub facts via the `:facts` hash or `spec/default_facts.yml`; do not rely on the host's real facts.
 - Provide Hiera test data through `spec/fixtures/hiera/` and a test `hiera.yaml` when behaviour is
   data-driven. Use `let(:params)` / `let(:pre_condition)` for class params and dependencies.
@@ -135,14 +141,17 @@ COVERAGE=yes bundle exec rspec        # SimpleCov report
 ### Spec helpers
 
 - `spec/spec_helper.rb` is **PDK-managed -- do not edit**; it is overwritten on `pdk update`.
-- Put project-local setup in `spec/spec_helper_local.rb` (safe to edit).
+- Put project-local unit setup in `spec/spec_helper_local.rb` (safe to edit).
+- `spec/spec_helper_acceptance.rb` (+ `spec/spec_helper_acceptance_local.rb`) drives the Litmus
+  acceptance run; put acceptance-only helpers there, not in the unit spec helper.
 
 ---
 
 ## Ruby code style
 
 - Style is enforced by `.rubocop.yml` (deployed from pdk-templates, `strict` profile). Run
-  `bundle exec rake rubocop` / `rubocop -a` before pushing; do not hand-tune cops in the synced file.
+  `bundle exec rake rubocop` (or `bundle exec rubocop -A` to autocorrect) before pushing -- always
+  under `bundle exec` so you get the module's pinned RuboCop version; do not hand-tune cops in the synced file.
 - Conventions the profile enforces: `Layout/LineLength` max 200, `snake_case` naming, `%r{}` for regex
   literals, trailing commas on multiline arrays/args, and the `rubocop-performance` / `rubocop-rspec`
   extensions. Target Ruby version follows `.rubocop.yml`'s `TargetRubyVersion`.
@@ -337,3 +346,7 @@ PRs are judged on outcomes, not line counts:
 - Never delete a file without permission -- this applies even after a blanket "yes to all".
 - Never output, log, save, or hardcode security-sensitive values -- passwords, tokens, API keys,
   private keys, secrets, or credentials of any kind. Do not write them to files, commit messages, or responses.
+
+> These are guidance, not enforcement. For anything that must hold every run (secret hygiene, no
+> direct pushes to `main`, the coverage gate), back it with a runtime hook in the repo's `.claude/`
+> settings -- prose alone can be treated as a suggestion and skipped.
