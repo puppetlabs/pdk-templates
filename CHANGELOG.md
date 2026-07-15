@@ -5,9 +5,28 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v3.7.0](https://github.com/puppetlabs/pdk-templates/tree/v3.7.0) - 2026-05-14
+## [v3.8.0](https://github.com/puppetlabs/pdk-templates/tree/v3.8.0) - 2026-07-15
 
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.6.1...v3.7.0)
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.7.0...v3.8.0)
+
+### Added
+
+- (CAT-2635) Add rubocop-hash_inspect to PDK rubocop gem group and plugins [#646](https://github.com/puppetlabs/pdk-templates/pull/646) ([david22swan](https://github.com/david22swan))
+- (CAT-2637) Enable Security/Open and Security/IoMethods cops [#645](https://github.com/puppetlabs/pdk-templates/pull/645) ([david22swan](https://github.com/david22swan))
+- (MODULES-11832) Add synced PR template with outcome-based review policy [#643](https://github.com/puppetlabs/pdk-templates/pull/643) ([imaqsood](https://github.com/imaqsood))
+- (MODULES-11829, MODULES-11830) Add synced CLAUDE.md.erb with Linux + Windows specifics [#642](https://github.com/puppetlabs/pdk-templates/pull/642) ([imaqsood](https://github.com/imaqsood))
+- (CAT-2581) Add faraday and Ruby 4 json pin to template Gemfile [#638](https://github.com/puppetlabs/pdk-templates/pull/638) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- Replace '..yml' with '.rubocop.yml' in config [#650](https://github.com/puppetlabs/pdk-templates/pull/650) ([david22swan](https://github.com/david22swan))
+- (CAT-2581) Open puppet-blacksmith constraint to `>= 7.0, < 10.0` [#644](https://github.com/puppetlabs/pdk-templates/pull/644) ([david22swan](https://github.com/david22swan))
+- (CAT-2662) Update CI templates for safe fork-PR CI [#640](https://github.com/puppetlabs/pdk-templates/pull/640) ([LukasAud](https://github.com/LukasAud))
+- (CAT-2661) Default puppet_litmus to ~> 2.5 unconditionally [#639](https://github.com/puppetlabs/pdk-templates/pull/639) ([LukasAud](https://github.com/LukasAud))
+
+## [3.7.0](https://github.com/puppetlabs/pdk-templates/tree/3.7.0) - 2026-05-14
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.6.1...3.7.0)
 
 ### Fixed
 
@@ -678,7 +697,6 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Fixed
 
 - (FM-7659) - Fix to pin Bundler for Puppet 4 Testing [#173](https://github.com/puppetlabs/pdk-templates/pull/173) ([david22swan](https://github.com/david22swan))
-- Fix rubygems-update for ruby older than 2.3 for travis and gitlab-ci [#171](https://github.com/puppetlabs/pdk-templates/pull/171) ([Felixoid](https://github.com/Felixoid))
 - (FM-7622) - Remove deprecated config from .travis.yml [#170](https://github.com/puppetlabs/pdk-templates/pull/170) ([eimlav](https://github.com/eimlav))
 - (PDK-957) Exclude all development files from module builds [#168](https://github.com/puppetlabs/pdk-templates/pull/168) ([rodjek](https://github.com/rodjek))
 
