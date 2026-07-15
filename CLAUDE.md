@@ -11,7 +11,6 @@ This repository contains the default templates used by [Puppet Development Kit (
 - `moduleroot/`: Full module templates deployed on `pdk new module`, `pdk convert`, and `pdk update`. Enforces boilerplate for central files.
 - `moduleroot_init/`: Skeleton templates deployed only when the target module does not yet exist (required by `pdk convert`; do not remove).
 - `object_templates/`: Templates for generated objects (classes, defined types, tasks, plans, functions, transports, providers).
-- `rubocop/`: RuboCop profiles (`cleanup_cops.yml`, `defaults-1.50.0.yml`) and the `profile_builder.rb` tool for regenerating them.
 - `config_defaults.yml`: The canonical source of default template configuration consumed by PDK.
 - `.ci/`: CI scripts (`install_pdk.sh`, `test_script.sh`) and fixtures.
 
@@ -37,13 +36,6 @@ pushd my_test_module
 pdk validate
 pdk test unit
 popd
-```
-
-Regenerate RuboCop defaults after a RuboCop version bump (run from `rubocop/`):
-
-```bash
-cd rubocop
-bundle exec ruby profile_builder.rb
 ```
 
 ## Architecture: How Templates Are Rendered
@@ -72,11 +64,14 @@ The `unmanaged: true` key tells PDK to leave a file untouched; `delete: true` te
 
 ## RuboCop Profile System
 
-`rubocop/` contains the tooling for the `.rubocop.yml` template that PDK deploys into modules:
+`moduleroot/.rubocop.yml.erb` uses `deep_merge` to layer configuration in the order `defaults -> profile['configs'] -> cop_overrides` before rendering the final `.rubocop.yml`:
 
-- `defaults-1.50.0.yml`: Auto-generated list of all enabled/disabled cops for RuboCop 1.50.0. Regenerate with `profile_builder.rb` after a version update.
-- `cleanup_cops.yml`: Curated set of cleanup cops included in the `strict` and `hardcore` profiles.
-- Profiles (`cleanups_only`, `strict`, `hardcore`, `off`) are defined in `config_defaults.yml` under `.rubocop.yml.profiles` and selected via `selected_profile`.
+- `default_configs`: a YAML anchor in `config_defaults.yml` holding the base EnforcedStyle tunings that the `'on'` profile reuses as its `configs` (resolved when `config_defaults.yml` is assembled, not read directly at render time). The anchor also tunes several PDK / rspec-puppet-convention cops (e.g. trailing-comma style, the rspec-puppet describe/context/double idioms) so that freshly-scaffolded modules validate clean under `NewCops: enable`. Each such tuning carries an inline `Description:` rationale explaining why it exists; do NOT remove those `Description:` lines, as they prevent future drift and accidental re-enabling.
+- `profiles`: defined in `config_defaults.yml` under `.rubocop.yml.profiles`. Two profiles exist: `'on'` (canonical; `NewCops: enable`) and `'off'` (`DisabledByDefault: true`, `NewCops: disable`). The names `cleanups_only`, `strict`, and `hardcore` are backward-compatible aliases that resolve to `'on'`.
+- `cop_overrides`: the authoritative per-module override surface, merged last. Use `CopName: { Enabled: false }` to disable a cop; use the knockout prefix `---` to remove an override. The same `---` prefix applies to both PDK's `.sync.yml` overlay (the outer PDK merge) and this template's internal `defaults -> profile -> cop_overrides` deep-merge, so there is one knockout prefix everywhere.
+- `selected_profile`: chooses which profile is active (ships as `strict`, a backward-compatible alias that resolves to `'on'`). Set to `'off'` to disable all cops.
+
+**Future improvements:** The convention tunings above cover the object types that `.ci/test_script.sh` actually scaffolds and validates. Object types NOT currently exercised by CI -- notably `plan` and the legacy V1 `function` -- were intentionally left untouched: there is no scaffold coverage to validate a change against, so fixing them speculatively would be unverifiable. They are candidates for future template-validation coverage once CI scaffolds them.
 
 ## Packaging and Release Context
 

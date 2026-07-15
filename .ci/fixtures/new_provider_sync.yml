@@ -6,6 +6,6 @@ Gemfile:
 spec/spec_helper.rb:
   mock_with: ':rspec'
 .rubocop.yml:
-  default_configs:
+  cop_overrides:
     Performance/CaseWhenSplat:
       Enabled: false

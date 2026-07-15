@@ -13,9 +13,9 @@ pdk new module new_module --template-url="file://$TEMPLATE_PR_DIR" --template-re
 pushd new_module
 grep template < metadata.json
 cp "$TEMPLATE_PR_DIR/.ci/fixtures/new_provider_sync.yml" ./.sync.yml
-grep -A 1 "Performance/CaseWhenSplat" ./.rubocop.yml | grep -q "true" # Ensure that the template is applied
+grep -A 5 "AllCops" ./.rubocop.yml | grep -q "NewCops" # Ensure the slim template is applied (NewCops governs cops, not per-cop enumeration)
 pdk update --force
-grep -A 1 "Performance/CaseWhenSplat" ./.rubocop.yml | grep -q "false" # Ensure that the update command changes the template
+grep -A 1 "Performance/CaseWhenSplat" ./.rubocop.yml | grep -q "false" # Ensure the cop_overrides override is rendered after update
 pdk new class new_module
 pdk new defined_type test_type
 pdk new fact test_fact || true # not available in pdk 1.18 yet
