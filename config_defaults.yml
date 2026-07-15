@@ -555,8 +555,12 @@ Gemfile:
         version: '= 3.12.1'
       - gem: 'pry'
         version: '~> 0.10'
+      - gem: 'simplecov'
+        version: '~> 0.22'
       - gem: 'simplecov-console'
         version: '~> 0.9'
+      - gem: 'simplecov-lcov'
+        version: '~> 0.8'
       - gem: 'puppet-debugger'
         version: '~> 1.6'
       - gem: 'rubocop'
@@ -615,6 +619,16 @@ spec/spec_helper.rb:
   mock_with: ":rspec"
   strict_level: ":warning"
   strict_variables: true
+  # Enables the SimpleCov hook used by the coverage workflow. Active only when
+  # the COVERAGE env var is set, so local `rake spec` runs are unaffected.
+  simplecov: true
+# The coverage workflow is managed (not unmanaged) so `pdk update` rolls it out
+# to every module. baseline_mode with no `.coverage_baseline` file is a no-op
+# gate (baseline 0), so deploying it is non-breaking; commit a baseline to start
+# ratcheting, or set `baseline_mode: false` to gate against `threshold`.
+.github/workflows/coverage.yml:
+  threshold: 80
+  baseline_mode: true
 .github/workflows/ci.yml:
   unmanaged: true
 .github/workflows/nightly.yml:

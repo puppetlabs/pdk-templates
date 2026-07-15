@@ -1,0 +1,23 @@
+<% coverage = @configs['.github/workflows/coverage.yml'] || {} -%>
+name: "coverage"
+
+on:
+  pull_request:
+    branches:
+      - "main"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pull-requests: write
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  Coverage:
+    uses: "puppetlabs/cat-github-actions/.github/workflows/module_coverage.yml@main"
+    with:
+      threshold: <%= coverage['threshold'] || 80 %>
+      baseline_mode: <%= coverage['baseline_mode'] ? true : false %>
