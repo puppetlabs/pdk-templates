@@ -200,6 +200,48 @@ release_schedule:
 
 In this example the automated release prep workflow is triggered every Saturday at 3 am.
 
+### .github/workflows/ci.yml and .github/workflows/nightly.yml
+
+> `ci.yml` and `nightly.yml` are `unmanaged: true` by default (see [Unmanaged and delete keys](#unmanaged-and-delete-keys)), so `acceptance_flags` has no effect on an existing module until that module's own `.sync.yml` sets `unmanaged: false` for the file(s) to be managed:
+
+```yaml
+.github/workflows/ci.yml:
+  unmanaged: false
+```
+
+The `acceptance_flags` key controls the flags passed to the Acceptance job via a `with: flags: "..."` entry on the `module_acceptance.yml` reusable workflow. It defaults to `acceptance_flags: ['--nightly']` under both `.github/workflows/ci.yml` and `.github/workflows/nightly.yml`, rendering as `flags: "--nightly"` when left at default.
+
+Flags can be added or removed using the same array syntax described in [Adding configuration values](#adding-configuration-values) and [Removing default configuration values](#removing-default-configuration-values) (prefix a value with `---` to remove it).
+
+> **Important:** the underlying array merge is a set union — it silently drops any array element that repeats a value already present elsewhere in the array. If you need a flag that takes a value and can appear multiple times (like `--platform-exclude`), write each occurrence as **one combined element** (`'--platform-exclude centos-7'`), not as two separate elements (`'--platform-exclude'`, `'centos-7'`). Splitting flag and value across separate elements causes every repeat of the bare flag token to collapse into a single occurrence, silently dropping the rest.
+
+For example, `puppetlabs-firewall` currently hand-maintains the flags `--nightly --platform-exclude centos-7 --platform-exclude oraclelinux-7 --platform-exclude scientific-7 --platform-exclude centos-8 --platform-exclude rocky-8` directly in its own frozen (`unmanaged: true`) workflow file rather than through `acceptance_flags`. The following shows what firewall would write in `.sync.yml` to manage this via PDK instead:
+
+```yaml
+.github/workflows/ci.yml:
+  unmanaged: false
+  acceptance_flags:
+    - '--nightly'
+    - '--platform-exclude centos-7'
+    - '--platform-exclude oraclelinux-7'
+    - '--platform-exclude scientific-7'
+    - '--platform-exclude centos-8'
+    - '--platform-exclude rocky-8'
+.github/workflows/nightly.yml:
+  unmanaged: false
+  acceptance_flags:
+    - '--nightly'
+    - '--platform-exclude centos-7'
+    - '--platform-exclude oraclelinux-7'
+    - '--platform-exclude scientific-7'
+    - '--platform-exclude centos-8'
+    - '--platform-exclude rocky-8'
+```
+
+This renders exactly `flags: "--nightly --platform-exclude centos-7 --platform-exclude oraclelinux-7 --platform-exclude scientific-7 --platform-exclude centos-8 --platform-exclude rocky-8"` on the Acceptance job of both workflows.
+
+To clear all flags entirely, knock out the default with `acceptance_flags: ['---']` — this omits the `with:` block completely (rather than rendering an empty `flags: ""`), so the Acceptance job runs with the reusable workflow's own defaults.
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
