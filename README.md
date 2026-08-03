@@ -240,7 +240,7 @@ For example, `puppetlabs-firewall` currently hand-maintains the flags `--nightly
 
 This renders exactly `flags: "--nightly --platform-exclude centos-7 --platform-exclude oraclelinux-7 --platform-exclude scientific-7 --platform-exclude centos-8 --platform-exclude rocky-8"` on the Acceptance job of both workflows.
 
-To clear all flags entirely, knock out the default with `acceptance_flags: ['---']` — this omits the `with:` block completely (rather than rendering an empty `flags: ""`), so the Acceptance job runs with the reusable workflow's own defaults.
+To clear all flags entirely, knock out each default element individually using the same per-element knockout prefix shown above, e.g. `acceptance_flags: ['-----nightly']` to remove the `--nightly` default. This omits the `with:` block completely (rather than rendering an empty `flags: ""`), so the Acceptance job runs with the reusable workflow's own defaults. Note that the hash-key removal syntax (`acceptance_flags: '---'`) does **not** achieve this — it merges to an empty string, which still renders `flags: ""` rather than omitting the block.
 
 ### .pdkignore
 
