@@ -9,3 +9,17 @@ spec/spec_helper.rb:
   default_configs:
     Performance/CaseWhenSplat:
       Enabled: false
+.github/workflows/ci.yml:
+  unmanaged: false
+  acceptance_flags:
+    - '-----nightly'
+    - '--platform-exclude centos-7'
+    - '--platform-exclude oraclelinux-7'
+    - '--message "hello"'
+.github/workflows/nightly.yml:
+  unmanaged: false
+  acceptance_flags:
+    - '-----nightly'
+    - '--platform-exclude centos-7'
+    - '--platform-exclude oraclelinux-7'
+    - '--message "hello"'

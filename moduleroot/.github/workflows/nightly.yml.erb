@@ -1,4 +1,5 @@
 <% common = config_for('common') -%>
+<% acceptance_flags = Array(@configs['acceptance_flags']) -%>
 name: "nightly"
 
 on:
@@ -14,4 +15,8 @@ jobs:
   Acceptance:
     needs: Spec
     uses: "puppetlabs/cat-github-actions/.github/workflows/module_acceptance.yml@main"
+<% unless acceptance_flags.empty? -%>
+    with:
+      flags: <%= acceptance_flags.join(' ').to_json %>
+<% end -%>
     secrets: "inherit"

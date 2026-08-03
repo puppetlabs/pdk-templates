@@ -617,8 +617,10 @@ spec/spec_helper.rb:
   strict_variables: true
 .github/workflows/ci.yml:
   unmanaged: true
+  acceptance_flags: ['--nightly']
 .github/workflows/nightly.yml:
   unmanaged: true
+  acceptance_flags: ['--nightly']
 .github/workflows/release.yml:
   unmanaged: true
 .github/workflows/release_prep.yml:

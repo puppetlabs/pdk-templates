@@ -12,10 +12,14 @@ git checkout -b ci_commit
 pdk new module new_module --template-url="file://$TEMPLATE_PR_DIR" --template-ref=ci_commit --skip-interview
 pushd new_module
 grep template < metadata.json
+[ ! -f .github/workflows/ci.yml ] # ci.yml is unmanaged: true by default, so PDK skips rendering it entirely -- byte-identical to pre-acceptance_flags behavior (TEST-02a)
+[ ! -f .github/workflows/nightly.yml ] # nightly.yml is unmanaged: true by default, so PDK skips rendering it entirely -- byte-identical to pre-acceptance_flags behavior (TEST-02a, D-13)
 cp "$TEMPLATE_PR_DIR/.ci/fixtures/new_provider_sync.yml" ./.sync.yml
 grep -A 1 "Performance/CaseWhenSplat" ./.rubocop.yml | grep -q "true" # Ensure that the template is applied
 pdk update --force
 grep -A 1 "Performance/CaseWhenSplat" ./.rubocop.yml | grep -q "false" # Ensure that the update command changes the template
+grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/ci.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on ci.yml (TEST-01, TEST-02b)
+grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/nightly.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on nightly.yml independently (TEST-01, TEST-02b, D-13)
 pdk new class new_module
 pdk new defined_type test_type
 pdk new fact test_fact || true # not available in pdk 1.18 yet
