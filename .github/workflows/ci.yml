@@ -23,6 +23,18 @@ jobs:
         run: |
           .ci/install_pdk.sh
 
+      - name: "Configure forge authentication"
+        run: |
+          # Conditional shell (not a bare `env:` export): an absent secret resolves to "",
+          # and Ruby's `if ENV['PUPPET_FORGE_TOKEN']` in Gemfile.erb treats "" as truthy,
+          # which would silently break the fallback to public rubygems. See AUTH-02.
+          if [ -n "$FORGE_TOKEN" ]; then
+            echo "PUPPET_FORGE_TOKEN=$FORGE_TOKEN" >> $GITHUB_ENV
+            echo "BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM=forge-key:$FORGE_TOKEN" >> $GITHUB_ENV
+          fi
+        env:
+          FORGE_TOKEN: ${{ secrets.PUPPET_FORGE_TOKEN || secrets.PUPPET_FORGE_TOKEN_PUBLIC }}
+
       - name: "Run Tests"
         run: |
           .ci/test_script.sh
