@@ -5,10 +5,21 @@ on:
     branches:
       - "main"
   workflow_dispatch:
+    inputs:
+      pdk_channel:
+        description: "PDK install channel"
+        type: choice
+        options:
+          - release
+          - nightly
+        default: nightly
 
 jobs:
   ci:
     runs-on: ubuntu-latest
+    env:
+      TWINGATE_PUBLIC_REPO_KEY: ${{ secrets.TWINGATE_PUBLIC_REPO_KEY }}
+      PDK_CHANNEL: ${{ inputs.pdk_channel || 'nightly' }}
     steps:
       - name: "Checkout"
         uses: "actions/checkout@v3"
@@ -18,6 +29,32 @@ jobs:
           export PDK=release
           export PDK_FRONTEND=noninteractive
           echo $BASH_VERSION
+
+      - name: "Configure forge authentication"
+        run: |
+          # Conditional shell, not a bare `env:` export: an absent secret resolves to "",
+          # and Ruby's `if ENV['PUPPET_FORGE_TOKEN']` treats "" as truthy, which would
+          # silently break the fallback to public rubygems.
+          if [ -n "$FORGE_TOKEN" ]; then
+            echo "PUPPET_FORGE_TOKEN=$FORGE_TOKEN" >> $GITHUB_ENV
+            echo "BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM=forge-key:$FORGE_TOKEN" >> $GITHUB_ENV
+          fi
+        env:
+          FORGE_TOKEN: ${{ secrets.PUPPET_FORGE_TOKEN || secrets.PUPPET_FORGE_TOKEN_PUBLIC }}
+
+      - name: "Connect Twingate (nightly PDK channel)"
+        if: env.PDK_CHANNEL == 'nightly' && env.TWINGATE_PUBLIC_REPO_KEY != ''
+        uses: "twingate/github-action@f1e69fc5af67b737d8597b759e5c607f567e77f2"  # v1
+        with:
+          service-key: ${{ env.TWINGATE_PUBLIC_REPO_KEY }}
+
+      - name: "Fix DNS for Twingate (nightly PDK channel)"
+        if: env.PDK_CHANNEL == 'nightly' && env.TWINGATE_PUBLIC_REPO_KEY != ''
+        run: |
+          sudo resolvectl dns eth0 ""
+          sudo resolvectl dns sdwan0 100.95.0.251 100.95.0.252
+          sudo resolvectl domain sdwan0 delivery.puppetlabs.net
+          sudo resolvectl flush-caches
 
       - name: "Install PDK"
         run: |

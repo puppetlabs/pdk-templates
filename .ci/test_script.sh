@@ -28,6 +28,8 @@ pdk new function --type v4 testfunc_v4 || true # not available in pdk 1.18 yet
 pdk new provider test_provider
 pdk new task test_task
 pdk new transport test_transport
+# ensure_bundle! skips actual `bundle install` for packaged PDK installs; pdk bundle install does not.
+pdk bundle install
 pdk validate
 pdk test unit
 popd
