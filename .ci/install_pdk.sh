@@ -73,6 +73,7 @@ setup_nightly_apt() {
 }
 
 main() {
+    set +x
     if [ "${PDK_CHANNEL}" = "nightly" -a -n "${TWINGATE_PUBLIC_REPO_KEY}" ]; then
         setup_nightly_apt
     elif [ -n "${PUPPET_FORGE_TOKEN}" ]; then
@@ -85,6 +86,7 @@ main() {
         echo "Unknown \$PDK value '${PDK}'. Supported values are 'release' and 'nightly'." >&2
         exit 1
     fi
+    set -x
 
     sudo apt-get update -qq
     sudo apt-get install -y pdk
