@@ -145,13 +145,30 @@ Gemfile:
 
 ### Manage Rubocop rules
 
-To disable or enable certain Rubocop rules, use the following structure:
+Use `cop_overrides` in `.sync.yml` to override individual cops. Entries in `cop_overrides` are merged last (after the built-in defaults and the selected profile's configs), making it the authoritative per-module override surface.
+
+To disable a cop:
 
 ```yaml
 .rubocop.yml:
-  default_configs:
+  cop_overrides:
     Style/Documentation:
       Enabled: false
+```
+
+To remove a cop override entirely (knockout):
+
+```yaml
+.rubocop.yml:
+  cop_overrides:
+    Style/Documentation: '---'
+```
+
+To select a profile:
+
+```yaml
+.rubocop.yml:
+  selected_profile: 'off'
 ```
 
 ## PDK default config values
@@ -288,14 +305,14 @@ To clear all flags entirely, knock out each default element individually using t
 | Key            | Description   |
 | :------------- |:--------------|
 |include\_todos|Allows you to use rubocop's "TODOs" to temporarily skip checks by setting this to `true`. See rubocop's `--auto-gen-config` option for details. Defaults to `false`.|
-|selected\_profile|Allows you to define which profile is used by default, which is set to `strict`, which is fully defined within the `profiles` section.|
-|default\_configs |Allows you to define the default configuration of which cops will run. Includes the full name of the cop followed by a description of it and an enforced style. Can also make use of the key `excludes` to exclude any files from that specific cop.|
-|cleanup\_cops    |Defines a set of cleanup cops to then be included within a rubocop profile. Cops are defined by their full name, and further configuration can be done by specifying secondary keys. By default we specify a large amount of cleanup cops using their default configuration.|
-|profiles         |Defines the profiles that can be enabled and used within rubocop through the `selected_profile` option. By default we have set up three profiles: cleanups\_only, strict, hardcore and off.|
+|selected\_profile|Selects the active RuboCop profile. The canonical value is `'on'`, which runs RuboCop's default-enabled cops plus any new/pending cops via `NewCops: enable` (cops disabled by default remain disabled). The names `cleanups_only`, `strict`, and `hardcore` are backward-compatible aliases that resolve to `'on'`. Set to `'off'` to disable all cops (`DisabledByDefault: true`).|
+|cop\_overrides|Authoritative per-module override surface. Merged last (precedence: `defaults -> profile configs -> cop_overrides`). Use `CopName: { Enabled: false }` to disable a cop; use the knockout prefix `---` (e.g. `CopName: '---'`) to remove an override entirely.|
+|profiles|Defines the profile configurations. Two profiles are provided: `'on'` (canonical; sets `NewCops: enable`, with its base EnforcedStyle tunings inlined directly under its `configs`) and `'off'` (`DisabledByDefault: true`, `NewCops: disable`). The named aliases `cleanups_only`, `strict`, and `hardcore` resolve to `'on'`.|
+|TargetRubyVersion|Overrides the `AllCops.TargetRubyVersion` in the rendered `.rubocop.yml`. Defaults to `3.1`.|
 
 #### Puppet 9 subprocess-creation detection
 
-The `strict` profile enables two security cops that flag the pipe-based subprocess creation removed in Ruby 4.0 (which ships with Puppet 9). See [Ruby #19630](https://bugs.ruby-lang.org/issues/19630).
+These `Security/*` cops are enabled implicitly via `AllCops.NewCops: enable` for any non-`'off'` profile (i.e. `'on'` and all its aliases: `cleanups_only`, `strict`, `hardcore`) and are disabled when `selected_profile: 'off'`. They can be pinned or overridden per module via `cop_overrides` regardless of profile. See [Ruby #19630](https://bugs.ruby-lang.org/issues/19630).
 
 | Cop | Flags | Recommended replacement |
 | :-- | :---- | :---------------------- |
