@@ -25,6 +25,5 @@
 # Rubocop profile builder temporary files
 /rubocop/.rubocop.yml
 /rubocop/.rubocop_todo.yml
-
-# GSD planning docs (local-only, not committed)
+# GSD planning docs (kept local, not tracked)
 /.planning/
