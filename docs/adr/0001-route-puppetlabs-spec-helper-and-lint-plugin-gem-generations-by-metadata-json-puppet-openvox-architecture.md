@@ -14,27 +14,9 @@ Accepted
 
 ## Context
 
-`puppetlabs_spec_helper` 9.0.0 dropped its dependency on Vox Pupuli's `puppet-syntax` gem in favour of Puppet, Inc.'s own `puppetlabs-syntax` gem — a genuine fork (different authors, different Ruby module name, no compatibility alias), not a rename:
+Recently the `puppetlabs_spec_helper` `~> 9.0` dropped its dependency on Vox Pupuli's `puppet-syntax` gem in favour of puppet's own `puppetlabs-syntax` gem.  This fork was necessary because newer versions of the `puppet-syntax` gemspec enforced the `openvox` instead of the `puppet` architecture.  As a result, the pdk-templates pinned `puppetlabs_spec_helper` to a single wide range (`>= 8.0, < 10.0`) in the `config_defaults.yml` allowing modules to 'straddle' either architecture (`puppet` or `openvox`).  **The problem was that** there was no way to enforce the correct gem set for a particular architecture.  `puppet` modules, for example, always required the `~> 9.0` `puppetlabs_spec_helper` while `openvox` the `~> 8.0`.
 
-```bash
-$ gem spec puppet-syntax --remote | grep -A2 authors        # Vox Pupuli
-$ gem spec puppetlabs-syntax --remote | grep -A2 authors    # Puppet, Inc.
-```
-
-`pdk-templates`' `config_defaults.yml` previously pinned `puppetlabs_spec_helper` to a single wide range (`>= 8.0, < 10.0`) that straddled this fork without choosing an architecture (puppet or openvox) — whichever generation a module's `Gemfile.lock` happened to have resolved stayed resolved, permanently, with no way for `pdk update` to move a module onto the current generation.
-
-Real puppet modules already declare which side of the ecosystem split they target, in their own `metadata.json`, and PDK's own metadata validation already recognises this:
-
-```ruby
-def puppet_requirement
-  @data['requirements'].find do |r|
-    r.key?('name') && ['puppet', 'openvox'].include? r['name']
-  end
-end
-```
-[`pdk/lib/pdk/module/metadata.rb#L158-L162`](https://github.com/puppetlabs/pdk/blob/1549e7a3f72b3f192fb28dd588fd101b6cb86936/lib/pdk/module/metadata.rb#L158-L162)
-
-Every PDK command that manages bundling (`pdk validate`, `pdk test unit`, `pdk convert`, `pdk update`, `pdk console`, `pdk release`) calls `PDK::Util::Bundler.ensure_bundle!`, which runs real Bundler against `bundle.gemfile` at `Dir.pwd` — the module's actual, rendered `Gemfile`, not a PDK-private copy (`pdk/lib/pdk/util/bundler.rb#L8-L21`). This means any routing logic placed in the rendered `Gemfile` governs every one of those commands automatically, with no PDK code change required — confirmed by inspecting `puppet_syntax_validator.rb`, which shows `pdk validate`'s own "puppet-syntax" check never touches either gem at all (it shells directly to `puppet parser validate`).
+Since every PDK command that manages bundling (`pdk validate`, `pdk test unit`, `pdk convert`, `pdk update`, `pdk console`, `pdk release`) calls `PDK::Util::Bundler.ensure_bundle!`, which runs real Bundler against `bundle.gemfile` at `Dir.pwd`; then the solution must place the routing logic in the rendered `Gemfile`.
 
 ## Decision
 
@@ -115,28 +97,7 @@ Sample table as follows:
 | `{"name": "puppet"}` or absent | 9.0.0 | `puppetlabs-syntax` 7.2.1 | 7.0.0 | 5.1.1 | passes |
 | `{"name": "openvox"}` | 8.0.0 | `puppet-syntax` 4.1.1 | 6.0.0 | 4.3.0 | passes |
 
-A separate, non-blocking check warns -- loudly, via `warn` on `$stderr`, never a `raise` -- if a puppet-architecture module's own `metadata.json` declares a `puppet` requirement whose upper bound is below `< 10.0.0`:
-
-```ruby
-def puppet_requirement_ceiling_too_low?
-  return false unless puppet_module?
-  return false unless File.file?('metadata.json')
-
-  require 'json'
-  metadata = JSON.parse(File.read('metadata.json'))
-  requirement = Array(metadata['requirements']).find { |r| r['name'] == 'puppet' }
-  return false if requirement.nil?
-
-  upper_bound = requirement['version_requirement'].to_s[/<\s*(\d+(?:\.\d+)*)/, 1]
-  return true if upper_bound.nil?
-
-  Gem::Version.new(upper_bound) < Gem::Version.new('10.0.0')
-rescue JSON::ParserError, ArgumentError
-  false
-end
-```
-
-This is deliberately a warning, not a failure, matching the earlier decision to drop the proactive raise-based guard: `metadata.json`'s declared Puppet ceiling doesn't affect which gems this `Gemfile` resolves (`puppet_module?` alone decides that), but a module can easily end up on the current puppet-architecture gems while its own Forge-facing `puppet` requirement still caps below Puppet 10 — this surfaces that drift without blocking anything. Because `Gemfile`s are re-evaluated by Bundler on every `bundle exec`, not just `bundle install` (verified directly: a `warn` at the top of a test `Gemfile` printed on a plain `bundle exec ruby -e ''` with no install step), this fires on `pdk validate`, `pdk test unit`, and any `bundle exec rake` invocation, not only fresh installs. Verified against four cases: a stale ceiling (`< 9.0.0`) warns; a correct one (`< 10.0.0`) is silent; an OpenVox-architecture module is silent regardless (the check is scoped to the `puppet` requirement only); and a module with no `metadata.json` at all is silent (nothing to check).
+See [[0002-auto-patch-a-stale-puppet-requirement-ceiling-via-moduleroot-metadata-json-erb|ADR 0002]] for how a puppet-architecture module's own `metadata.json` requirement is kept in sync with this decision.
 
 ## Consequences
 
@@ -145,9 +106,3 @@ This is deliberately a warning, not a failure, matching the earlier decision to 
 - Every additional gem that turns out to have divergent puppet-vs-openvox-compatible version ranges (the `voxpupuli-puppet-lint-plugins`/`puppet-lint` chain being the first discovered, not necessarily the last) must be added to `architecture_gems`, under the correct Bundler group, or the affected architecture's `Gemfile` silently becomes unresolvable again. `config_defaults.yml` is not a place this can be detected statically — it can only be caught by actually running `bundle install` against both branches, as done here.
 - `Rakefile.erb`'s single `require` and the `Gemfile`'s gem selection are now driven by the exact same `puppet_module?` decision, so the two files can't drift into contradicting each other about which architecture a module is — and a genuine mismatch (gem declared but not actually installed) surfaces as an immediate `LoadError`, not a swallowed no-op. There is deliberately no proactive check for the *other* generation's gem also being loaded (see Decision) — out of scope for now.
 - This decision does not touch `pdk-private` (the PDK gem/CLI) at all — see [[explanation_pdk_templates_puppetlabs_spec_helper_version_routing_for_puppet_vs_openvox]] for the fuller reasoning on why the routing belongs in the template layer rather than the CLI.
-
-## Related Topics
-
-- [[explanation_pdk_templates_puppetlabs_spec_helper_version_routing_for_puppet_vs_openvox]] — full explanation doc: the ecosystem fork, why `pdk-templates` (not `pdk-private`) is the right layer, and the initial end-to-end verification
-- [`puppetlabs-syntax` README](https://github.com/puppetlabs/puppetlabs-syntax/blob/34cdc634ed547985a855c208fe44b92c998ed647/README.md) — confirms "not a drop-in replacement" for `puppet-syntax`
-- [`pdk/lib/pdk/util/bundler.rb#L8-L21`](https://github.com/puppetlabs/pdk/blob/1549e7a3f72b3f192fb28dd588fd101b6cb86936/lib/pdk/util/bundler.rb#L8-L21) — `PDK::Util::Bundler.ensure_bundle!`, the mechanism that makes every PDK command route through this same rendered `Gemfile`

@@ -100,43 +100,6 @@ rescue JSON::ParserError
   true
 end
 
-# Warn -- loudly, but never fail the build -- if this module's own metadata.json declares a
-# "puppet" requirement whose upper bound is below < 10.0.0. This doesn't affect which gems
-# this Gemfile resolves (puppet_module? above decides that), but it does mean the module
-# itself still tells PDK/the Forge it only supports up to some older Puppet major version --
-# an easy thing to leave behind by accident once a module's own gems have already moved on.
-def puppet_requirement_ceiling_too_low?
-  return false unless puppet_module?
-  return false unless File.file?('metadata.json')
-
-  require 'json'
-  metadata = JSON.parse(File.read('metadata.json'))
-  requirement = Array(metadata['requirements']).find { |r| r['name'] == 'puppet' }
-  return false if requirement.nil?
-
-  upper_bound = requirement['version_requirement'].to_s[/<\s*(\d+(?:\.\d+)*)/, 1]
-  return true if upper_bound.nil?
-
-  Gem::Version.new(upper_bound) < Gem::Version.new('10.0.0')
-rescue JSON::ParserError, ArgumentError
-  false
-end
-
-if puppet_requirement_ceiling_too_low?
-  warn <<~WARNING
-
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-    !!  metadata.json's "puppet" requirement does not allow < 10.0.0.             !!
-    !!  This module resolves puppet-architecture gems (puppetlabs-syntax,         !!
-    !!  puppetlabs_spec_helper 9.x -- see ADR 0001), but its own declared         !!
-    !!  "puppet" version_requirement still caps below Puppet 10. Fix              !!
-    !!  metadata.json's requirements entry, e.g.:                                 !!
-    !!    { "name": "puppet", "version_requirement": ">= 8.0.0 < 10.0.0" }        !!
-    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-  WARNING
-end
-
 def location_for(place_or_constraint, fake_constraint = nil, opts = {})
   git_url_regex  = /\A(?<url>(?:https?|git)[:@][^#]*)(?:#(?<branch>.*))?/
   file_url_regex = %r{\Afile://(?<path>.*)}

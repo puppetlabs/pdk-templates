@@ -423,4 +423,5 @@ The repos have restricted access only to [@modules](https://github.com/orgs/pupp
 
 <!-- adrlog -->
 * [ADR-0001](docs/adr/0001-route-puppetlabs-spec-helper-and-lint-plugin-gem-generations-by-metadata-json-puppet-openvox-architecture.md) - Route puppetlabs_spec_helper and lint-plugin gem generations by metadata.json puppet/openvox architecture
+* [ADR-0002](docs/adr/0002-auto-patch-a-stale-puppet-requirement-ceiling-via-moduleroot-metadata-json-erb.md) - Auto-patch a stale puppet requirement ceiling via moduleroot/metadata.json.erb
 <!-- adrlogstop -->
