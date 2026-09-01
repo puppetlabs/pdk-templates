@@ -188,10 +188,11 @@ Rakefile:
             - 'spec/unit/puppet/transport/**/*_spec.rb'
 
         RSpec/MultipleExpectations:
-          Description: The resource-API provider specs PDK generates use multiple expectations per example to cover resource attribute checks. Scoped to PDK-generated provider and transport spec paths only (D-08).
+          Description: The resource-API provider specs PDK generates use multiple expectations per example to cover resource attribute checks; acceptance specs use multiple expectations per example to check several resource properties after a single catalog apply. Scoped to PDK-generated provider, transport, and acceptance spec paths only (D-08).
           Exclude:
             - 'spec/unit/puppet/provider/**/*_spec.rb'
             - 'spec/unit/puppet/transport/**/*_spec.rb'
+            - 'spec/acceptance/**/*_spec.rb'
 
         RSpec/VerifiedDoubleReference:
           Description: The resource-API provider and transport specs PDK generates use string-referenced instance doubles (the Puppet provider constant is not loaded in the spec context). Scoped to PDK-generated provider and transport spec paths only (D-08).
