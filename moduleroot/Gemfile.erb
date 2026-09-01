@@ -57,6 +57,24 @@ def gem_spec(gem, max_len)
 
   output
 end
+
+def prepare_gems(gems, overrides)
+  gems.map do |gem|
+    gem = overrides&.find { |prefer| prefer['gem'] == gem['gem'] } || gem
+    {
+      'gem'           => gem['gem'],
+      'version'       => gem['version'],
+      'platforms'     => gem['platforms'].nil? ? nil : Array[*gem['platforms']].map(&:to_sym),
+      'git'           => gem['git'],
+      'branch'        => gem['branch'],
+      'ref'           => gem['ref'],
+      'length'        => gem_length(gem),
+      'from_env'      => gem['from_env'],
+      'condition'     => gem['condition'],
+      'source'        => gem['source'],
+    }
+  end
+end
 -%>
 # For puppetcore, set GEM_SOURCE_PUPPETCORE = 'https://rubygems-puppetcore.puppet.com'
 gemsource_default = ENV['GEM_SOURCE'] || 'https://rubygems.org'
@@ -66,6 +84,58 @@ else
   ENV['GEM_SOURCE_PUPPETCORE'] || gemsource_default
 end
 source gemsource_default
+
+# A module targets the Puppet, Inc. architecture (puppetlabs-syntax, puppetlabs_spec_helper
+# 9.x, and so on) by default. It only opts into the OpenVox architecture -- and the older
+# gem generation that goes with it -- by explicitly declaring an "openvox" requirement in
+# its own metadata.json. No requirement, or an explicit "puppet" requirement, both mean
+# "puppet" architecture.
+def puppet_module?
+  return true unless File.file?('metadata.json')
+
+  require 'json'
+  metadata = JSON.parse(File.read('metadata.json'))
+  Array(metadata['requirements']).none? { |r| r['name'] == 'openvox' }
+rescue JSON::ParserError
+  true
+end
+
+# Warn -- loudly, but never fail the build -- if this module's own metadata.json declares a
+# "puppet" requirement whose upper bound is below < 10.0.0. This doesn't affect which gems
+# this Gemfile resolves (puppet_module? above decides that), but it does mean the module
+# itself still tells PDK/the Forge it only supports up to some older Puppet major version --
+# an easy thing to leave behind by accident once a module's own gems have already moved on.
+def puppet_requirement_ceiling_too_low?
+  return false unless puppet_module?
+  return false unless File.file?('metadata.json')
+
+  require 'json'
+  metadata = JSON.parse(File.read('metadata.json'))
+  requirement = Array(metadata['requirements']).find { |r| r['name'] == 'puppet' }
+  return false if requirement.nil?
+
+  upper_bound = requirement['version_requirement'].to_s[/<\s*(\d+(?:\.\d+)*)/, 1]
+  return true if upper_bound.nil?
+
+  Gem::Version.new(upper_bound) < Gem::Version.new('10.0.0')
+rescue JSON::ParserError, ArgumentError
+  false
+end
+
+if puppet_requirement_ceiling_too_low?
+  warn <<~WARNING
+
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    !!  metadata.json's "puppet" requirement does not allow < 10.0.0.             !!
+    !!  This module resolves puppet-architecture gems (puppetlabs-syntax,         !!
+    !!  puppetlabs_spec_helper 9.x -- see ADR 0001), but its own declared         !!
+    !!  "puppet" version_requirement still caps below Puppet 10. Fix              !!
+    !!  metadata.json's requirements entry, e.g.:                                 !!
+    !!    { "name": "puppet", "version_requirement": ">= 8.0.0 < 10.0.0" }        !!
+    !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+  WARNING
+end
 
 def location_for(place_or_constraint, fake_constraint = nil, opts = {})
   git_url_regex  = /\A(?<url>(?:https?|git)[:@][^#]*)(?:#(?<branch>.*))?/
@@ -102,26 +172,40 @@ end
 <% groups.each do |group, gems| -%>
 group <%= group %> do
 <%
-     gems.map! do |gem|
-       gem = @configs['overrides']&.find { |prefer| prefer['gem'] == gem['gem'] } || gem
-       {
-         'gem'           => gem['gem'],
-         'version'       => gem['version'],
-         'platforms'     => gem['platforms'].nil? ? nil : Array[*gem['platforms']].map(&:to_sym),
-         'git'           => gem['git'],
-         'branch'        => gem['branch'],
-         'ref'           => gem['ref'],
-         'length'        => gem_length(gem),
-         'from_env'      => gem['from_env'],
-         'condition'     => gem['condition'],
-         'source'        => gem['source'],
-       }
-     end
-
+     gems = prepare_gems(gems, @configs['overrides'])
      maxlen = gems.map { |r| r['length'] }.max
 -%>
 <%   gems.each do |gem| -%>
   gem <%= gem_spec(gem, maxlen) %>
+<%   end -%>
+end
+<% end -%>
+
+<% architecture_gems = @configs['architecture_gems'] -%>
+<% if architecture_gems -%>
+# See ADR 0001 (docs/adr/0001-*.md): every gem whose compatible version differs by
+# puppet-vs-openvox architecture lives here, collected in one place. puppet_module? (defined
+# above) decides live, on every bundle install/bundle exec, which side this module resolves
+# to -- true unless this module's own metadata.json declares an "openvox" requirement.
+if puppet_module?
+<%   (architecture_gems['puppet'] || {}).each do |group, gems| -%>
+  group <%= group %> do
+<%     gems = prepare_gems(gems, @configs['overrides']) -%>
+<%     maxlen = gems.map { |r| r['length'] }.max -%>
+<%     gems.each do |gem| -%>
+    gem <%= gem_spec(gem, maxlen) %>
+<%     end -%>
+  end
+<%   end -%>
+else
+<%   (architecture_gems['openvox'] || {}).each do |group, gems| -%>
+  group <%= group %> do
+<%     gems = prepare_gems(gems, @configs['overrides']) -%>
+<%     maxlen = gems.map { |r| r['length'] }.max -%>
+<%     gems.each do |gem| -%>
+    gem <%= gem_spec(gem, maxlen) %>
+<%     end -%>
+  end
 <%   end -%>
 end
 <% end -%>

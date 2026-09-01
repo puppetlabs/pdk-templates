@@ -418,3 +418,9 @@ If we later need to support multiple versions of an action as we roll out change
 * [Gamesight/slack-workflow-status](https://github.com/Gamesight/slack-workflow-status) ➡️ [puppetlabs/Gamesight-slack-workflow-status](https://github.com/puppetlabs/Gamesight-slack-workflow-status/tree/pdk-templates-v1)
 
 The repos have restricted access only to [@modules](https://github.com/orgs/puppetlabs/teams/modules) team members.
+
+### Design Decisions
+
+<!-- adrlog -->
+* [ADR-0001](docs/adr/0001-route-puppetlabs-spec-helper-and-lint-plugin-gem-generations-by-metadata-json-puppet-openvox-architecture.md) - Route puppetlabs_spec_helper and lint-plugin gem generations by metadata.json puppet/openvox architecture
+<!-- adrlogstop -->

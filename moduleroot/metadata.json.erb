@@ -1,0 +1,30 @@
+<%
+  # @configs['module_metadata'] is PDK's own already-computed metadata hash for this
+  # pdk update/pdk convert run (PDK::Module::Metadata#data) -- it already has template-ref
+  # and pdk-version bumped, and the module's existing fields (author, license, requirements,
+  # etc.) merged in. Re-serializing it here, unchanged except for one targeted patch, keeps
+  # this in lock-step with PDK's own metadata write rather than replacing it.
+  metadata = (@configs['module_metadata'] || {}).dup
+
+  begin
+    requirements = Array(metadata['requirements'])
+    targets_openvox = requirements.any? { |r| r['name'] == 'openvox' }
+    puppet_requirement = requirements.find { |r| r['name'] == 'puppet' }
+
+    if !targets_openvox && puppet_requirement
+      version_requirement = puppet_requirement['version_requirement'].to_s
+      upper_bound = version_requirement[/<\s*(\d+(?:\.\d+)*)/, 1]
+
+      if upper_bound.nil? || Gem::Version.new(upper_bound) < Gem::Version.new('10.0.0')
+        puppet_requirement['version_requirement'] = if version_requirement.include?('<')
+                                                        version_requirement.sub(/<\s*\d+(?:\.\d+)*/, '< 10.0.0')
+                                                      else
+                                                        "#{version_requirement.strip} < 10.0.0"
+                                                      end
+      end
+    end
+  rescue StandardError
+    nil
+  end
+-%>
+<%= JSON.pretty_generate(metadata.delete_if { |_key, value| value.nil? }) %>
