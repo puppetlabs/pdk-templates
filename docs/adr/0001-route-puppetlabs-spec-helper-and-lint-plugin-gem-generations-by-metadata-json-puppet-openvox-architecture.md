@@ -1,6 +1,6 @@
 ---
 tags:
-  - -jira/bolt/193/bolt-migrate-to-puppet9/inbox
+  - -jira/bolt/193/migration-to-puppet9/inbox
   - -scope/implementation
 ---
 

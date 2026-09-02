@@ -1,6 +1,6 @@
 ---
 tags:
-  - -jira/bolt/193/bolt-migrate-to-puppet9/inbox
+  - -jira/bolt/193/migration-to-puppet9/inbox
   - -scope/implementation
 ---
 # 0002. Auto-patch a stale puppet requirement ceiling via moduleroot/metadata.json.erb
