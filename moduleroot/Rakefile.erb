@@ -11,22 +11,6 @@ end
 -%>
 # frozen_string_literal: true
 
-# See moduleroot/Gemfile.erb for the full explanation (ADR 0004): which syntax gem got
-# installed is decided by the resolved gemsource regime, not by a module's own metadata.json
-# architecture declaration. Duplicated here rather than shared because Gemfile.erb and
-# Rakefile.erb are rendered and evaluated independently -- this is the same, single source of
-# truth the Gemfile already used to install the gem, so it's trusted here unconditionally, the
-# same way puppetlabs_spec_helper/rake_tasks is required unconditionally above. If the expected
-# gem isn't actually installed (a stale Gemfile.lock, bundle install never run after an
-# environment change), this should fail loudly with a LoadError naming the exact missing file,
-# not be silently swallowed into "rake syntax" just not existing.
-gemsource_default = ENV['GEM_SOURCE'] || 'https://rubygems.org'
-gemsource_puppetcore = if ENV['PUPPET_FORGE_TOKEN']
-  'https://rubygems-puppetcore.puppet.com'
-else
-  ENV['GEM_SOURCE_PUPPETCORE'] || gemsource_default
-end
-
 def puppetcore_source?(source)
   source != 'https://rubygems.org'
 end
