@@ -25,5 +25,10 @@
 # Rubocop profile builder temporary files
 /rubocop/.rubocop.yml
 /rubocop/.rubocop_todo.yml
-# GSD planning docs (kept local, not tracked)
+# GSD planning docs (kept local, not tracked; .planning is a symlink to an external repo)
 /.planning/
+# GSD local runtime artifacts (agent state, MCP config, background-shell manifest)
+/.gsd/
+/.mcp.json
+/.bg-shell/
+/.planning
