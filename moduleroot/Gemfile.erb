@@ -75,6 +75,20 @@ def prepare_gems(gems, overrides)
     }
   end
 end
+
+# Renders one gemsource regime's { group => gems } map as literal `group ... do / gem ... /
+# end` text for embedding inside the rendered Gemfile's own if puppetcore_source? / else
+# branches (see ADR 0004). Shared by both branches below so the render logic isn't duplicated
+# per regime -- the rendered *output* still gets a separate block per branch, which is what
+# lets Bundler decide live, at bundle install/bundle exec time, which block actually runs.
+def render_architecture_groups(group_gems, overrides)
+  group_gems.map do |group, gems|
+    gems = prepare_gems(gems, overrides)
+    maxlen = gems.map { |r| r['length'] }.max
+    gem_lines = gems.map { |gem| "    gem #{gem_spec(gem, maxlen)}" }.join("\n")
+    "  group #{group} do\n#{gem_lines}\n  end"
+  end.join("\n")
+end
 -%>
 # For puppetcore, set GEM_SOURCE_PUPPETCORE = 'https://rubygems-puppetcore.puppet.com'
 gemsource_default = ENV['GEM_SOURCE'] || 'https://rubygems.org'
@@ -85,19 +99,15 @@ else
 end
 source gemsource_default
 
-# A module targets the Puppet, Inc. architecture (puppetlabs-syntax, puppetlabs_spec_helper
-# 9.x, and so on) by default. It only opts into the OpenVox architecture -- and the older
-# gem generation that goes with it -- by explicitly declaring an "openvox" requirement in
-# its own metadata.json. No requirement, or an explicit "puppet" requirement, both mean
-# "puppet" architecture.
-def puppet_module?
-  return true unless File.file?('metadata.json')
-
-  require 'json'
-  metadata = JSON.parse(File.read('metadata.json'))
-  Array(metadata['requirements']).none? { |r| r['name'] == 'openvox' }
-rescue JSON::ParserError
-  true
+# True unless the resolved gemsource is the literal public rubygems.org -- i.e. true for the
+# direct puppetcore host, or any proxy/mirror (e.g. an Artifactory instance) that carries the
+# puppetcore-only releases. See ADR 0004 (docs/adr/0004-*.md): this is deliberately the same
+# signal puppet_floor_version below already uses to decide whether Puppet 9-generation gems
+# are even resolvable -- the dev/test tooling generation (puppetlabs-syntax vs puppet-syntax,
+# puppetlabs_spec_helper 9.x vs 8.x) now tracks that same signal, not a module's own
+# metadata.json architecture declaration.
+def puppetcore_source?(source)
+  source != 'https://rubygems.org'
 end
 
 def location_for(place_or_constraint, fake_constraint = nil, opts = {})
@@ -121,7 +131,7 @@ end
 # Floors puppet's default version by resolved gem source and Ruby version. See ADR 0003
 # (docs/adr/0003-*.md) for the full rationale.
 def puppet_floor_version(puppetcore_source)
-  return nil if puppetcore_source == 'https://rubygems.org'
+  return nil unless puppetcore_source?(puppetcore_source)
 
   ruby4_or_later = Gem::Requirement.create('>= 4.0.0').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
   ruby4_or_later ? '~> 9.0' : '~> 8.21'
@@ -153,32 +163,16 @@ group <%= group %> do
 end
 <% end -%>
 
-<% architecture_gems = @configs['architecture_gems'] -%>
-<% if architecture_gems -%>
-# See ADR 0001 (docs/adr/0001-*.md): every gem whose compatible version differs by
-# puppet-vs-openvox architecture lives here, collected in one place. puppet_module? (defined
-# above) decides live, on every bundle install/bundle exec, which side this module resolves
-# to -- true unless this module's own metadata.json declares an "openvox" requirement.
-if puppet_module?
-<%   (architecture_gems['puppet'] || {}).each do |group, gems| -%>
-  group <%= group %> do
-<%     gems = prepare_gems(gems, @configs['overrides']) -%>
-<%     maxlen = gems.map { |r| r['length'] }.max -%>
-<%     gems.each do |gem| -%>
-    gem <%= gem_spec(gem, maxlen) %>
-<%     end -%>
-  end
-<%   end -%>
+<% gemsource_gems = @configs['gemsource_gems'] -%>
+<% if gemsource_gems -%>
+# See ADR 0004 (docs/adr/0004-*.md): every gem whose compatible version differs by
+# puppetcore-vs-public gemsource regime lives here, collected in one place. puppetcore_source?
+# (defined above) decides live, on every bundle install/bundle exec, which side this module
+# resolves to -- true unless the resolved gemsource is the literal public rubygems.org.
+if puppetcore_source?(gemsource_puppetcore)
+<%= render_architecture_groups(gemsource_gems['puppetcore'] || {}, @configs['overrides']) %>
 else
-<%   (architecture_gems['openvox'] || {}).each do |group, gems| -%>
-  group <%= group %> do
-<%     gems = prepare_gems(gems, @configs['overrides']) -%>
-<%     maxlen = gems.map { |r| r['length'] }.max -%>
-<%     gems.each do |gem| -%>
-    gem <%= gem_spec(gem, maxlen) %>
-<%     end -%>
-  end
-<%   end -%>
+<%= render_architecture_groups(gemsource_gems['public'] || {}, @configs['overrides']) %>
 end
 <% end -%>
 

@@ -308,6 +308,19 @@ Gemfile:
         version: '< 3.2.2'
         platforms:
           - windows
+        # Forces gem selection on puppetcore or public gemsource
+      - gem: 'voxpupuli-puppet-lint-plugins' 
+        version: '~> 7.0'
+        condition: 'puppetcore_gemsource?(gemsource_puppetcore)'
+      - gem: 'voxpupuli-puppet-lint-plugins'
+        version: '~> 6.0'
+        condition: '!puppetcore_gemsource?(gemsource_puppetcore)'
+      - gem: 'puppetlabs_spec_helper'
+        version: '~> 9.0'
+        condition: 'puppetcore_gemsource?(gemsource_puppetcore)'
+      - gem: 'puppetlabs_spec_helper'
+        version: '~> 8.0'
+        condition: '!puppetcore_gemsource?(gemsource_puppetcore)'
     ':development, :release_prep':
       - gem: 'puppet-strings'
         version:
@@ -330,32 +343,6 @@ Gemfile:
         condition: "RUBY_PLATFORM.include?('darwin')"
       - gem: 'serverspec'
         version: '~> 2.41'
-  # Every gem whose compatible version differs by which ecosystem a module targets is
-  # collected here, one flat list per architecture, so the full impact of choosing "puppet"
-  # vs "openvox" can be read in one place instead of scattered as condition-gated pairs
-  # throughout `required`/`optional` above. See ADR 0001 (docs/adr/0001-*.md) for the full
-  # rationale and how puppet_module? (defined in Gemfile.erb/Rakefile.erb) decides between
-  # the two: true unless a module's metadata.json declares an explicit "openvox" requirement.
-  #
-  # voxpupuli-puppet-lint-plugins 7.x requires puppet-lint ~> 5.1, which only
-  # puppetlabs_spec_helper 9.x (puppet) resolves with; openvox's puppetlabs_spec_helper < 9.0
-  # needs puppet-lint ~> 4.0, which only voxpupuli-puppet-lint-plugins 6.x satisfies -- these
-  # two gems must always move together within an architecture.
-  architecture_gems:
-    puppet:
-      ':development':
-        - gem: 'voxpupuli-puppet-lint-plugins'
-          version: '~> 7.0'
-      ':development, :release_prep':
-        - gem: 'puppetlabs_spec_helper'
-          version: '~> 9.0'
-    openvox:
-      ':development':
-        - gem: 'voxpupuli-puppet-lint-plugins'
-          version: '~> 6.0'
-      ':development, :release_prep':
-        - gem: 'puppetlabs_spec_helper'
-          version: '~> 8.0'
 spec/default_facts.yml:
   is_pe: false
   networking:

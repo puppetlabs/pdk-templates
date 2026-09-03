@@ -11,28 +11,30 @@ end
 -%>
 # frozen_string_literal: true
 
-# See moduleroot/Gemfile.erb for the full explanation: a module targets the Puppet, Inc.
-# architecture by default and only opts into OpenVox by declaring an "openvox" requirement
-# in its own metadata.json. This is the same, single source of truth the Gemfile already
-# used to decide which syntax gem gets installed -- so it's trusted here unconditionally,
-# the same way puppetlabs_spec_helper/rake_tasks is required unconditionally above. If the
-# expected gem isn't actually installed (a stale Gemfile.lock, bundle install never run
-# after a metadata.json change), this should fail loudly with a LoadError naming the exact
-# missing file, not be silently swallowed into "rake syntax" just not existing.
-def puppet_module?
-  return true unless File.file?('metadata.json')
+# See moduleroot/Gemfile.erb for the full explanation (ADR 0004): which syntax gem got
+# installed is decided by the resolved gemsource regime, not by a module's own metadata.json
+# architecture declaration. Duplicated here rather than shared because Gemfile.erb and
+# Rakefile.erb are rendered and evaluated independently -- this is the same, single source of
+# truth the Gemfile already used to install the gem, so it's trusted here unconditionally, the
+# same way puppetlabs_spec_helper/rake_tasks is required unconditionally above. If the expected
+# gem isn't actually installed (a stale Gemfile.lock, bundle install never run after an
+# environment change), this should fail loudly with a LoadError naming the exact missing file,
+# not be silently swallowed into "rake syntax" just not existing.
+gemsource_default = ENV['GEM_SOURCE'] || 'https://rubygems.org'
+gemsource_puppetcore = if ENV['PUPPET_FORGE_TOKEN']
+  'https://rubygems-puppetcore.puppet.com'
+else
+  ENV['GEM_SOURCE_PUPPETCORE'] || gemsource_default
+end
 
-  require 'json'
-  metadata = JSON.parse(File.read('metadata.json'))
-  Array(metadata['requirements']).none? { |r| r['name'] == 'openvox' }
-rescue JSON::ParserError
-  true
+def puppetcore_source?(source)
+  source != 'https://rubygems.org'
 end
 
 require 'bundler'
 require 'puppet_litmus/rake_tasks' if Gem.loaded_specs.key? 'puppet_litmus'
 require 'puppetlabs_spec_helper/rake_tasks'
-require(puppet_module? ? 'puppetlabs-syntax/tasks/puppetlabs-syntax' : 'puppet-syntax/tasks/puppet-syntax')
+require(puppetcore_source?(gemsource_puppetcore) ? 'puppetlabs-syntax/tasks/puppetlabs-syntax' : 'puppet-syntax/tasks/puppet-syntax')
 require 'puppet-strings/tasks' if Gem.loaded_specs.key? 'puppet-strings'
 <% if ! @configs['requires'].nil? -%>
 <%   @configs['requires'].each do |item| -%>

@@ -6,6 +6,13 @@
   # this in lock-step with PDK's own metadata write rather than replacing it.
   metadata = (@configs['module_metadata'] || {}).dup
 
+  # Per ADR 0004 (docs/adr/0004-*.md), this module's own declared "openvox" requirement no
+  # longer drives which gems Gemfile.erb/Rakefile.erb install -- that's decided by the
+  # resolved gemsource regime instead. This is now the ONLY place a module's metadata.json
+  # architecture declaration still affects template output: an openvox-declaring module is
+  # exempted from the puppet requirement ceiling patch below, since ADR 0002's problem
+  # (a stale puppet ceiling silently skipping the Puppet 9 test stream) is specific to
+  # modules that intend to track Puppet, Inc.'s own puppet releases.
   begin
     requirements = Array(metadata['requirements'])
     targets_openvox = requirements.any? { |r| r['name'] == 'openvox' }
