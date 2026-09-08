@@ -85,7 +85,7 @@ def location_for(place_or_constraint, fake_constraint = nil, opts = {})
   end
 end
 
-# Works around a bundler multi_json/puppet resolution bug - see docs/adr/0001.
+# Switch selection on puppetcore gemsource and ruby version.
 def puppet_floor_version(puppetcore_source)
   return nil if puppetcore_source == 'https://rubygems.org'
 
