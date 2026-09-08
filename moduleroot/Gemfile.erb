@@ -85,15 +85,15 @@ def location_for(place_or_constraint, fake_constraint = nil, opts = {})
   end
 end
 
-# Works around a bundler multi_json/puppet resolution bug - see docs/adr/0001.
+# Raise puppet floor to 8.21 from 8.11 to fix a silent bug where bundler always resolved
+# puppet to <= 8.13.  Root cause was an upper contraint of <= 1.19 for multi_json
+# added to puppet 8.17.  Bundler kept selecting the latest multi_json and then 
+# downgrading puppet
 def puppet_floor_version(puppetcore_source)
   return nil if puppetcore_source == 'https://rubygems.org'
 
-  ruby_version = Gem::Version.new(RUBY_VERSION.dup)
-  return '~> 9.0' if Gem::Requirement.create('>= 4.0.0').satisfied_by?(ruby_version)
-  return '~> 8.17' if Gem::Requirement.create('>= 3.1.0').satisfied_by?(ruby_version)
-
-  nil # puppet 8+ requires ruby >= 3.1; leave older rubies unconstrained
+  ruby4_or_later = Gem::Requirement.create('>= 4.0.0').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))
+  ruby4_or_later ? '~> 9.0' : '~> 8.21'
 end
 
 # Print debug information if DEBUG_GEMS or VERBOSE is set
