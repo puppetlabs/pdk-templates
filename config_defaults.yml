@@ -259,8 +259,13 @@ Gemfile:
         condition: "Gem::Requirement.create(['>= 2.7.0', '< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: deep_merge
         version: '~> 1.2.2'
+      # See docs/adr/0001 for why this is a resolved-source check.
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 7.0'
+        condition: 'gemsource_puppetcore != "https://rubygems.org"'
+      - gem: 'voxpupuli-puppet-lint-plugins'
+        version: '~> 6.0'
+        condition: 'gemsource_puppetcore == "https://rubygems.org"'
       - gem: 'facterdb'
         version: '~> 2.1'
         condition: "Gem::Requirement.create(['< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
@@ -314,10 +319,13 @@ Gemfile:
         version:
         - '>= 4.0'
         - '< 6.0'
+      # See docs/adr/0001 for why this is a resolved-source check.
       - gem: 'puppetlabs_spec_helper'
-        version:
-        - '>= 8.0'
-        - '< 10.0'
+        version: '~> 9.0'
+        condition: 'gemsource_puppetcore != "https://rubygems.org"'
+      - gem: 'puppetlabs_spec_helper'
+        version: '~> 8.0'
+        condition: 'gemsource_puppetcore == "https://rubygems.org"'
       - gem: 'puppet-blacksmith'
         version:
         - '>= 7.0'
