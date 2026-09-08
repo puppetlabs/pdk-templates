@@ -188,11 +188,10 @@ Rakefile:
             - 'spec/unit/puppet/transport/**/*_spec.rb'
 
         RSpec/MultipleExpectations:
-          Description: The resource-API provider specs PDK generates use multiple expectations per example to cover resource attribute checks; acceptance specs use multiple expectations per example to check several resource properties after a single catalog apply. Scoped to PDK-generated provider, transport, and acceptance spec paths only (D-08).
+          Description: The resource-API provider specs PDK generates use multiple expectations per example to cover resource attribute checks. Scoped to PDK-generated provider and transport spec paths only (D-08).
           Exclude:
             - 'spec/unit/puppet/provider/**/*_spec.rb'
             - 'spec/unit/puppet/transport/**/*_spec.rb'
-            - 'spec/acceptance/**/*_spec.rb'
 
         RSpec/VerifiedDoubleReference:
           Description: The resource-API provider and transport specs PDK generates use string-referenced instance doubles (the Puppet provider constant is not loaded in the spec context). Scoped to PDK-generated provider and transport spec paths only (D-08).
@@ -358,10 +357,10 @@ spec/spec_helper.rb:
   strict_variables: true
 .github/workflows/ci.yml:
   unmanaged: true
-  acceptance_flags: ['--nightly', '--collection-platform-exclude 9:redhat-7', '--collection-platform-exclude 9:centos-7', '--collection-platform-exclude 9:oraclelinux-7', '--collection-platform-exclude 9:scientific-7', '--collection-platform-exclude 9:debian-10', '--collection-platform-exclude 9:ubuntu-18.04', '--collection-platform-exclude 9:ubuntu-20.04', '--collection-platform-exclude 9:windows-2012r2-x86']
+  acceptance_flags: ['--nightly']
 .github/workflows/nightly.yml:
   unmanaged: true
-  acceptance_flags: ['--nightly', '--collection-platform-exclude 9:redhat-7', '--collection-platform-exclude 9:centos-7', '--collection-platform-exclude 9:oraclelinux-7', '--collection-platform-exclude 9:scientific-7', '--collection-platform-exclude 9:debian-10', '--collection-platform-exclude 9:ubuntu-18.04', '--collection-platform-exclude 9:ubuntu-20.04', '--collection-platform-exclude 9:windows-2012r2-x86']
+  acceptance_flags: ['--nightly']
 .github/workflows/release.yml:
   unmanaged: true
 .github/workflows/release_prep.yml:
