@@ -36,6 +36,15 @@ setup_puppetcore_apt() {
     sudo chmod 600 "${PUPPETCORE_AUTH_CONF}"
 }
 
+# Mirrors main()'s puppetcore precedence: the public release PDK can't auth against rubygems-puppetcore.puppet.com even with the BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM credential set.
+setup_fallback_apt() {
+    if [ -n "${PUPPET_FORGE_TOKEN}" ]; then
+        setup_puppetcore_apt
+    else
+        setup_apt "${RELEASE_DEB}"
+    fi
+}
+
 # Per-commit builds ahead of any official release. Requires Twingate already
 # connected (ci.yml's job, gated on PDK_CHANNEL=nightly) - builds.delivery.puppetlabs.net
 # is unreachable otherwise. Finds "latest" from the directory listing's real
@@ -52,17 +61,26 @@ setup_nightly_apt() {
     ')
 
     if [ -z "${latest_sha}" ]; then
-        echo "ERROR: could not determine latest PDK nightly build from ${NIGHTLY_INDEX_URL}" >&2
-        exit 1
+        echo "WARNING: could not determine latest PDK nightly build from ${NIGHTLY_INDEX_URL}; falling back to PDK release channel" >&2
+        setup_fallback_apt
+        return
     fi
     echo "Using PDK nightly build ${latest_sha}"
 
     local list_url="${NIGHTLY_INDEX_URL}${latest_sha}/repo_configs/deb/pl-pdk-${latest_sha}-${DIST_NAME}.list"
+
+    # A per-commit build can be indexed before this dist's config finishes uploading; fall back rather than fail CI outright.
+    if ! curl -fsSL --max-time 30 --output /dev/null "${list_url}"; then
+        echo "WARNING: no PDK nightly build for '${DIST_NAME}' at ${list_url}; falling back to PDK release channel" >&2
+        setup_fallback_apt
+        return
+    fi
+
     local repo_line
     repo_line=$(curl -fsSL --max-time 30 "${list_url}" | grep '^deb ')
 
     if [ -z "${repo_line}" ]; then
-        echo "ERROR: no apt repo config for '${DIST_NAME}' at ${list_url}" >&2
+        echo "ERROR: apt repo config at ${list_url} has no 'deb ' line" >&2
         exit 1
     fi
 
