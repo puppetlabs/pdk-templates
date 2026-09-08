@@ -1,4 +1,8 @@
 <%
+  # Shadow PDK's own no-op `metadata` binding method (LegacyTemplateDir#metadata
+  # always returns nil) with the actual module metadata hash.
+  metadata = (@configs['module_metadata'] || {}).dup
+
   # Ensure latest puppet requirement
   begin
     requirements = Array(metadata['requirements'])
