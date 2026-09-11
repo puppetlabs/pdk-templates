@@ -22,7 +22,7 @@ jobs:
       PDK_CHANNEL: ${{ inputs.pdk_channel || 'nightly' }}
     steps:
       - name: "Checkout"
-        uses: "actions/checkout@v3"
+        uses: "actions/checkout@v6"
 
       - name: "Export variables"
         run: |
