@@ -51,6 +51,71 @@ pdk new function --type v4 testfunc_v4 || true # not available in pdk 1.18 yet
 pdk new provider test_provider
 pdk new task test_task
 pdk new transport test_transport
+
+# Check the resolved (not rendered) gemsource_puppetcore via Bundler::Dsl, the same approach
+# pdk-private uses to decide whether to trust the vendored lock. eval_gemfile runs the Gemfile's
+# literal Ruby, so the credential warning may print to stderr below -- expected; checks only read stdout.
+
+# puppetcore is the default with no credentials present
+[ "$(env -u PUPPET_FORGE_TOKEN -u BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  %w[puppet facter bolt].each { |n| puts dsl.dependencies.find { |d| d.name == n }&.source&.remotes&.first }
+' 2>/dev/null | grep -cF 'rubygems-puppetcore.puppet.com')" = 3 ]
+
+# token presence doesn't change resolution
+[ "$(PUPPET_FORGE_TOKEN=fake-token-value ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  %w[puppet facter bolt].each { |n| puts dsl.dependencies.find { |d| d.name == n }&.source&.remotes&.first }
+' 2>/dev/null | grep -cF 'rubygems-puppetcore.puppet.com')" = 3 ]
+
+# downstream gem-version gating picks the puppetcore branch
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "voxpupuli-puppet-lint-plugins" }.requirement.to_s
+' 2>/dev/null)" = '~> 7.0' ]
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "puppetlabs_spec_helper" }.requirement.to_s
+' 2>/dev/null)" = '~> 9.0' ]
+
+# persisted gemsource.public opt-out routes to public rubygems.org; re-checked from a separate
+# process to prove persistence
+ruby -rbundler -e 'Bundler.settings.set_local("gemsource.public", "true")'
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "puppet" }&.source&.remotes&.first
+' 2>/dev/null | grep -cF 'rubygems.org')" = 1 ]
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "puppet" }&.source&.remotes&.first
+' 2>/dev/null | grep -cF 'puppetcore')" = 0 ]
+
+# downstream gem-version gating picks the public branch under the opt-out
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "voxpupuli-puppet-lint-plugins" }.requirement.to_s
+' 2>/dev/null)" = '~> 6.0' ]
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "puppetlabs_spec_helper" }.requirement.to_s
+' 2>/dev/null)" = '~> 8.0' ]
+
+# restore for the pdk bundle install / validate / test unit block below
+ruby -rbundler -e 'Bundler.settings.set_local("gemsource.public", nil)'
+[ "$(ruby -rbundler -e '
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "puppet" }&.source&.remotes&.first
+' 2>/dev/null | grep -cF 'rubygems-puppetcore.puppet.com')" = 1 ]
+
 # ensure_bundle! skips actual `bundle install` for packaged PDK installs; pdk bundle install does not.
 pdk bundle install
 pdk validate
