@@ -154,6 +154,8 @@ Gemfile:
 
 `overrides` only reaches gems defined via `required`/`optional` in `config_defaults.yml`. The `puppet`, `facter` and `bolt` gems are not configured that way, so their version is set with `PUPPET_GEM_VERSION` / `FACTER_GEM_VERSION` / `BOLT_GEM_VERSION` and their source with `GEM_SOURCE` or `bundle config set gemsource.public true`.
 
+Overriding a gem that has more than one conditional `required` entry in `config_defaults.yml` (as `voxpupuli-puppet-lint-plugins` does) replaces every matching entry with the same override, which can produce a duplicate `gem` line and a harmless "lists the gem ... more than once" warning from Bundler on `bundle install`.
+
 ### Manage Rubocop rules
 
 Use `cop_overrides` in `.sync.yml` to override individual cops. Entries in `cop_overrides` are merged last (after the built-in defaults and the selected profile's configs), making it the authoritative per-module override surface.
