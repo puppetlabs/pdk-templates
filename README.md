@@ -143,6 +143,17 @@ Gemfile:
         source: 'https://myrubygems.example.com/'
 ```
 
+To replace a template default gem of the same name, add an `overrides` entry similar to the following in `.sync.yml` file and run `pdk update`.
+
+```yaml
+Gemfile:
+  overrides:
+    - gem: 'voxpupuli-puppet-lint-plugins'
+      version: '~> 7.5'
+```
+
+`overrides` only reaches gems defined via `required`/`optional` in `config_defaults.yml`. The `puppet`, `facter` and `bolt` gems are not configured that way, so their version is set with `PUPPET_GEM_VERSION` / `FACTER_GEM_VERSION` / `BOLT_GEM_VERSION` and their source with `GEM_SOURCE` or `bundle config set gemsource.public true`.
+
 ### Manage Rubocop rules
 
 Use `cop_overrides` in `.sync.yml` to override individual cops. Entries in `cop_overrides` are merged last (after the built-in defaults and the selected profile's configs), making it the authoritative per-module override surface.
