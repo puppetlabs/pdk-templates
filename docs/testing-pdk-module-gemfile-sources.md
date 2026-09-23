@@ -2,21 +2,25 @@
 
 ## Description
 
-This guide explains how to vary the gemsources and gem versions in the Gemfile of your pdk module using the following environment variables:
+This guide explains how to vary the gemsources and gem versions in the Gemfile of your pdk module using the environment variables in the table below, plus the persisted Bundler settings `gemsource.public` and `gemsource.airgapped`.
 
 | Environment Variable      | Purpose                                                                                   | Example Value                                                      |
 |--------------------------|-------------------------------------------------------------------------------------------|--------------------------------------------------------------------|
-| GEM_SOURCE               | Sets the default gem source for all gems.                                                 | https://rubygems.org<br>https://artifactory.delivery.puppetlabs.net/artifactory/api/gems/rubygems |
-| GEM_SOURCE_PUPPETCORE    | Sets the gem source specifically for puppetcore gems (puppet, facter).                    | https://rubygems-puppetcore.puppet.com                             |
+| GEM_SOURCE               | Sets the default gem source, which is also where puppetcore gems resolve from once the `gemsource.public` opt-out is set. | https://rubygems.org<br>https://artifactory.delivery.puppetlabs.net/artifactory/api/gems/rubygems |
 | PUPPET_GEM_VERSION       | Specifies the Puppet gem version, git repo, or local path to use.                         | 8.10.0<br>https://github.com/puppetlabs/puppet.git<br>/path/to/puppet |
 | FACTER_GEM_VERSION       | Specifies the Facter gem version, git repo, or local path to use.                         | 4.0.52<br>https://github.com/puppetlabs/facter.git<br>/path/to/facter |
 | DEBUG                    | Enables verbose Gemfile output for troubleshooting when set to a non-empty string.         | true     
+| BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM | Supplies puppetcore credentials to Bundler.                          | forge-key:${PUPPET_FORGE_TOKEN}                                    |
+
+Two persisted Bundler settings are not environment variables: `bundle config set gemsource.public true` routes puppetcore gems to the default source instead, and `bundle config set gemsource.airgapped true` only suppresses the credential-detection warning without changing which source is used. Both are written to the module's `.bundle/config`, so they persist across commands.
 
 This flexibility is essential for development workflows, allowing modules to be tested against different puppet and facter versions, whether sourced from public or private gem servers, local file paths, or git repositories.
 
 ## Setup
 
 ### Environment variables
+
+- `PUPPET_FORGE_TOKEN` is not necessary for airgapped installations, because puppetcore is the default gem source regardless of whether a token is present and a packaged PDK install resolves those gems from its vendored cache; the token is needed only to download puppetcore gems over the network and to silence the credential-detection warning.
 
 - Export a valid `PUPPET_FORGE_TOKEN` to enable access to puppetcore gems:
 
@@ -40,7 +44,7 @@ This flexibility is essential for development workflows, allowing modules to be 
   # Create environment cleanup script
   cat << 'EOF' > clean_environment.sh
   # Clean environment variables
-  unset GEM_SOURCE GEM_SOURCE_PUPPETCORE
+  unset GEM_SOURCE
   unset PUPPET_GEM_VERSION FACTER_GEM_VERSION HIERA_GEM_VERSION  
   unset BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM
   # Clean bundler state
@@ -54,6 +58,11 @@ This flexibility is essential for development workflows, allowing modules to be 
   EOF
   chmod +x set_puppetcore_authentication.sh
   ```
+
+The `rm -rf vendor .bundle` matters now because `bundle config set` writes to the module's own
+`.bundle/config` by default, so removing `.bundle` also clears any `gemsource.public` or
+`gemsource.airgapped` opt-out from a previous scenario, letting each scenario start from the true
+default.
 
 **Important**: Use `source ./script.sh` or `. ./script.sh` to execute these scripts otherwise the environment variables may not get registered on your terminal session.
 
