@@ -163,8 +163,9 @@ COVERAGE=yes bundle exec rspec        # SimpleCov report
 - The `Gemfile` is PDK-managed. It resolves `puppet`, `facter`, `hiera` (and `bolt`) gems through a
   configurable source -- do not hard-code gem versions in it.
 - Environment knobs: `PUPPET_GEM_VERSION`, `FACTER_GEM_VERSION`, `HIERA_GEM_VERSION`, `BOLT_GEM_VERSION`
-  pin versions; `GEM_SOURCE` overrides the default RubyGems source; `GEM_SOURCE_PUPPETCORE` (set
-  automatically when `PUPPET_FORGE_TOKEN` is present) selects the authenticated PuppetCore registry.
+  pin versions; `GEM_SOURCE` overrides the default RubyGems source; puppetcore
+  (`https://rubygems-puppetcore.puppet.com`) is the default source for `puppet`, `facter` and `bolt`
+  regardless of `PUPPET_FORGE_TOKEN`, and `bundle config set gemsource.public true` opts out to public gems.
 - The `:system_tests` group holds Litmus/serverspec; `:development` holds rspec, lint, and coverage gems.
 - In code and specs, depend on the public Puppet API (`Puppet::ResourceApi`, `Puppet::Type`, `Facter`),
   never on a specific gem name, so the module works whichever runtime gem is resolved.
