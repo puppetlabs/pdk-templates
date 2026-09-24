@@ -152,7 +152,7 @@ Gemfile:
       version: '~> 7.5'
 ```
 
-`overrides` only reaches gems defined via `required`/`optional` in `config_defaults.yml`. The `puppet`, `facter` and `bolt` gems are not configured that way, so their version is set with `PUPPET_GEM_VERSION` / `FACTER_GEM_VERSION` / `BOLT_GEM_VERSION` and their source with `GEM_SOURCE` or `bundle config set gemsource.public true`.
+`overrides` only reaches gems defined via `required`/`optional` in `config_defaults.yml`. The `puppet`, `facter` and `bolt` gems are not configured that way, so their version is set with `PUPPET_GEM_VERSION` / `FACTER_GEM_VERSION` / `BOLT_GEM_VERSION`. Their source always resolves to `https://rubygems-puppetcore.puppet.com`; `GEM_SOURCE` has no effect on it by itself — `bundle config set gemsource.public true` must also be set for `GEM_SOURCE` to take effect for these three gems.
 
 Overriding a gem that has more than one conditional `required` entry in `config_defaults.yml` (as `voxpupuli-puppet-lint-plugins` does) replaces every matching entry with the same override, which can produce a duplicate `gem` line and a harmless "lists the gem ... more than once" warning from Bundler on `bundle install`.
 
@@ -360,7 +360,7 @@ Known gaps (not statically detectable, so not flagged): the explicit-receiver `K
 
 #### Gem source resolution
 
-A generated Gemfile sets its default source from `ENV['GEM_SOURCE']`, falling back to `https://rubygems.org`, and resolves `puppet`, `facter`, `bolt`, and the ADR 0001 dev/test gems that move with them to `https://rubygems-puppetcore.puppet.com` unconditionally, regardless of whether `PUPPET_FORGE_TOKEN` is set and regardless of network state.
+A generated Gemfile sets its default source from `ENV['GEM_SOURCE']`, falling back to `https://rubygems.org`, and resolves `puppet`, `facter` and `bolt` to `https://rubygems-puppetcore.puppet.com` unconditionally, regardless of whether `PUPPET_FORGE_TOKEN` is set and regardless of network state. The ADR 0001 dev/test gems (`voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`) still load from the default source; only their gem *version* moves with the resolved value, not their source.
 
 This keeps the rendered `source:` declaration byte-identical across machines: airgapped installs need a deterministic gem source that does not depend on a token being present or on the network being reachable, so a committed `Gemfile.lock` cannot drift into a frozen-mode failure.
 
