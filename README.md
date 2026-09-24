@@ -143,6 +143,19 @@ Gemfile:
         source: 'https://myrubygems.example.com/'
 ```
 
+To replace a template default gem of the same name, add an `overrides` entry similar to the following in `.sync.yml` file and run `pdk update`.
+
+```yaml
+Gemfile:
+  overrides:
+    - gem: 'voxpupuli-puppet-lint-plugins'
+      version: '~> 7.5'
+```
+
+`overrides` only reaches gems defined via `required`/`optional` in `config_defaults.yml`. The `puppet`, `facter` and `bolt` gems are not configured that way, so their version is set with `PUPPET_GEM_VERSION` / `FACTER_GEM_VERSION` / `BOLT_GEM_VERSION`. Their source always resolves to `https://rubygems-puppetcore.puppet.com`; `GEM_SOURCE` has no effect on it by itself — `bundle config set gemsource.public true` must also be set for `GEM_SOURCE` to take effect for these three gems.
+
+Overriding a gem that has more than one conditional `required` entry in `config_defaults.yml` (as `voxpupuli-puppet-lint-plugins` does) replaces every matching entry with the same override, which can produce a duplicate `gem` line and a harmless "lists the gem ... more than once" warning from Bundler on `bundle install`.
+
 ### Manage Rubocop rules
 
 Use `cop_overrides` in `.sync.yml` to override individual cops. Entries in `cop_overrides` are merged last (after the built-in defaults and the selected profile's configs), making it the authoritative per-module override surface.
@@ -344,6 +357,42 @@ Known gaps (not statically detectable, so not flagged): the explicit-receiver `K
 |source|Specify an alternate Rubygems repository to load the gem from.|
 |from_env|Specifies an environment variable containing either a Rubygem version specification indicating the version to use OR a URL indicating the location from which to load the gem.|
 |condition|An optional string containing a Ruby-code conditional controlling if this gem will be processed in the Gemfile.|
+
+#### Gem source resolution
+
+A generated Gemfile sets its default source from `ENV['GEM_SOURCE']`, falling back to `https://rubygems.org`, and resolves `puppet`, `facter` and `bolt` to `https://rubygems-puppetcore.puppet.com` unconditionally, regardless of whether `PUPPET_FORGE_TOKEN` is set and regardless of network state. The ADR 0001 dev/test gems (`voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`) still load from the default source; only their gem *version* moves with the resolved value, not their source.
+
+This keeps the rendered `source:` declaration byte-identical across machines: airgapped installs need a deterministic gem source that does not depend on a token being present or on the network being reachable, so a committed `Gemfile.lock` cannot drift into a frozen-mode failure.
+
+To use public rubygems.org instead:
+
+```bash
+bundle config set gemsource.public true
+```
+
+This is a persisted Bundler setting written to the module's `.bundle/config`, so it survives across commands and does not need repeating per invocation.
+
+A module can also make public gems the default for every contributor and CI run by committing its own `.bundle/config` containing the `gemsource.public` setting, which requires knocking `/.bundle/` out of the templated `.gitignore`:
+
+```yaml
+.gitignore:
+  required:
+    - '---/.bundle/'
+```
+
+`ENV['GEM_SOURCE_PUPPETCORE']` was removed entirely and now has no effect on gem source resolution. Users who previously set it to force puppetcore no longer need to do anything (puppetcore is the default), and users who previously left `PUPPET_FORGE_TOKEN` unset in order to get public gems must now run `bundle config set gemsource.public true` instead. `ENV['GEM_SOURCE']` still works and still sets the default (non-puppetcore) source.
+
+Bundler emits a warning on every invocation when none of `PUPPET_FORGE_TOKEN`, `BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM`, `gemsource.airgapped` or `gemsource.public` is present:
+
+```
+No puppetcore credentials detected.
+On an airgapped install, run `bundle config set gemsource.airgapped true` to suppress this warning.
+To use public gems instead, run `bundle config set gemsource.public true`.
+```
+
+`bundle config set gemsource.airgapped true` suppresses the warning without changing which source is used.
+
+For cases the default and the opt-out do not cover, see [Setting custom gems in the Gemfile](#setting-custom-gems-in-the-gemfile).
 
 ### spec/default_facts.yml
 

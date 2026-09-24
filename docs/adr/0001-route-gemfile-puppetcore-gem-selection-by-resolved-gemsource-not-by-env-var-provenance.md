@@ -31,4 +31,4 @@ Therefore, `gemsource_puppetcore != 'https://rubygems.org'` was added to the Gem
 
 ## Consequences
 
-The above design solves not only the selection of `puppet` but also the selection of 2 associated dev/test gems `voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`.  These 2 gems must move together for puppetcore gemsources.
+The above design solves not only the selection of `puppet` but also the selection of 2 associated dev/test gems `voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`.  These 2 gems must move together for puppetcore gemsources.  See [0002](0002-default-gemsource-puppetcore-to-puppetcore-with-a-persisted-public-opt-out.md) for how `gemsource_puppetcore` itself resolves.
