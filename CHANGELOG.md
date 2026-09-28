@@ -9,36 +9,21 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 
 [Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.8.0.2...v4.0.0)
 
-### Other
-
-- (maint) Fix nightly workflow to install actual PDK nightly builds [#668](https://github.com/puppetlabs/pdk-templates/pull/668) ([david22swan](https://github.com/david22swan))
-
-## [3.8.0.2](https://github.com/puppetlabs/pdk-templates/tree/3.8.0.2) - 2026-09-28
-
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.8.0.1...3.8.0.2)
-
-### Other
+### Changed
 
 - (CAT-2895) Puppetcore-default gemsource resolution [#667](https://github.com/puppetlabs/pdk-templates/pull/667) ([david22swan](https://github.com/david22swan))
-
-## [3.8.0.1](https://github.com/puppetlabs/pdk-templates/tree/3.8.0.1) - 2026-09-16
-
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.8.0...3.8.0.1)
+- (CAT-1698) Slim `.rubocop.yml` to the `NewCops: enable` deep-merge model and validate clean scaffolds [#647](https://github.com/puppetlabs/pdk-templates/pull/647) ([david22swan](https://github.com/david22swan))
 
 ### Added
 
 - (CAT-2581) Allow voxpupuli-puppet-lint-plugins 7.x versions [#659](https://github.com/puppetlabs/pdk-templates/pull/659) ([david22swan](https://github.com/david22swan))
 - (CAT-2581) Allow puppetlabs_spec_helper 9.x versions [#658](https://github.com/puppetlabs/pdk-templates/pull/658) ([david22swan](https://github.com/david22swan))
 - (CAT-2682) Add customizable acceptance_flags for CI/nightly workflow Acceptance jobs [#654](https://github.com/puppetlabs/pdk-templates/pull/654) ([david22swan](https://github.com/david22swan))
-- (CAT-1698) Slim `.rubocop.yml` to the `NewCops: enable` deep-merge model and validate clean scaffolds [#647](https://github.com/puppetlabs/pdk-templates/pull/647) ([david22swan](https://github.com/david22swan))
 
 ### Fixed
 
 - (CAT-2575) Pin Layout/EndOfLine to lf in generated .rubocop.yml [#665](https://github.com/puppetlabs/pdk-templates/pull/665) ([david22swan](https://github.com/david22swan))
 - Update puppet-strings gem version to ~> 5.0 [#655](https://github.com/puppetlabs/pdk-templates/pull/655) ([david22swan](https://github.com/david22swan))
-
-### Other
-
 - fix: Raise puppet floor to 8.17 to fix silent resolution failure. [#662](https://github.com/puppetlabs/pdk-templates/pull/662) ([gavindidrichsen](https://github.com/gavindidrichsen))
 - (maint) Open puppet-strings constraint to `>= 4.0` [#660](https://github.com/puppetlabs/pdk-templates/pull/660) ([gavindidrichsen](https://github.com/gavindidrichsen))
 
