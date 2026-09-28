@@ -5,9 +5,31 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v3.8.0](https://github.com/puppetlabs/pdk-templates/tree/v3.8.0) - 2026-07-15
+## [v4.0.0](https://github.com/puppetlabs/pdk-templates/tree/v4.0.0) - 2026-09-28
 
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.7.0...v3.8.0)
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.8.0.2...v4.0.0)
+
+### Changed
+
+- (CAT-2895) Puppetcore-default gemsource resolution [#667](https://github.com/puppetlabs/pdk-templates/pull/667) ([david22swan](https://github.com/david22swan))
+- (CAT-1698) Slim `.rubocop.yml` to the `NewCops: enable` deep-merge model and validate clean scaffolds [#647](https://github.com/puppetlabs/pdk-templates/pull/647) ([david22swan](https://github.com/david22swan))
+
+### Added
+
+- (CAT-2581) Allow voxpupuli-puppet-lint-plugins 7.x versions [#659](https://github.com/puppetlabs/pdk-templates/pull/659) ([david22swan](https://github.com/david22swan))
+- (CAT-2581) Allow puppetlabs_spec_helper 9.x versions [#658](https://github.com/puppetlabs/pdk-templates/pull/658) ([david22swan](https://github.com/david22swan))
+- (CAT-2682) Add customizable acceptance_flags for CI/nightly workflow Acceptance jobs [#654](https://github.com/puppetlabs/pdk-templates/pull/654) ([david22swan](https://github.com/david22swan))
+
+### Fixed
+
+- (CAT-2575) Pin Layout/EndOfLine to lf in generated .rubocop.yml [#665](https://github.com/puppetlabs/pdk-templates/pull/665) ([david22swan](https://github.com/david22swan))
+- Update puppet-strings gem version to ~> 5.0 [#655](https://github.com/puppetlabs/pdk-templates/pull/655) ([david22swan](https://github.com/david22swan))
+- fix: Raise puppet floor to 8.17 to fix silent resolution failure. [#662](https://github.com/puppetlabs/pdk-templates/pull/662) ([gavindidrichsen](https://github.com/gavindidrichsen))
+- (maint) Open puppet-strings constraint to `>= 4.0` [#660](https://github.com/puppetlabs/pdk-templates/pull/660) ([gavindidrichsen](https://github.com/gavindidrichsen))
+
+## [3.8.0](https://github.com/puppetlabs/pdk-templates/tree/3.8.0) - 2026-07-15
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.7.0...3.8.0)
 
 ### Added
 
@@ -697,6 +719,7 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Fixed
 
 - (FM-7659) - Fix to pin Bundler for Puppet 4 Testing [#173](https://github.com/puppetlabs/pdk-templates/pull/173) ([david22swan](https://github.com/david22swan))
+- Fix rubygems-update for ruby older than 2.3 for travis and gitlab-ci [#171](https://github.com/puppetlabs/pdk-templates/pull/171) ([Felixoid](https://github.com/Felixoid))
 - (FM-7622) - Remove deprecated config from .travis.yml [#170](https://github.com/puppetlabs/pdk-templates/pull/170) ([eimlav](https://github.com/eimlav))
 - (PDK-957) Exclude all development files from module builds [#168](https://github.com/puppetlabs/pdk-templates/pull/168) ([rodjek](https://github.com/rodjek))
 
