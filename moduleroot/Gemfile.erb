@@ -101,7 +101,7 @@ def puppet_floor_version(puppetcore_source)
   return nil if puppetcore_source == 'https://rubygems.org'
 
   ruby_version = Gem::Version.new(RUBY_VERSION.dup)
-  return '~> 9.0' if Gem::Requirement.create('>= 4.0.0').satisfied_by?(ruby_version)
+  return '~> 9.0' if Gem::Requirement.create('>= 3.4.0').satisfied_by?(ruby_version)
   return '~> 8.17' if Gem::Requirement.create('>= 3.1.0').satisfied_by?(ruby_version)
 
   nil # puppet 8+ requires ruby >= 3.1; leave older rubies unconstrained
