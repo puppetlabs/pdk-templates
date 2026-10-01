@@ -362,6 +362,8 @@ spec/spec_helper.rb:
 .github/workflows/ci.yml:
   unmanaged: true
   acceptance_flags: ['--nightly']
+.github/workflows/fork_ci_label_guard.yml:
+  unmanaged: true
 .github/workflows/nightly.yml:
   unmanaged: true
   acceptance_flags: ['--nightly']
