@@ -61,6 +61,7 @@ The `unmanaged: true` key tells PDK to leave a file untouched; `delete: true` te
 - Use plain ASCII unless the file already requires unicode characters.
 - Many templates read values from `@configs`; avoid hardcoding values that should remain configurable.
 - When editing `moduleroot/.github/workflows/*.erb`, third-party GitHub Actions must reference the `puppetlabs`-forked copies (on `pdk-templates-v1` branches), not upstream. See the README's "Security Considerations on Github Actions" section for the rationale and list of forked actions.
+- Any new GitHub Actions workflow added to the templates must be set to `unmanaged: true` by default in `config_defaults.yml`.
 
 ## RuboCop Profile System
 
