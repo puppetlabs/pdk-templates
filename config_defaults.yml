@@ -359,6 +359,8 @@ spec/spec_helper.rb:
   mock_with: ":rspec"
   strict_level: ":warning"
   strict_variables: true
+.github/PULL_REQUEST_TEMPLATE.md:
+  unmanaged: true
 .github/workflows/ci.yml:
   unmanaged: true
   acceptance_flags: ['--nightly']
