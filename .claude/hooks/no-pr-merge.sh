@@ -6,5 +6,5 @@
 . "$(dirname "$0")/_parse_input.sh"
 
 if echo "$cmd" | grep -qE '(^|[;&|])[[:space:]]*gh pr merge'; then
-  echo '{"continue":false,"stopReason":"Project rule: never merge a pull request."}'
+  echo '{"systemMessage":"🚫 Project rule: never merge a pull request.","hookSpecificOutput":{"hookEventName":"PreToolUse","permissionDecision":"deny","permissionDecisionReason":"Project rule: never merge a pull request."}}'
 fi
