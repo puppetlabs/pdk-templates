@@ -1,0 +1,18 @@
+<%
+  # Shadow PDK's own no-op `metadata` binding method (LegacyTemplateDir#metadata
+  # always returns nil) with the actual module metadata hash.
+  metadata = (@configs['module_metadata'] || {}).dup
+
+  # Ensure latest puppet requirement
+  begin
+    requirements = Array(metadata['requirements'])
+    targets_openvox = requirements.any? { |r| r['name'] == 'openvox' }
+    puppet_requirement = requirements.find { |r| r['name'] == 'puppet' }
+
+    # >= 8.0.0 < 10.0.0 is the new supported puppet bound for a puppet-architecture module.
+    puppet_requirement['version_requirement'] = '>= 8.0.0 < 10.0.0' if !targets_openvox && puppet_requirement
+  rescue StandardError
+    nil
+  end
+-%>
+<%= JSON.pretty_generate(metadata.delete_if { |_key, value| value.nil? }) %>
