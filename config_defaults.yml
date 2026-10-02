@@ -24,6 +24,7 @@ common:
     - '/doc/'
     - '/Gemfile.local'
     - '/Gemfile.lock'
+    - '/Gemfile-puppet*.lock'
     - '/junit/'
     - '/log/'
     - '/pkg/'
