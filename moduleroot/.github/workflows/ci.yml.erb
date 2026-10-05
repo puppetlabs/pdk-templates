@@ -26,6 +26,7 @@ jobs:
     secrets: "inherit"
 
   Acceptance:
+    needs: Spec
     if: >-
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request' &&
