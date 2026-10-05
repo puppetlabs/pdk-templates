@@ -5,9 +5,18 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) and this project adheres to [Semantic Versioning](http://semver.org).
 
-## [v4.0.0](https://github.com/puppetlabs/pdk-templates/tree/v4.0.0) - 2026-09-28
+## [v4.0.1](https://github.com/puppetlabs/pdk-templates/tree/v4.0.1) - 2026-10-05
 
-[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.8.0.2...v4.0.0)
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/4.0.0...v4.0.1)
+
+### Fixed
+
+- (CAT-2914) Set pull request template to unmanaged by default [#673](https://github.com/puppetlabs/pdk-templates/pull/673) ([david22swan](https://github.com/david22swan))
+- (CAT-2912/CAT-2913) Remove generated CLUADE.md and  set `fork_ci_label_guard.yml` workflow to unmanaged [#670](https://github.com/puppetlabs/pdk-templates/pull/670) ([david22swan](https://github.com/david22swan))
+
+## [4.0.0](https://github.com/puppetlabs/pdk-templates/tree/4.0.0) - 2026-09-28
+
+[Full Changelog](https://github.com/puppetlabs/pdk-templates/compare/3.8.0...4.0.0)
 
 ### Changed
 
@@ -23,9 +32,9 @@ The format is based on [Keep a Changelog](http://keepachangelog.com/en/1.0.0/) a
 ### Fixed
 
 - (CAT-2575) Pin Layout/EndOfLine to lf in generated .rubocop.yml [#665](https://github.com/puppetlabs/pdk-templates/pull/665) ([david22swan](https://github.com/david22swan))
-- Update puppet-strings gem version to ~> 5.0 [#655](https://github.com/puppetlabs/pdk-templates/pull/655) ([david22swan](https://github.com/david22swan))
 - fix: Raise puppet floor to 8.17 to fix silent resolution failure. [#662](https://github.com/puppetlabs/pdk-templates/pull/662) ([gavindidrichsen](https://github.com/gavindidrichsen))
 - (maint) Open puppet-strings constraint to `>= 4.0` [#660](https://github.com/puppetlabs/pdk-templates/pull/660) ([gavindidrichsen](https://github.com/gavindidrichsen))
+- Update puppet-strings gem version to ~> 5.0 [#655](https://github.com/puppetlabs/pdk-templates/pull/655) ([david22swan](https://github.com/david22swan))
 
 ## [3.8.0](https://github.com/puppetlabs/pdk-templates/tree/3.8.0) - 2026-07-15
 
