@@ -4,7 +4,7 @@ name: "nightly"
 
 on:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "<%= @configs['cron'] %>"
   workflow_dispatch:
 
 jobs:

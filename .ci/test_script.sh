@@ -43,6 +43,7 @@ mv .sync.yml.orig .sync.yml
 pdk update --force
 grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/ci.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on ci.yml (TEST-01, TEST-02b)
 grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/nightly.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on nightly.yml independently (TEST-01, TEST-02b, D-13)
+grep -qF -- '- cron: "20 3 * * *"' .github/workflows/nightly.yml # Ensure a .sync.yml cron override renders as the nightly schedule (MODULES-11981)
 pdk new class new_module
 pdk new defined_type test_type
 pdk new fact test_fact || true # not available in pdk 1.18 yet
