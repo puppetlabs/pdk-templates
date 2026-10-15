@@ -272,6 +272,14 @@ This renders exactly `flags: "--nightly --platform-exclude centos-7 --platform-e
 
 To clear all flags entirely, knock out each default element individually using the same per-element knockout prefix shown above, e.g. `acceptance_flags: ['-----nightly']` to remove the `--nightly` default. This omits the `with:` block completely (rather than rendering an empty `flags: ""`), so the Acceptance job runs with the reusable workflow's own defaults. Note that the hash-key removal syntax (`acceptance_flags: '---'`) does **not** achieve this — it merges to an empty string, which still renders `flags: ""` rather than omitting the block.
 
+The `cron` key under `.github/workflows/nightly.yml` sets the nightly workflow's `on.schedule` cron expression (UTC). It defaults to `'0 0 * * *'`. Give each module its own slot so that the nightlies of many modules do not all start, and provision test machines, at the same moment:
+
+```yaml
+.github/workflows/nightly.yml:
+  unmanaged: false
+  cron: '35 1 * * *'
+```
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
