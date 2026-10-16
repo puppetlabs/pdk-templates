@@ -45,7 +45,7 @@ cat > .sync.yml <<'YAML'
   include_todos: true
 YAML
 pdk update --force
-grep -q "inherit_from: .rubocop_todo.yml" ./.rubocop.yml
+grep -qF 'inherit_from: ".rubocop_todo.yml"' ./.rubocop.yml
 grep -A 2 "inherit_mode:" ./.rubocop.yml | grep -q -- "- Exclude" # Ensure todo excludes merge with the profile's per-cop excludes instead of being replaced by them
 mv .sync.yml.orig .sync.yml
 pdk update --force
