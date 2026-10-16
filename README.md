@@ -325,7 +325,7 @@ The `cron` key under `.github/workflows/nightly.yml` sets the nightly workflow's
 
 | Key            | Description   |
 | :------------- |:--------------|
-|include\_todos|Allows you to use rubocop's "TODOs" to temporarily skip checks by setting this to `true`. See rubocop's `--auto-gen-config` option for details. Defaults to `false`.|
+|include\_todos|Allows you to use rubocop's "TODOs" to temporarily skip checks by setting this to `true`. See rubocop's `--auto-gen-config` option for details. Also sets `inherit_mode: merge: [Exclude]` so todo excludes combine with the profile's own per-cop excludes. Defaults to `false`.|
 |selected\_profile|Selects the active RuboCop profile. The canonical value is `'on'`, which runs RuboCop's default-enabled cops plus any new/pending cops via `NewCops: enable` (cops disabled by default remain disabled). The names `cleanups_only`, `strict`, and `hardcore` are backward-compatible aliases that resolve to `'on'`. Set to `'off'` to disable all cops (`DisabledByDefault: true`).|
 |cop\_overrides|Authoritative per-module override surface. Merged last (precedence: `defaults -> profile configs -> cop_overrides`). Use `CopName: { Enabled: false }` to disable a cop; use the knockout prefix `---` (e.g. `CopName: '---'`) to remove an override entirely.|
 |profiles|Defines the profile configurations. Two profiles are provided: `'on'` (canonical; sets `NewCops: enable`, with its base EnforcedStyle tunings inlined directly under its `configs`) and `'off'` (`DisabledByDefault: true`, `NewCops: disable`). The named aliases `cleanups_only`, `strict`, and `hardcore` resolve to `'on'`.|

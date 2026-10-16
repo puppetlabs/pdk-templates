@@ -31,7 +31,12 @@ defaults = {
   },
 }
 
-defaults['inherit_from'] = '.rubocop_todo.yml' if @configs['include_todos']
+if @configs['include_todos']
+  defaults['inherit_from'] = '.rubocop_todo.yml'
+  # A cop's Exclude in this file replaces the one inherited from the todo file, so the
+  # profile's scoped Excludes (e.g. RSpec/ExampleLength) would silently drop the todos.
+  defaults['inherit_mode'] = { 'merge' => ['Exclude'] }
+end
 defaults['AllCops']['TargetRubyVersion'] = @configs['TargetRubyVersion'] if @configs['TargetRubyVersion']
 
 require 'deep_merge/core'
