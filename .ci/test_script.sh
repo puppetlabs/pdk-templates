@@ -39,8 +39,17 @@ YAML
 pdk update --force
 grep -q "DisabledByDefault: true" ./.rubocop.yml # Ensure selected_profile: 'off' (YAML-coerced to boolean false) renders RuboCop's native disable-all switch, exercising the boolean-coercion guard. DisabledByDefault is a new AllCops key so deep_merge appends it after the Exclude array -- check the whole file, not a fixed window after AllCops.
 grep -q "NewCops: disable" ./.rubocop.yml
+cat > .sync.yml <<'YAML'
+---
+.rubocop.yml:
+  include_todos: true
+YAML
+pdk update --force
+grep -qF 'inherit_from: ".rubocop_todo.yml"' ./.rubocop.yml
+grep -A 2 "inherit_mode:" ./.rubocop.yml | grep -q -- "- Exclude" # Ensure todo excludes merge with the profile's per-cop excludes instead of being replaced by them
 mv .sync.yml.orig .sync.yml
 pdk update --force
+[ -z "$(grep "inherit_mode" ./.rubocop.yml)" ] # Ensure inherit_mode is only rendered with include_todos
 grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/ci.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on ci.yml (TEST-01, TEST-02b)
 grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/nightly.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on nightly.yml independently (TEST-01, TEST-02b, D-13)
 grep -qF -- '- cron: "20 3 * * *"' .github/workflows/nightly.yml # Ensure a .sync.yml cron override renders as the nightly schedule (MODULES-11981)
