@@ -280,6 +280,8 @@ The `cron` key under `.github/workflows/nightly.yml` sets the nightly workflow's
   cron: '35 1 * * *'
 ```
 
+On a fork pull request, `ci.yml` runs Acceptance only when a maintainer adds the `allowed-for-ci` label (the `labeled` event for that label). A label left on the PR from an earlier commit does not start a run. To re-run after new commits, remove the label and add it again.
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
