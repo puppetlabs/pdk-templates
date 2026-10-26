@@ -7,7 +7,7 @@ on:
     branches:
       - "main"
   pull_request_target:
-    types: [labeled, reopened]
+    types: [labeled]
     branches:
       - "main"
   workflow_dispatch:
@@ -16,7 +16,11 @@ permissions:
   contents: read
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
+  # On pull_request_target, github.ref is the base branch, so key on the PR number
+  # (and the event) to keep runs of different PRs from cancelling each other. The
+  # label is in the key so that adding another label to the same PR doesn't cancel
+  # its allowed-for-ci acceptance run; re-adding allowed-for-ci still replaces it.
+  group: ${{ github.workflow }}-${{ github.event_name }}-${{ github.event.pull_request.number || github.ref }}-${{ github.event.label.name }}
   cancel-in-progress: true
 
 jobs:
@@ -32,7 +36,7 @@ jobs:
        github.event.pull_request.head.repo.fork == false) ||
       (github.event_name == 'pull_request_target' &&
        github.event.pull_request.head.repo.fork == true &&
-       contains(github.event.pull_request.labels.*.name, 'allowed-for-ci'))
+       github.event.label.name == 'allowed-for-ci')
     uses: "puppetlabs/cat-github-actions/.github/workflows/module_acceptance.yml@main"
 <% unless acceptance_flags.empty? -%>
     with:

@@ -280,6 +280,12 @@ The `cron` key under `.github/workflows/nightly.yml` sets the nightly workflow's
   cron: '35 1 * * *'
 ```
 
+#### Fork pull requests in ci.yml
+
+On a fork pull request, `ci.yml` runs Acceptance only when a maintainer (anyone with Triage access or higher, who can add labels) adds the `allowed-for-ci` label. It runs on that `labeled` event, not because the label is present, so a label left on the PR from an earlier commit does not start a run. The `puppetcore-fork` environment approval in `module_acceptance.yml` (puppetlabs/cat-github-actions) still applies after the label.
+
+"Re-run jobs" in the Actions UI re-tests the commit from the original labeling event, not newer commits. To test new commits, add the label again. `.github/workflows/fork_ci_label_guard.yml` is opt-in (`unmanaged: true` by default). A module that manages it gets `allowed-for-ci` removed automatically when the PR gets a new commit or is closed, so a maintainer only re-adds it. Without it, remove the label and add it again.
+
 ### .pdkignore
 
 >A .pdkignore file in your repo allows you to specify files to ignore when building a module package with `pdk build`.
