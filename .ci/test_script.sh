@@ -53,6 +53,11 @@ pdk update --force
 grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/ci.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on ci.yml (TEST-01, TEST-02b)
 grep -qF 'flags: "--platform-exclude centos-7 --platform-exclude oraclelinux-7 --message \"hello\""' .github/workflows/nightly.yml # Ensure acceptance_flags override + knockout + repeated-flag-name (CR-01 regression) + adversarial quote render on nightly.yml independently (TEST-01, TEST-02b, D-13)
 grep -qF -- '- cron: "20 3 * * *"' .github/workflows/nightly.yml # Ensure a .sync.yml cron override renders as the nightly schedule (MODULES-11981)
+grep -qF 'types: [labeled]' .github/workflows/ci.yml # Ensure pull_request_target triggers only on labeled (MODULES-12062)
+[ -z "$(grep -F 'reopened' .github/workflows/ci.yml)" ] # Ensure a fork author can't re-run acceptance by reopening their PR (MODULES-12062)
+grep -qF "github.event.label.name == 'allowed-for-ci'" .github/workflows/ci.yml # Ensure fork acceptance gates on the allowed-for-ci labeling event itself (MODULES-12062)
+[ -z "$(grep -F 'contains(github.event.pull_request.labels' .github/workflows/ci.yml)" ] # Ensure a stale allowed-for-ci label's presence can't start fork acceptance (MODULES-12062)
+grep -qF 'github.event.pull_request.number || github.ref }}-${{ github.event.label.name }}' .github/workflows/ci.yml # Ensure the concurrency group is per PR and per label, so other PRs and other labels don't cancel acceptance (MODULES-12062)
 pdk new class new_module
 pdk new defined_type test_type
 pdk new fact test_fact || true # not available in pdk 1.18 yet
