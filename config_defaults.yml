@@ -221,6 +221,13 @@ Rakefile:
           Exclude:
             - 'lib/puppet/util/network_device/**/*.rb'
 
+        Lint/BooleanSymbol:
+          Description: Puppet types and providers use the symbols :true and :false as parameter and property values (e.g. newvalues(:true, :false)), and specs set and assert them. Autocorrecting them to true/false breaks the types. Scoped to type, provider and spec paths, matching puppet's own .rubocop.yml.
+          Exclude:
+            - 'lib/puppet/type/**/*.rb'
+            - 'lib/puppet/provider/**/*.rb'
+            - 'spec/**/*.rb'
+
     # No cops enabled. Uses RuboCop's native DisabledByDefault switch
     # instead of enumerating per-cop Enabled: false.
     'off':
