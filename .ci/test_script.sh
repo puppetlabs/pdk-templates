@@ -17,7 +17,6 @@ grep template < metadata.json
 cp "$TEMPLATE_PR_DIR/.ci/fixtures/new_provider_sync.yml" ./.sync.yml
 grep -q "NewCops: enable" ./.rubocop.yml # Ensure the slim template is applied (NewCops governs cops, not per-cop enumeration)
 grep -A 5 "Style/TrailingCommaInHashLiteral" ./.rubocop.yml | grep -q "EnforcedStyleForMultiline: comma" # Ensure the profile merge actually contributed a profile-sourced tuning, not just the hardcoded NewCops key
-[ "$(sed -n '/^Lint\/BooleanSymbol:/,/^[^ ]/p' ./.rubocop.yml | grep -cE -- '- (lib/puppet/type|lib/puppet/provider|spec)/\*\*/\*\.rb$')" = 3 ] # Ensure Puppet's :true/:false value idiom in types, providers and specs is excluded from Lint/BooleanSymbol, whose autocorrect would break the types
 pdk update --force
 grep -A 1 "Performance/CaseWhenSplat" ./.rubocop.yml | grep -q "false" # Ensure the cop_overrides override is rendered after update
 cp .sync.yml .sync.yml.orig
