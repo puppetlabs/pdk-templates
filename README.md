@@ -374,7 +374,7 @@ Known gaps (not statically detectable, so not flagged): the explicit-receiver `K
 
 #### Gem source resolution
 
-A generated Gemfile sets its default source from `ENV['GEM_SOURCE']`, falling back to `https://rubygems.org`, and resolves `puppet`, `facter` and `bolt` to `https://rubygems-puppetcore.puppet.com` unconditionally, regardless of whether `PUPPET_FORGE_TOKEN` is set and regardless of network state. The ADR 0001 dev/test gems (`voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`) still load from the default source; only their gem *version* moves with the resolved value, not their source.
+A generated Gemfile sets its default source from `ENV['GEM_SOURCE']`, falling back to `https://rubygems.org`, and resolves `puppet`, `facter` and `bolt` to `https://rubygems-puppetcore.puppet.com` unconditionally, regardless of whether `PUPPET_FORGE_TOKEN` is set and regardless of network state. The ADR 0001 dev/test gems (`voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`) still load from the default source; only their gem *version* moves with the resolved value, not their source. On Ruby older than 3.2 they keep the public versions (`~> 6.0` and `~> 8.0`) even under puppetcore, because `voxpupuli-puppet-lint-plugins` 7 and `puppetlabs_spec_helper` 9 require Ruby 3.2 or later.
 
 This keeps the rendered `source:` declaration byte-identical across machines: airgapped installs need a deterministic gem source that does not depend on a token being present or on the network being reachable, so a committed `Gemfile.lock` cannot drift into a frozen-mode failure.
 
