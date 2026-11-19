@@ -273,10 +273,10 @@ Gemfile:
       # See docs/adr/0001 for why this is a resolved-source check.
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 7.0'
-        condition: 'gemsource_puppetcore != "https://rubygems.org"'
+        condition: "gemsource_puppetcore != \"https://rubygems.org\" && Gem::Requirement.create('>= 3.2.0').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 6.0'
-        condition: 'gemsource_puppetcore == "https://rubygems.org"'
+        condition: "gemsource_puppetcore == \"https://rubygems.org\" || Gem::Requirement.create('< 3.2.0').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'facterdb'
         version: '~> 2.1'
         condition: "Gem::Requirement.create(['< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
@@ -333,10 +333,10 @@ Gemfile:
       # See docs/adr/0001 for why this is a resolved-source check.
       - gem: 'puppetlabs_spec_helper'
         version: '~> 9.0'
-        condition: 'gemsource_puppetcore != "https://rubygems.org"'
+        condition: "gemsource_puppetcore != \"https://rubygems.org\" && Gem::Requirement.create('>= 3.2.0').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'puppetlabs_spec_helper'
         version: '~> 8.0'
-        condition: 'gemsource_puppetcore == "https://rubygems.org"'
+        condition: "gemsource_puppetcore == \"https://rubygems.org\" || Gem::Requirement.create('< 3.2.0').satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
       - gem: 'puppet-blacksmith'
         version:
         - '>= 7.0'
