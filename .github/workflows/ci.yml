@@ -16,10 +16,7 @@ on:
 
 jobs:
   ci:
-    # Pinned: ubuntu-latest is now 26.04 (resolute), and there are no PDK packages
-    # for resolute yet (nightly repo config, puppet8-release and puppet-tools-release
-    # debs all 404). .ci/install_pdk.sh derives the codename via `lsb_release -cs`.
-    # Revert to ubuntu-latest once PDK publishes resolute packages.
+    # Pinned until PDK publishes Ubuntu 26.04 (resolute) packages.
     runs-on: ubuntu-24.04
     env:
       TWINGATE_PUBLIC_REPO_KEY: ${{ secrets.TWINGATE_PUBLIC_REPO_KEY }}
