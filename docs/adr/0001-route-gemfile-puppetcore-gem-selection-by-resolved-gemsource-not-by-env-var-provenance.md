@@ -32,3 +32,5 @@ Therefore, `gemsource_puppetcore != 'https://rubygems.org'` was added to the Gem
 ## Consequences
 
 The above design solves not only the selection of `puppet` but also the selection of 2 associated dev/test gems `voxpupuli-puppet-lint-plugins`, `puppetlabs_spec_helper`.  These 2 gems must move together for puppetcore gemsources.  See [0002](0002-default-gemsource-puppetcore-to-puppetcore-with-a-persisted-public-opt-out.md) for how `gemsource_puppetcore` itself resolves.
+
+`voxpupuli-puppet-lint-plugins` 7 and `puppetlabs_spec_helper` 9 require Ruby >= 3.2, so their puppetcore versions are also gated on Ruby >= 3.2. On Ruby 3.1, which still runs Puppet 8 with `puppet ~> 8.17` from puppetcore, they fall back to the public versions (`~> 6.0` and `~> 8.0`).

@@ -96,6 +96,20 @@ pdk new transport test_transport
   dsl.eval_gemfile("Gemfile")
   puts dsl.dependencies.find { |d| d.name == "puppetlabs_spec_helper" }.requirement.to_s
 ' 2>/dev/null)" = '~> 9.0' ]
+[ "$(ruby -rbundler -e '
+  Object.send(:remove_const, :RUBY_VERSION)
+  RUBY_VERSION = "3.1.7"
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "voxpupuli-puppet-lint-plugins" }.requirement.to_s
+' 2>/dev/null)" = '~> 6.0' ]
+[ "$(ruby -rbundler -e '
+  Object.send(:remove_const, :RUBY_VERSION)
+  RUBY_VERSION = "3.1.7"
+  dsl = Bundler::Dsl.new
+  dsl.eval_gemfile("Gemfile")
+  puts dsl.dependencies.find { |d| d.name == "puppetlabs_spec_helper" }.requirement.to_s
+' 2>/dev/null)" = '~> 8.0' ]
 
 # persisted gemsource.public opt-out routes to public rubygems.org; re-checked from a separate
 # process to prove persistence
