@@ -7,7 +7,8 @@ on:
 
 jobs:
   ci:
-    runs-on: ubuntu-latest
+    # Pinned until PDK publishes Ubuntu 26.04 (resolute) packages.
+    runs-on: ubuntu-24.04
     env:
       TWINGATE_PUBLIC_REPO_KEY: ${{ secrets.TWINGATE_PUBLIC_REPO_KEY }}
       PDK_CHANNEL: nightly
