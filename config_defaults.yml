@@ -204,7 +204,7 @@ Rakefile:
             - 'spec/unit/puppet/transport/**/*_spec.rb'
 
         RSpec/ContextWording:
-          Description: rspec-puppet-facts uses the `context "on #{os}"` idiom in generated facts, class, and defined-type specs. The `on` prefix is added to the allowed list so this well-known idiom does not trigger the cop.
+          Description: 'rspec-puppet-facts uses the `context "on #{os}"` idiom in generated facts, class, and defined-type specs. The `on` prefix is added to the allowed list so this well-known idiom does not trigger the cop.'
           Prefixes:
             - when
             - with
