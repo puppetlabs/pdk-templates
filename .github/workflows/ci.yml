@@ -64,3 +64,46 @@ jobs:
       - name: "Run Tests"
         run: |
           .ci/test_script.sh
+
+  bundle:
+    name: "bundle install (Ruby ${{ matrix.ruby_version }})"
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        ruby_version:
+          - "3.1"
+          - "3.2"
+          - "3.4"
+          - "4.0"
+    steps:
+      - name: "Checkout"
+        uses: "actions/checkout@v6"
+
+      - name: "Configure forge authentication"
+        run: |
+          if [ -n "$FORGE_TOKEN" ]; then
+            echo "PUPPET_FORGE_TOKEN=$FORGE_TOKEN" >> "$GITHUB_ENV"
+            echo "BUNDLE_RUBYGEMS___PUPPETCORE__PUPPET__COM=forge-key:$FORGE_TOKEN" >> "$GITHUB_ENV"
+          fi
+        env:
+          FORGE_TOKEN: ${{ secrets.PUPPET_FORGE_TOKEN || secrets.PUPPET_FORGE_TOKEN_PUBLIC }}
+
+      - name: "Install PDK"
+        run: |
+          .ci/install_pdk.sh
+
+      - name: "Generate module"
+        run: |
+          git checkout -b ci_commit
+          pdk new module new_module --template-url="file://$PWD" --template-ref=ci_commit --skip-interview
+
+      - name: "Install Ruby ${{ matrix.ruby_version }}"
+        uses: "ruby/setup-ruby@v1"
+        with:
+          ruby-version: ${{ matrix.ruby_version }}
+
+      - name: "Bundle install"
+        working-directory: new_module
+        run: |
+          bundle install
