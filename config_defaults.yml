@@ -174,7 +174,7 @@ Rakefile:
           EnforcedStyleForMultiline: comma
 
         # PDK/rspec-puppet convention cops -- tuned here (not in cop_overrides) because these
-        # are structural conventions of rspec-puppet and rspec-puppet-facts that every module
+        # are structural conventions of rspec-puppet and rspec-puppetlabs-facts that every module
         # scaffolded by PDK encounters, not module-specific style preferences (D-19).
 
         RSpec/DescribeClass:
@@ -204,7 +204,7 @@ Rakefile:
             - 'spec/unit/puppet/transport/**/*_spec.rb'
 
         RSpec/ContextWording:
-          Description: rspec-puppet-facts uses the `context "on #{os}"` idiom in generated facts, class, and defined-type specs. The `on` prefix is added to the allowed list so this well-known idiom does not trigger the cop.
+          Description: rspec-puppetlabs-facts uses the `context "on #{os}"` idiom in generated facts, class, and defined-type specs. The `on` prefix is added to the allowed list so this well-known idiom does not trigger the cop.
           Prefixes:
             - when
             - with
@@ -212,7 +212,7 @@ Rakefile:
             - 'on'
 
         Style/MixinUsage:
-          Description: rspec-puppet-facts requires the top-level `include RspecPuppetFacts` idiom in spec_helper, which cannot be cleanly restructured without breaking the facts test harness. Scoped to spec_helper only (D-07).
+          Description: rspec-puppetlabs-facts requires the top-level `include RspecPuppetlabsFacts` idiom in spec_helper, which cannot be cleanly restructured without breaking the facts test harness. Scoped to spec_helper only (D-07).
           Exclude:
             - 'spec/spec_helper.rb'
 
@@ -277,22 +277,14 @@ Gemfile:
       - gem: 'voxpupuli-puppet-lint-plugins'
         version: '~> 6.0'
         condition: 'gemsource_puppetcore == "https://rubygems.org"'
-      - gem: 'facterdb'
-        version: '~> 2.1'
-        condition: "Gem::Requirement.create(['< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
-      - gem: 'facterdb'
-        version: '~> 3.0'
-        condition: "Gem::Requirement.create(['>= 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: 'puppetlabs-facterdb'
+        version: '~> 0.1'
       - gem: 'metadata-json-lint'
         version: '~> 4.0'
       - gem: 'json-schema'
         version: '< 5.1.1'
-      - gem: 'rspec-puppet-facts'
-        version: '~> 4.0'
-        condition: "Gem::Requirement.create(['< 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
-      - gem: 'rspec-puppet-facts'
-        version: '~> 5.0'
-        condition: "Gem::Requirement.create(['>= 3.0.0']).satisfied_by?(Gem::Version.new(RUBY_VERSION.dup))"
+      - gem: 'rspec-puppetlabs-facts'
+        version: '~> 7.0'
       - gem: 'dependency_checker'
         version: '~> 1.0.0'
       - gem: 'parallel_tests'
